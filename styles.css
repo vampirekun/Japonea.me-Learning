@@ -7,10 +7,11 @@
   --text-strong: #111111;
   --muted: #555555;
   --muted-soft: #777777;
-  --primary: #e6005c;
-  --primary-hover: #cc0051;
-  --error: #ffe4e9;
-  --error-border: #f2a9b7;
+  --primary: #ff5252;
+  --primary-hover: #e63e3e;
+  --accent: #00a8e8;
+  --error: #ffe8e8;
+  --error-border: #f9b8b8;
   --border: #e8ecf4;
   --shadow-soft: 0 8px 20px rgba(25, 30, 55, 0.08);
 }
@@ -48,7 +49,7 @@ body {
   width: min(34vw, 150px);
   max-height: 46px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(230, 0, 92, 0.2));
+  filter: drop-shadow(0 4px 10px rgba(255, 82, 82, 0.2));
 }
 
 .brand-copy {
@@ -67,7 +68,7 @@ body {
 .brand-subtitle {
   margin: 0;
   font-size: 0.83rem;
-  color: var(--muted);
+  color: var(--accent);
 }
 
 .controls {
@@ -117,7 +118,7 @@ button {
   color: #ffffff;
   background: var(--primary);
   border-color: transparent;
-  box-shadow: 0 8px 18px rgba(230, 0, 92, 0.24);
+  box-shadow: 0 8px 18px rgba(255, 82, 82, 0.24);
 }
 
 button:hover:not(:disabled) {
@@ -153,7 +154,7 @@ button:disabled {
   width: 0%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--primary), #ff4c8d);
+  background: linear-gradient(90deg, #ff5252, #ff9a8a);
   transition: width 260ms ease;
 }
 
@@ -224,8 +225,8 @@ button:disabled {
 .badge {
   margin: 0;
   border-radius: 999px;
-  border: 1px solid #ffc7dd;
-  background: #fff1f7;
+  border: 1px solid #ffc5c5;
+  background: #fff2f2;
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -246,7 +247,7 @@ button:disabled {
 #cardKana {
   margin: 0;
   font-size: clamp(1.1rem, 5.4vw, 1.6rem);
-  color: var(--muted);
+  color: var(--accent);
   overflow-wrap: break-word;
 }
 
