@@ -9,8 +9,15 @@
   <body>
     <main class="app">
       <header class="app-header">
-        <h1>Japonea.me Learning</h1>
-        <p>Flashcards de japonés por lotes</p>
+        <img
+          class="brand-logo"
+          src="https://japonea.me/wp-content/uploads/2019/04/cropped-japoneame-1.png"
+          alt="japonea.me"
+        />
+        <div class="brand-copy">
+          <h1>Japonea.me Learning</h1>
+          <p>Flashcards de japonés por lotes</p>
+        </div>
       </header>
 
       <section class="controls">
@@ -29,8 +36,9 @@
           <div class="card-inner">
             <article class="card-face card-front">
               <p class="badge" id="cardType"></p>
-              <h2 id="cardJapanese"></h2>
-              <p id="cardReading"></p>
+              <h2 id="cardRomajiFront"></h2>
+              <p id="cardKana"></p>
+              <p id="cardKanji"></p>
             </article>
             <article class="card-face card-back">
               <h2 id="cardSpanish"></h2>
@@ -38,6 +46,13 @@
             </article>
           </div>
         </div>
+      </section>
+
+      <section class="quiz" aria-live="polite">
+        <p class="quiz-title">Quiz rápido</p>
+        <div id="quizOptions" class="quiz-options"></div>
+        <button id="quizNextBtn" class="quiz-next" type="button" hidden>Siguiente</button>
+        <p id="quizStats" class="quiz-stats">✅ 0 · ❌ 0 · Precisión: 0%</p>
       </section>
 
       <section class="meta">

@@ -10,42 +10,54 @@
             "reading": "",
             "romaji": "hajimemashite",
             "es": "Mucho gusto",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "はじめまして",
+            "kanji": ""
           },
           {
             "jp": "WATASHI WA [NOMBRE] DESU",
             "reading": "",
             "romaji": "watashi wa [nombre] desu",
             "es": "Soy [nombre]",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "わたし は [なまえ] です",
+            "kanji": ""
           },
           {
             "jp": "[PAÍS] JIN DESU",
             "reading": "",
             "romaji": "[país] jin desu",
             "es": "Soy de [país]",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "[くに] じん です",
+            "kanji": ""
           },
           {
             "jp": "[OCUPACIÓN] DESU",
             "reading": "",
             "romaji": "[ocupación] desu",
             "es": "Soy [ocupación]",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "[しょくぎょう] です",
+            "kanji": ""
           },
           {
             "jp": "[COSA] GA SUKI DESU",
             "reading": "",
             "romaji": "[cosa] ga suki desu",
             "es": "Me gusta [cosa]",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "[もの] が すき です",
+            "kanji": ""
           },
           {
             "jp": "KOCHIRAKOSO YOROSHIKU ONEGAISHIMASU",
             "reading": "",
             "romaji": "kochirakoso yoroshiku onegaishimasu",
             "es": "Igualmente",
-            "type": "phrase"
+            "type": "phrase",
+            "kana": "こちらこそ よろしく おねがいします",
+            "kanji": ""
           }
         ],
         "countries": [
@@ -54,105 +66,135 @@
             "reading": "",
             "romaji": "nihon",
             "es": "Japón",
-            "type": "country"
+            "type": "country",
+            "kana": "にほん",
+            "kanji": "日本"
           },
           {
             "jp": "KANKOKU",
             "reading": "",
             "romaji": "kankoku",
             "es": "Corea del Sur",
-            "type": "country"
+            "type": "country",
+            "kana": "かんこく",
+            "kanji": "韓国"
           },
           {
             "jp": "AMERIKA",
             "reading": "",
             "romaji": "amerika",
             "es": "Estados Unidos",
-            "type": "country"
+            "type": "country",
+            "kana": "あめりか",
+            "kanji": "アメリカ"
           },
           {
             "jp": "SUPEIN",
             "reading": "",
             "romaji": "supein",
             "es": "España",
-            "type": "country"
+            "type": "country",
+            "kana": "すぺいん",
+            "kanji": "スペイン"
           },
           {
             "jp": "ITARIA",
             "reading": "",
             "romaji": "itaria",
             "es": "Italia",
-            "type": "country"
+            "type": "country",
+            "kana": "いたりあ",
+            "kanji": "イタリア"
           },
           {
             "jp": "ROSHIA",
             "reading": "",
             "romaji": "roshia",
             "es": "Rusia",
-            "type": "country"
+            "type": "country",
+            "kana": "ろしあ",
+            "kanji": "ロシア"
           },
           {
             "jp": "BURAJIRU",
             "reading": "",
             "romaji": "burajiru",
             "es": "Brasil",
-            "type": "country"
+            "type": "country",
+            "kana": "ぶらじる",
+            "kanji": "ブラジル"
           },
           {
             "jp": "OOSUTORARIA",
             "reading": "",
             "romaji": "oosutoraria",
             "es": "Australia",
-            "type": "country"
+            "type": "country",
+            "kana": "おーすとらりあ",
+            "kanji": "オーストラリア"
           },
           {
             "jp": "CHUUGOKU",
             "reading": "",
             "romaji": "chuugoku",
             "es": "China",
-            "type": "country"
+            "type": "country",
+            "kana": "ちゅうごく",
+            "kanji": "中国"
           },
           {
             "jp": "MEKISHIKO",
             "reading": "",
             "romaji": "mekishiko",
             "es": "México",
-            "type": "country"
+            "type": "country",
+            "kana": "めきしこ",
+            "kanji": "メキシコ"
           },
           {
             "jp": "KANADA",
             "reading": "",
             "romaji": "kanada",
             "es": "Canadá",
-            "type": "country"
+            "type": "country",
+            "kana": "かなだ",
+            "kanji": "カナダ"
           },
           {
             "jp": "FURANSU",
             "reading": "",
             "romaji": "furansu",
             "es": "Francia",
-            "type": "country"
+            "type": "country",
+            "kana": "ふらんす",
+            "kanji": "フランス"
           },
           {
             "jp": "IGIRISU",
             "reading": "",
             "romaji": "igirisu",
             "es": "Inglaterra",
-            "type": "country"
+            "type": "country",
+            "kana": "いぎりす",
+            "kanji": "イギリス"
           },
           {
             "jp": "DOITSU",
             "reading": "",
             "romaji": "doitsu",
             "es": "Alemania",
-            "type": "country"
+            "type": "country",
+            "kana": "どいつ",
+            "kanji": "ドイツ"
           },
           {
             "jp": "ARUZENCHIN",
             "reading": "",
             "romaji": "aruzenchin",
             "es": "Argentina",
-            "type": "country"
+            "type": "country",
+            "kana": "あるぜんちん",
+            "kanji": "アルゼンチン"
           }
         ],
         "occupations": [
@@ -161,105 +203,135 @@
             "reading": "",
             "romaji": "kyoushi",
             "es": "Maestro",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "きょうし",
+            "kanji": "教師"
           },
           {
             "jp": "KAISHAIN",
             "reading": "",
             "romaji": "kaishain",
             "es": "Empleado de empresa",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "かいしゃいん",
+            "kanji": "会社員"
           },
           {
             "jp": "CHUUGAKUSEI",
             "reading": "",
             "romaji": "chuugakusei",
             "es": "Estudiante de secundaria",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "ちゅうがくせい",
+            "kanji": "中学生"
           },
           {
             "jp": "DAIGAKUSEI",
             "reading": "",
             "romaji": "daigakusei",
             "es": "Estudiante universitario",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "だいがくせい",
+            "kanji": "大学生"
           },
           {
             "jp": "JUUISHI",
             "reading": "",
             "romaji": "juuishi",
             "es": "Veterinario",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "じゅういし",
+            "kanji": "獣医師"
           },
           {
             "jp": "BENGOSHI",
             "reading": "",
             "romaji": "bengoshi",
             "es": "Abogado",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "べんごし",
+            "kanji": "弁護士"
           },
           {
             "jp": "ENJINIA",
             "reading": "",
             "romaji": "enjinia",
             "es": "Ingeniero",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "えんじにあ",
+            "kanji": "エンジニア"
           },
           {
             "jp": "MYUUJISHAN",
             "reading": "",
             "romaji": "myuujishan",
             "es": "Músico",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "みゅーじしゃん",
+            "kanji": "ミュージシャン"
           },
           {
             "jp": "GAKUSEI",
             "reading": "",
             "romaji": "gakusei",
             "es": "Estudiante",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "がくせい",
+            "kanji": "学生"
           },
           {
             "jp": "SHOUGAKUSEI",
             "reading": "",
             "romaji": "shougakusei",
             "es": "Estudiante de primaria",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "しょうがくせい",
+            "kanji": "小学生"
           },
           {
             "jp": "KOUKOUSEI",
             "reading": "",
             "romaji": "koukousei",
             "es": "Estudiante de preparatoria",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "こうこうせい",
+            "kanji": "高校生"
           },
           {
             "jp": "ISHA",
             "reading": "",
             "romaji": "isha",
             "es": "Doctor",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "いしゃ",
+            "kanji": "医者"
           },
           {
             "jp": "HISHO",
             "reading": "",
             "romaji": "hisho",
             "es": "Secretaria",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "ひしょ",
+            "kanji": "秘書"
           },
           {
             "jp": "KAIKEISHI",
             "reading": "",
             "romaji": "kaikeishi",
             "es": "Contador",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "かいけいし",
+            "kanji": "会計士"
           },
           {
             "jp": "DEZAINAA",
             "reading": "",
             "romaji": "dezainaa",
             "es": "Diseñador",
-            "type": "occupation"
+            "type": "occupation",
+            "kana": "でざいなー",
+            "kanji": "デザイナー"
           }
         ],
         "likes": [
@@ -268,70 +340,90 @@
             "reading": "",
             "romaji": "ongaku",
             "es": "Música",
-            "type": "like"
+            "type": "like",
+            "kana": "おんがく",
+            "kanji": "音楽"
           },
           {
             "jp": "MANGA",
             "reading": "",
             "romaji": "manga",
             "es": "Manga / comics",
-            "type": "like"
+            "type": "like",
+            "kana": "まんが",
+            "kanji": "漫画"
           },
           {
             "jp": "INU",
             "reading": "",
             "romaji": "inu",
             "es": "Perros",
-            "type": "like"
+            "type": "like",
+            "kana": "いぬ",
+            "kanji": "犬"
           },
           {
             "jp": "GEEMU",
             "reading": "",
             "romaji": "geemu",
             "es": "Videojuegos",
-            "type": "like"
+            "type": "like",
+            "kana": "げーむ",
+            "kanji": "ゲーム"
           },
           {
             "jp": "RYOKOU",
             "reading": "",
             "romaji": "ryokou",
             "es": "Viaje",
-            "type": "like"
+            "type": "like",
+            "kana": "りょこう",
+            "kanji": "旅行"
           },
           {
             "jp": "SAKKAA",
             "reading": "",
             "romaji": "sakkaa",
             "es": "Fútbol",
-            "type": "like"
+            "type": "like",
+            "kana": "さっかー",
+            "kanji": "サッカー"
           },
           {
             "jp": "EIGA",
             "reading": "",
             "romaji": "eiga",
             "es": "Películas",
-            "type": "like"
+            "type": "like",
+            "kana": "えいが",
+            "kanji": "映画"
           },
           {
             "jp": "BIIRU",
             "reading": "",
             "romaji": "biiru",
             "es": "Cerveza",
-            "type": "like"
+            "type": "like",
+            "kana": "びーる",
+            "kanji": "ビール"
           },
           {
             "jp": "DORAMA",
             "reading": "",
             "romaji": "dorama",
             "es": "Series de TV",
-            "type": "like"
+            "type": "like",
+            "kana": "どらま",
+            "kanji": "ドラマ"
           },
           {
             "jp": "NEKO",
             "reading": "",
             "romaji": "neko",
             "es": "Gatos",
-            "type": "like"
+            "type": "like",
+            "kana": "ねこ",
+            "kanji": "猫"
           }
         ]
       }

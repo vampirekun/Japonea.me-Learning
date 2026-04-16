@@ -1,17 +1,27 @@
 const STORAGE_KEYS = {
   seen: "japonea_seen_cards",
   known: "japonea_known_cards",
-  lastBatch: "japonea_last_batch"
+  lastBatch: "japonea_last_batch",
+  quizStats: "japonea_quiz_stats"
 };
+
+const QUIZ_AUTO_NEXT_DELAY = 1200;
 
 const state = {
   batches: [],
   activeBatchId: "",
   activeCategory: "all",
+  batchCards: [],
   cards: [],
   index: 0,
+  quizOptions: [],
+  hasAnsweredQuiz: false,
+  quizAnswerId: "",
+  quizSelectedId: "",
+  quizAutoNextTimer: null,
   seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
-  knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]"))
+  knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]")),
+  quizStatsByBatch: readQuizStats()
 };
 
 const ui = {
@@ -19,8 +29,9 @@ const ui = {
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
   cardType: document.getElementById("cardType"),
-  cardJapanese: document.getElementById("cardJapanese"),
-  cardReading: document.getElementById("cardReading"),
+  cardRomajiFront: document.getElementById("cardRomajiFront"),
+  cardKana: document.getElementById("cardKana"),
+  cardKanji: document.getElementById("cardKanji"),
   cardSpanish: document.getElementById("cardSpanish"),
   cardRomaji: document.getElementById("cardRomaji"),
   cardCounter: document.getElementById("cardCounter"),
@@ -28,7 +39,10 @@ const ui = {
   knownCounter: document.getElementById("knownCounter"),
   prevBtn: document.getElementById("prevBtn"),
   nextBtn: document.getElementById("nextBtn"),
-  knownBtn: document.getElementById("knownBtn")
+  knownBtn: document.getElementById("knownBtn"),
+  quizOptions: document.getElementById("quizOptions"),
+  quizNextBtn: document.getElementById("quizNextBtn"),
+  quizStats: document.getElementById("quizStats")
 };
 
 async function init() {
@@ -76,17 +90,11 @@ function renderCategoryOptions() {
 
 function updateFilteredCards() {
   const batch = getActiveBatch();
-  const categories = batch.categories || {};
-  const entries = Object.entries(categories);
-
-  const source = state.activeCategory === "all" ? entries : entries.filter(([key]) => key === state.activeCategory);
-
-  state.cards = source.flatMap(([category, items], categoryIndex) =>
-    (items || []).map((item, itemIndex) => ({
-      ...item,
-      _id: `${batch.id}:${category}:${item.romaji}:${categoryIndex}:${itemIndex}`
-    }))
-  );
+  state.batchCards = flattenBatchCards(batch);
+  state.cards =
+    state.activeCategory === "all"
+      ? state.batchCards
+      : state.batchCards.filter((item) => item._category === state.activeCategory);
 
   state.index = 0;
   renderCard();
@@ -97,13 +105,24 @@ function renderCard() {
   const hasCards = total > 0;
   const card = hasCards ? state.cards[state.index] : null;
 
+  clearQuizAutoNext();
+  state.hasAnsweredQuiz = false;
+  state.quizSelectedId = "";
+  state.quizAnswerId = card ? card._id : "";
+  state.quizOptions = card ? buildQuizOptions(card) : [];
+
   ui.card.classList.remove("is-flipped");
 
   ui.cardType.textContent = card ? capitalize(card.type || state.activeCategory) : "Sin tarjetas";
-  ui.cardJapanese.textContent = card ? card.romaji.toUpperCase() : "No hay contenido";
-  ui.cardReading.textContent = card && card.reading ? card.reading : "";
+  ui.cardRomajiFront.textContent = card ? getDisplayRomaji(card) : "No hay contenido";
+  const kana = card ? getDisplayKana(card) : "";
+  const kanji = card ? getDisplayKanji(card) : "";
+  ui.cardKana.textContent = kana;
+  ui.cardKanji.textContent = kanji;
+  ui.cardKana.hidden = !kana;
+  ui.cardKanji.hidden = !kanji;
   ui.cardSpanish.textContent = card ? card.es : "Selecciona otra categoría";
-  ui.cardRomaji.textContent = card ? `JP: ${card.jp}` : "";
+  ui.cardRomaji.textContent = card ? `JP: ${card.jp || getDisplayRomaji(card)}` : "";
 
   if (card) {
     markSeen(card._id);
@@ -116,6 +135,8 @@ function renderCard() {
   ui.prevBtn.disabled = !hasCards;
   ui.nextBtn.disabled = !hasCards;
   ui.knownBtn.disabled = !hasCards;
+  ui.quizNextBtn.hidden = true;
+  ui.quizNextBtn.disabled = !hasCards;
 
   if (card) {
     ui.knownBtn.classList.toggle("is-known", state.knownCards.has(card._id));
@@ -124,6 +145,10 @@ function renderCard() {
     ui.knownBtn.classList.remove("is-known");
     ui.knownBtn.textContent = "Marcar conocida";
   }
+
+  renderQuizOptions();
+  renderQuizStats();
+  animateCardTransition();
 }
 
 function bindEvents() {
@@ -142,6 +167,7 @@ function bindEvents() {
 
   ui.prevBtn.addEventListener("click", () => moveCard(-1));
   ui.nextBtn.addEventListener("click", () => moveCard(1));
+  ui.quizNextBtn.addEventListener("click", () => moveCard(1));
 
   ui.knownBtn.addEventListener("click", () => {
     const card = state.cards[state.index];
@@ -179,6 +205,7 @@ function bindEvents() {
 
 function moveCard(step) {
   if (!state.cards.length) return;
+  clearQuizAutoNext();
   state.index = (state.index + step + state.cards.length) % state.cards.length;
   renderCard();
 }
@@ -195,6 +222,168 @@ function markSeen(cardId) {
   if (state.seenCards.has(cardId)) return;
   state.seenCards.add(cardId);
   localStorage.setItem(STORAGE_KEYS.seen, JSON.stringify([...state.seenCards]));
+}
+
+function flattenBatchCards(batch) {
+  const categories = batch.categories || {};
+  return Object.entries(categories).flatMap(([category, items], categoryIndex) =>
+    (items || []).map((item, itemIndex) => normalizeCard(item, batch.id, category, categoryIndex, itemIndex))
+  );
+}
+
+function normalizeCard(item, batchId, category, categoryIndex, itemIndex) {
+  const romaji = (item.romaji || item.jp || "").trim();
+  const kana = getKanaFromItem(item);
+  const kanji = (item.kanji || "").trim();
+
+  return {
+    ...item,
+    romaji,
+    kana,
+    kanji,
+    _category: category,
+    _id: `${batchId}:${category}:${romaji || item.es || "card"}:${categoryIndex}:${itemIndex}`
+  };
+}
+
+function getDisplayRomaji(card) {
+  return (card.romaji || card.jp || "").toUpperCase();
+}
+
+function getDisplayKana(card) {
+  return getKanaFromItem(card);
+}
+
+function getDisplayKanji(card) {
+  return card.kanji || "";
+}
+
+function buildQuizOptions(card) {
+  const pool = state.batchCards.filter((entry) => entry._id !== card._id);
+  const uniquePool = [];
+  const seenEs = new Set();
+
+  for (const item of pool) {
+    const answerText = (item.es || "").trim().toLowerCase();
+    if (!answerText || seenEs.has(answerText)) continue;
+    seenEs.add(answerText);
+    uniquePool.push(item);
+  }
+
+  const distractors = shuffle([...uniquePool]).slice(0, 3);
+  if (distractors.length < 3) {
+    const selected = new Set(distractors.map((item) => item._id));
+    const selectedLabels = new Set(distractors.map((item) => (item.es || "").trim().toLowerCase()));
+    selectedLabels.add((card.es || "").trim().toLowerCase());
+    for (const item of shuffle([...pool])) {
+      const itemLabel = (item.es || "").trim().toLowerCase();
+      if (selected.has(item._id)) continue;
+      if (!itemLabel || selectedLabels.has(itemLabel)) continue;
+      distractors.push(item);
+      selected.add(item._id);
+      selectedLabels.add(itemLabel);
+      if (distractors.length === 3) break;
+    }
+  }
+
+  return shuffle([
+    ...distractors.slice(0, 3).map((item) => ({ id: item._id, label: item.es, isCorrect: false })),
+    { id: card._id, label: card.es, isCorrect: true }
+  ]);
+}
+
+function renderQuizOptions() {
+  if (!state.cards.length) {
+    ui.quizOptions.innerHTML = "";
+    return;
+  }
+
+  ui.quizOptions.innerHTML = state.quizOptions
+    .map((option) => {
+      const classes = ["quiz-option"];
+      if (state.hasAnsweredQuiz) {
+        if (option.id === state.quizAnswerId) classes.push("is-correct");
+        if (option.id === state.quizSelectedId && option.id !== state.quizAnswerId) classes.push("is-incorrect");
+      }
+
+      return `<button type="button" class="${classes.join(" ")}" data-option-id="${option.id}" ${
+        state.hasAnsweredQuiz ? "disabled" : ""
+      }>${option.label}</button>`;
+    })
+    .join("");
+
+  ui.quizOptions.querySelectorAll(".quiz-option").forEach((button) => {
+    button.addEventListener("click", () => handleQuizAnswer(button.dataset.optionId || ""));
+  });
+}
+
+function handleQuizAnswer(optionId) {
+  if (!state.cards.length || state.hasAnsweredQuiz) return;
+  state.hasAnsweredQuiz = true;
+  state.quizSelectedId = optionId;
+
+  const isCorrect = optionId === state.quizAnswerId;
+  updateQuizStats(isCorrect);
+  renderQuizOptions();
+  renderQuizStats();
+  ui.quizNextBtn.hidden = false;
+
+  clearQuizAutoNext();
+  state.quizAutoNextTimer = setTimeout(() => {
+    moveCard(1);
+  }, QUIZ_AUTO_NEXT_DELAY);
+}
+
+function updateQuizStats(isCorrect) {
+  const batchId = state.activeBatchId;
+  const current = state.quizStatsByBatch[batchId] || { correct: 0, incorrect: 0, accuracy: 0 };
+  const correct = current.correct + (isCorrect ? 1 : 0);
+  const incorrect = current.incorrect + (isCorrect ? 0 : 1);
+  const total = correct + incorrect;
+  state.quizStatsByBatch[batchId] = {
+    correct,
+    incorrect,
+    accuracy: total ? Number(((correct / total) * 100).toFixed(1)) : 0
+  };
+  localStorage.setItem(STORAGE_KEYS.quizStats, JSON.stringify(state.quizStatsByBatch));
+}
+
+function renderQuizStats() {
+  const current = state.quizStatsByBatch[state.activeBatchId] || { correct: 0, incorrect: 0, accuracy: 0 };
+  ui.quizStats.textContent = `✅ ${current.correct} · ❌ ${current.incorrect} · Precisión: ${current.accuracy}%`;
+}
+
+function readQuizStats() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.quizStats) || "{}");
+    return raw && typeof raw === "object" ? raw : {};
+  } catch {
+    return {};
+  }
+}
+
+function clearQuizAutoNext() {
+  if (!state.quizAutoNextTimer) return;
+  clearTimeout(state.quizAutoNextTimer);
+  state.quizAutoNextTimer = null;
+}
+
+function animateCardTransition() {
+  ui.card.classList.remove("is-switching");
+  void ui.card.offsetWidth;
+  ui.card.classList.add("is-switching");
+}
+
+function getKanaFromItem(item) {
+  return (item?.kana || item?.reading || "").trim();
+}
+
+function shuffle(items) {
+  for (let i = items.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  return items;
 }
 
 function capitalize(value = "") {
