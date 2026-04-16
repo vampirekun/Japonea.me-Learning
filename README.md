@@ -7,11 +7,30 @@ Aplicación web mobile-first para aprender japonés con flashcards por lotes sem
 ```text
 .
 ├── .github/workflows/deploy.yml
+├── assets/japonea-logo.svg
 ├── app.js
 ├── data/batches.json
 ├── index.html
 └── styles.css
 ```
+
+## Mejoras incluidas
+
+- Branding con logo oficial de japonea.me en el header.
+- Rediseño UI dark moderno (gradientes, glow, micro-interacciones y transiciones suaves).
+- Tarjeta con jerarquía japonesa en 3 niveles:
+  - Romaji (principal)
+  - Kana (hiragana/katakana)
+  - Kanji (opcional, sin espacio vacío cuando no existe)
+- Quiz gamificado:
+  - 4 opciones por tarjeta (1 correcta + 3 distractores del mismo lote)
+  - Opciones mezcladas en cada turno
+  - Feedback visual correcto/incorrecto y revelado de la respuesta correcta
+  - Auto-avance tras responder + botón manual "Siguiente"
+- Persistencia localStorage de estadísticas de quiz por lote:
+  - aciertos
+  - errores
+  - precisión
 
 ## Ejecutar localmente
 
@@ -28,6 +47,18 @@ Luego visita `http://localhost:8080`.
 - El vocabulario vive en `data/batches.json`.
 - Para agregar más semanas/lotes, añade un nuevo objeto dentro de `batches`.
 - No hace falta modificar la lógica principal para agregar nuevos lotes/categorías.
+- Formato recomendado por tarjeta (con compatibilidad retroactiva):
+
+```json
+{
+  "jp": "SENSEI",
+  "kana": "せんせい",
+  "kanji": "教師",
+  "romaji": "sensei",
+  "es": "maestro",
+  "type": "occupation"
+}
+```
 
 ## Deploy (GitHub Pages)
 
