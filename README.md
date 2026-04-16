@@ -8,6 +8,7 @@ Aplicación web mobile-first para aprender japonés con flashcards por lotes sem
 .
 ├── .github/workflows/deploy.yml
 ├── assets/japonea-logo.svg
+├── assets/cropped-japoneame-1.png
 ├── app.js
 ├── data/batches.json
 ├── index.html
@@ -16,7 +17,7 @@ Aplicación web mobile-first para aprender japonés con flashcards por lotes sem
 
 ## Mejoras incluidas
 
-- Branding con logo oficial de japonea.me en header compacto (fuente oficial remota).
+- Branding con logo local de japonea.me en header compacto (`assets/cropped-japoneame-1.png`).
 - Rediseño UI dark moderno y game-like (gradientes, glow, micro-interacciones y transiciones suaves).
 - Layout centrado para que la flashcard sea el foco principal de estudio.
 - Tarjeta con jerarquía japonesa en 3 niveles:
