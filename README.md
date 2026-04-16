@@ -7,6 +7,7 @@ Aplicación web mobile-first para aprender japonés con flashcards por lotes sem
 ```text
 .
 ├── .github/workflows/deploy.yml
+├── assets/japonea-logo.svg
 ├── app.js
 ├── data/batches.json
 ├── index.html

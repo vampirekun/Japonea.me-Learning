@@ -264,7 +264,7 @@ function buildQuizOptions(card) {
   const seenEs = new Set();
 
   for (const item of pool) {
-    const answerText = (item.es || "").trim().toLowerCase();
+    const answerText = getOptionLabel(item).toLowerCase();
     if (!answerText || seenEs.has(answerText)) continue;
     seenEs.add(answerText);
     uniquePool.push(item);
@@ -273,10 +273,10 @@ function buildQuizOptions(card) {
   const distractors = shuffle([...uniquePool]).slice(0, 3);
   if (distractors.length < 3) {
     const selected = new Set(distractors.map((item) => item._id));
-    const selectedLabels = new Set(distractors.map((item) => (item.es || "").trim().toLowerCase()));
-    selectedLabels.add((card.es || "").trim().toLowerCase());
+    const selectedLabels = new Set(distractors.map((item) => getOptionLabel(item).toLowerCase()));
+    selectedLabels.add(getOptionLabel(card).toLowerCase());
     for (const item of shuffle([...pool])) {
-      const itemLabel = (item.es || "").trim().toLowerCase();
+      const itemLabel = getOptionLabel(item).toLowerCase();
       if (selected.has(item._id)) continue;
       if (!itemLabel || selectedLabels.has(itemLabel)) continue;
       distractors.push(item);
@@ -286,35 +286,41 @@ function buildQuizOptions(card) {
     }
   }
 
-  return shuffle([
-    ...distractors.slice(0, 3).map((item) => ({ id: item._id, label: item.es, isCorrect: false })),
-    { id: card._id, label: card.es, isCorrect: true }
-  ]);
+  const options = [
+    ...distractors.slice(0, 3).map((item) => ({ id: item._id, label: getOptionLabel(item), isCorrect: false })),
+    { id: card._id, label: getOptionLabel(card), isCorrect: true }
+  ].filter((option) => option.label);
+
+  return shuffle(options);
 }
 
 function renderQuizOptions() {
+  ui.quizOptions.innerHTML = "";
+
   if (!state.cards.length) {
-    ui.quizOptions.innerHTML = "";
     return;
   }
 
-  ui.quizOptions.innerHTML = state.quizOptions
-    .map((option) => {
-      const classes = ["quiz-option"];
-      if (state.hasAnsweredQuiz) {
-        if (option.id === state.quizAnswerId) classes.push("is-correct");
-        if (option.id === state.quizSelectedId && option.id !== state.quizAnswerId) classes.push("is-incorrect");
-      }
+  const fragment = document.createDocumentFragment();
 
-      return `<button type="button" class="${classes.join(" ")}" data-option-id="${option.id}" ${
-        state.hasAnsweredQuiz ? "disabled" : ""
-      }>${option.label}</button>`;
-    })
-    .join("");
+  state.quizOptions.forEach((option) => {
+    const classes = ["quiz-option"];
+    if (state.hasAnsweredQuiz) {
+      if (option.id === state.quizAnswerId) classes.push("is-correct");
+      if (option.id === state.quizSelectedId && option.id !== state.quizAnswerId) classes.push("is-incorrect");
+    }
 
-  ui.quizOptions.querySelectorAll(".quiz-option").forEach((button) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = classes.join(" ");
+    button.dataset.optionId = option.id;
+    button.disabled = state.hasAnsweredQuiz;
+    button.textContent = option.label;
     button.addEventListener("click", () => handleQuizAnswer(button.dataset.optionId || ""));
+    fragment.appendChild(button);
   });
+
+  ui.quizOptions.appendChild(fragment);
 }
 
 function handleQuizAnswer(optionId) {
@@ -376,6 +382,10 @@ function animateCardTransition() {
 
 function getKanaFromItem(item) {
   return (item?.kana || item?.reading || "").trim();
+}
+
+function getOptionLabel(item) {
+  return (item?.es || item?.jp || item?.romaji || "").trim();
 }
 
 function shuffle(items) {
