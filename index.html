@@ -8,18 +8,14 @@
   </head>
   <body>
     <main class="app">
-      <header class="app-header">
+      <header class="app-header" aria-label="Marca">
         <img
           class="brand-logo"
-          src="./assets/japonea-logo.svg"
+          src="http://japonea.me/wp-content/uploads/2019/04/cropped-japoneame-1.png"
           alt="japonea.me"
-          width="192"
-          height="64"
+          width="160"
+          height="48"
         />
-        <div class="brand-copy">
-          <h1>Japonea.me Learning</h1>
-          <p>Flashcards de japonés por lotes</p>
-        </div>
       </header>
 
       <section class="controls">
@@ -33,34 +29,36 @@
         </label>
       </section>
 
-      <section class="card-section">
-        <div id="card" class="card" role="button" tabindex="0" aria-label="Flashcard (toca para girar)">
-          <div class="card-inner">
-            <article class="card-face card-front">
-              <p class="badge" id="cardType"></p>
-              <h2 id="cardRomajiFront"></h2>
-              <p id="cardKana"></p>
-              <p id="cardKanji"></p>
-            </article>
-            <article class="card-face card-back">
-              <h2 id="cardSpanish"></h2>
-              <p id="cardRomaji"></p>
-            </article>
+      <section class="focus-stage" aria-label="Zona principal de estudio">
+        <section class="card-section">
+          <div id="card" class="card" role="button" tabindex="0" aria-label="Flashcard (toca para girar)">
+            <div class="card-inner">
+              <article class="card-face card-front">
+                <p class="badge" id="cardType"></p>
+                <h2 id="cardRomajiFront"></h2>
+                <p id="cardKana"></p>
+                <p id="cardKanji"></p>
+              </article>
+              <article class="card-face card-back">
+                <h2 id="cardSpanish"></h2>
+                <p id="cardRomaji"></p>
+              </article>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="quiz">
-        <p class="quiz-title">Quiz rápido</p>
-        <div id="quizOptions" class="quiz-options"></div>
-        <button id="quizNextBtn" class="quiz-next" type="button" hidden>Siguiente</button>
-        <p id="quizStats" class="quiz-stats" aria-live="polite">✅ 0 · ❌ 0 · Precisión: 0%</p>
+        <section class="quiz">
+          <p class="quiz-title">Quiz rápido</p>
+          <div id="quizOptions" class="quiz-options"></div>
+          <button id="quizNextBtn" class="quiz-next" type="button" hidden>Siguiente</button>
+        </section>
       </section>
 
       <section class="meta">
         <span id="cardCounter">0 / 0</span>
         <span id="seenCounter">Vistas: 0</span>
         <span id="knownCounter">Conocidas: 0</span>
+        <span id="quizStats" class="quiz-stats" aria-live="polite">✅ 0 · ❌ 0 · Precisión: 0%</span>
       </section>
 
       <section class="actions">
@@ -72,4 +70,4 @@
 
     <script type="module" src="./app.js"></script>
   </body>
-  </html>
+</html>

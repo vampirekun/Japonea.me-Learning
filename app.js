@@ -6,6 +6,7 @@ const STORAGE_KEYS = {
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
+const KNOWN_FEEDBACK_DELAY = 320;
 
 const state = {
   batches: [],
@@ -178,6 +179,8 @@ function bindEvents() {
       state.knownCards.add(card._id);
     }
     localStorage.setItem(STORAGE_KEYS.known, JSON.stringify([...state.knownCards]));
+    ui.knownBtn.classList.add("is-pulse");
+    setTimeout(() => ui.knownBtn.classList.remove("is-pulse"), KNOWN_FEEDBACK_DELAY);
     renderCard();
   });
 
@@ -315,6 +318,7 @@ function renderQuizOptions() {
     button.className = classes.join(" ");
     button.dataset.optionId = option.id;
     button.disabled = state.hasAnsweredQuiz;
+    button.setAttribute("aria-pressed", String(state.quizSelectedId === option.id));
     button.textContent = option.label;
     button.addEventListener("click", () => handleQuizAnswer(button.dataset.optionId || ""));
     fragment.appendChild(button);
