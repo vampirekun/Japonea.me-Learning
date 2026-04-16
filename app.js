@@ -43,7 +43,9 @@ const ui = {
   knownBtn: document.getElementById("knownBtn"),
   quizOptions: document.getElementById("quizOptions"),
   quizNextBtn: document.getElementById("quizNextBtn"),
-  quizStats: document.getElementById("quizStats")
+  quizStats: document.getElementById("quizStats"),
+  progressFill: document.getElementById("progressFill"),
+  progressLabel: document.getElementById("progressLabel")
 };
 
 async function init() {
@@ -138,6 +140,7 @@ function renderCard() {
   ui.knownBtn.disabled = !hasCards;
   ui.quizNextBtn.hidden = true;
   ui.quizNextBtn.disabled = !hasCards;
+  renderProgress(total, hasCards ? state.index + 1 : 0);
 
   if (card) {
     ui.knownBtn.classList.toggle("is-known", state.knownCards.has(card._id));
@@ -360,6 +363,12 @@ function updateQuizStats(isCorrect) {
 function renderQuizStats() {
   const current = state.quizStatsByBatch[state.activeBatchId] || { correct: 0, incorrect: 0, accuracy: 0 };
   ui.quizStats.textContent = `✅ ${current.correct} · ❌ ${current.incorrect} · Precisión: ${current.accuracy}%`;
+}
+
+function renderProgress(total, position) {
+  const percent = total ? Math.round((position / total) * 100) : 0;
+  ui.progressFill.style.width = `${percent}%`;
+  ui.progressLabel.textContent = `Progreso: ${percent}%`;
 }
 
 function readQuizStats() {
