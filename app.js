@@ -318,7 +318,6 @@ function renderQuizOptions() {
     button.className = classes.join(" ");
     button.dataset.optionId = option.id;
     button.disabled = state.hasAnsweredQuiz;
-    button.setAttribute("aria-pressed", String(state.quizSelectedId === option.id));
     button.textContent = option.label;
     button.addEventListener("click", () => handleQuizAnswer(button.dataset.optionId || ""));
     fragment.appendChild(button);
