@@ -7,6 +7,17 @@ const STORAGE_KEYS = {
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
+const UI_LABELS_ES = {
+  all: "Todas",
+  phrases: "Frases",
+  countries: "Países",
+  occupations: "Ocupaciones",
+  likes: "Gustos",
+  phrase: "Frase",
+  country: "País",
+  occupation: "Ocupación",
+  like: "Gusto"
+};
 
 const state = {
   batches: [],
@@ -83,7 +94,7 @@ function renderCategoryOptions() {
 
   ui.categorySelect.innerHTML = options
     .map((category) => {
-      const label = category === "all" ? "Todas" : capitalize(category);
+      const label = getSpanishLabel(category);
       return `<option value="${category}">${label}</option>`;
     })
     .join("");
@@ -116,7 +127,7 @@ function renderCard() {
 
   ui.card.classList.remove("is-flipped");
 
-  ui.cardType.textContent = card ? capitalize(card.type || state.activeCategory) : "Sin tarjetas";
+  ui.cardType.textContent = card ? getSpanishLabel(card.type || state.activeCategory) : "Sin tarjetas";
   ui.cardRomajiFront.textContent = card ? getDisplayRomaji(card) : "No hay contenido";
   const kana = card ? getDisplayKana(card) : "";
   const kanji = card ? getDisplayKanji(card) : "";
@@ -253,7 +264,7 @@ function normalizeCard(item, batchId, category, categoryIndex, itemIndex) {
 }
 
 function getDisplayRomaji(card) {
-  return (card.romaji || card.jp || "").toUpperCase();
+  return (card.romaji || card.jp || "").trim();
 }
 
 function getDisplayKana(card) {
@@ -410,6 +421,10 @@ function shuffle(items) {
 
 function capitalize(value = "") {
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function getSpanishLabel(value = "") {
+  return UI_LABELS_ES[value] || capitalize(value);
 }
 
 init();
