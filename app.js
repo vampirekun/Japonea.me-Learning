@@ -6,7 +6,7 @@ const STORAGE_KEYS = {
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
-const KNOWN_FEEDBACK_DELAY = 320;
+const KNOWN_FEEDBACK_DELAY = 280;
 
 const state = {
   batches: [],
