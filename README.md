@@ -16,8 +16,9 @@ Aplicación web mobile-first para aprender japonés con flashcards por lotes sem
 
 ## Mejoras incluidas
 
-- Branding con logo oficial de japonea.me en el header.
-- Rediseño UI dark moderno (gradientes, glow, micro-interacciones y transiciones suaves).
+- Branding con logo oficial de japonea.me en header compacto (fuente oficial remota).
+- Rediseño UI dark moderno y game-like (gradientes, glow, micro-interacciones y transiciones suaves).
+- Layout centrado para que la flashcard sea el foco principal de estudio.
 - Tarjeta con jerarquía japonesa en 3 niveles:
   - Romaji (principal)
   - Kana (hiragana/katakana)

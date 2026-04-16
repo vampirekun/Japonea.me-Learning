@@ -6,6 +6,7 @@ const STORAGE_KEYS = {
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
+const KNOWN_FEEDBACK_DELAY = 280;
 
 const state = {
   batches: [],
@@ -178,6 +179,8 @@ function bindEvents() {
       state.knownCards.add(card._id);
     }
     localStorage.setItem(STORAGE_KEYS.known, JSON.stringify([...state.knownCards]));
+    ui.knownBtn.classList.add("is-pulse");
+    setTimeout(() => ui.knownBtn.classList.remove("is-pulse"), KNOWN_FEEDBACK_DELAY);
     renderCard();
   });
 
