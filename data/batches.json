@@ -1,0 +1,340 @@
+{
+  "batches": [
+    {
+      "id": "batch-1",
+      "title": "Week 1 - Basics",
+      "categories": {
+        "phrases": [
+          {
+            "jp": "HAJIMEMASHITE",
+            "reading": "",
+            "romaji": "hajimemashite",
+            "es": "Mucho gusto",
+            "type": "phrase"
+          },
+          {
+            "jp": "WATASHI WA [NOMBRE] DESU",
+            "reading": "",
+            "romaji": "watashi wa [nombre] desu",
+            "es": "Soy [nombre]",
+            "type": "phrase"
+          },
+          {
+            "jp": "[PAÍS] JIN DESU",
+            "reading": "",
+            "romaji": "[país] jin desu",
+            "es": "Soy de [país]",
+            "type": "phrase"
+          },
+          {
+            "jp": "[OCUPACIÓN] DESU",
+            "reading": "",
+            "romaji": "[ocupación] desu",
+            "es": "Soy [ocupación]",
+            "type": "phrase"
+          },
+          {
+            "jp": "[COSA] GA SUKI DESU",
+            "reading": "",
+            "romaji": "[cosa] ga suki desu",
+            "es": "Me gusta [cosa]",
+            "type": "phrase"
+          },
+          {
+            "jp": "KOCHIRAKOSO YOROSHIKU ONEGAISHIMASU",
+            "reading": "",
+            "romaji": "kochirakoso yoroshiku onegaishimasu",
+            "es": "Igualmente",
+            "type": "phrase"
+          }
+        ],
+        "countries": [
+          {
+            "jp": "NIHON",
+            "reading": "",
+            "romaji": "nihon",
+            "es": "Japón",
+            "type": "country"
+          },
+          {
+            "jp": "KANKOKU",
+            "reading": "",
+            "romaji": "kankoku",
+            "es": "Corea del Sur",
+            "type": "country"
+          },
+          {
+            "jp": "AMERIKA",
+            "reading": "",
+            "romaji": "amerika",
+            "es": "Estados Unidos",
+            "type": "country"
+          },
+          {
+            "jp": "SUPEIN",
+            "reading": "",
+            "romaji": "supein",
+            "es": "España",
+            "type": "country"
+          },
+          {
+            "jp": "ITARIA",
+            "reading": "",
+            "romaji": "itaria",
+            "es": "Italia",
+            "type": "country"
+          },
+          {
+            "jp": "ROSHIA",
+            "reading": "",
+            "romaji": "roshia",
+            "es": "Rusia",
+            "type": "country"
+          },
+          {
+            "jp": "BURAJIRU",
+            "reading": "",
+            "romaji": "burajiru",
+            "es": "Brasil",
+            "type": "country"
+          },
+          {
+            "jp": "OOSUTORARIA",
+            "reading": "",
+            "romaji": "oosutoraria",
+            "es": "Australia",
+            "type": "country"
+          },
+          {
+            "jp": "CHUUGOKU",
+            "reading": "",
+            "romaji": "chuugoku",
+            "es": "China",
+            "type": "country"
+          },
+          {
+            "jp": "MEKISHIKO",
+            "reading": "",
+            "romaji": "mekishiko",
+            "es": "México",
+            "type": "country"
+          },
+          {
+            "jp": "KANADA",
+            "reading": "",
+            "romaji": "kanada",
+            "es": "Canadá",
+            "type": "country"
+          },
+          {
+            "jp": "FURANSU",
+            "reading": "",
+            "romaji": "furansu",
+            "es": "Francia",
+            "type": "country"
+          },
+          {
+            "jp": "IGIRISU",
+            "reading": "",
+            "romaji": "igirisu",
+            "es": "Inglaterra",
+            "type": "country"
+          },
+          {
+            "jp": "DOITSU",
+            "reading": "",
+            "romaji": "doitsu",
+            "es": "Alemania",
+            "type": "country"
+          },
+          {
+            "jp": "ARUZENCHIN",
+            "reading": "",
+            "romaji": "aruzenchin",
+            "es": "Argentina",
+            "type": "country"
+          }
+        ],
+        "occupations": [
+          {
+            "jp": "KYOUSHI",
+            "reading": "",
+            "romaji": "kyoushi",
+            "es": "Maestro",
+            "type": "occupation"
+          },
+          {
+            "jp": "KAISHAIN",
+            "reading": "",
+            "romaji": "kaishain",
+            "es": "Empleado de empresa",
+            "type": "occupation"
+          },
+          {
+            "jp": "CHUUGAKUSEI",
+            "reading": "",
+            "romaji": "chuugakusei",
+            "es": "Estudiante de secundaria",
+            "type": "occupation"
+          },
+          {
+            "jp": "DAIGAKUSEI",
+            "reading": "",
+            "romaji": "daigakusei",
+            "es": "Estudiante universitario",
+            "type": "occupation"
+          },
+          {
+            "jp": "JUUISHI",
+            "reading": "",
+            "romaji": "juuishi",
+            "es": "Veterinario",
+            "type": "occupation"
+          },
+          {
+            "jp": "BENGOSHI",
+            "reading": "",
+            "romaji": "bengoshi",
+            "es": "Abogado",
+            "type": "occupation"
+          },
+          {
+            "jp": "ENJINIA",
+            "reading": "",
+            "romaji": "enjinia",
+            "es": "Ingeniero",
+            "type": "occupation"
+          },
+          {
+            "jp": "MYUUJISHAN",
+            "reading": "",
+            "romaji": "myuujishan",
+            "es": "Músico",
+            "type": "occupation"
+          },
+          {
+            "jp": "GAKUSEI",
+            "reading": "",
+            "romaji": "gakusei",
+            "es": "Estudiante",
+            "type": "occupation"
+          },
+          {
+            "jp": "SHOUGAKUSEI",
+            "reading": "",
+            "romaji": "shougakusei",
+            "es": "Estudiante de primaria",
+            "type": "occupation"
+          },
+          {
+            "jp": "KOUKOUSEI",
+            "reading": "",
+            "romaji": "koukousei",
+            "es": "Estudiante de preparatoria",
+            "type": "occupation"
+          },
+          {
+            "jp": "ISHA",
+            "reading": "",
+            "romaji": "isha",
+            "es": "Doctor",
+            "type": "occupation"
+          },
+          {
+            "jp": "HISHO",
+            "reading": "",
+            "romaji": "hisho",
+            "es": "Secretaria",
+            "type": "occupation"
+          },
+          {
+            "jp": "KAIKEISHI",
+            "reading": "",
+            "romaji": "kaikeishi",
+            "es": "Contador",
+            "type": "occupation"
+          },
+          {
+            "jp": "DEZAINAA",
+            "reading": "",
+            "romaji": "dezainaa",
+            "es": "Diseñador",
+            "type": "occupation"
+          }
+        ],
+        "likes": [
+          {
+            "jp": "ONGAKU",
+            "reading": "",
+            "romaji": "ongaku",
+            "es": "Música",
+            "type": "like"
+          },
+          {
+            "jp": "MANGA",
+            "reading": "",
+            "romaji": "manga",
+            "es": "Manga / comics",
+            "type": "like"
+          },
+          {
+            "jp": "INU",
+            "reading": "",
+            "romaji": "inu",
+            "es": "Perros",
+            "type": "like"
+          },
+          {
+            "jp": "GEEMU",
+            "reading": "",
+            "romaji": "geemu",
+            "es": "Videojuegos",
+            "type": "like"
+          },
+          {
+            "jp": "RYOKOU",
+            "reading": "",
+            "romaji": "ryokou",
+            "es": "Viaje",
+            "type": "like"
+          },
+          {
+            "jp": "SAKKAA",
+            "reading": "",
+            "romaji": "sakkaa",
+            "es": "Fútbol",
+            "type": "like"
+          },
+          {
+            "jp": "EIGA",
+            "reading": "",
+            "romaji": "eiga",
+            "es": "Películas",
+            "type": "like"
+          },
+          {
+            "jp": "BIIRU",
+            "reading": "",
+            "romaji": "biiru",
+            "es": "Cerveza",
+            "type": "like"
+          },
+          {
+            "jp": "DORAMA",
+            "reading": "",
+            "romaji": "dorama",
+            "es": "Series de TV",
+            "type": "like"
+          },
+          {
+            "jp": "NEKO",
+            "reading": "",
+            "romaji": "neko",
+            "es": "Gatos",
+            "type": "like"
+          }
+        ]
+      }
+    }
+  ]
+}

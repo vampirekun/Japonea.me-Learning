@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japonea.me Learning</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>Japonea.me Learning</h1>
+        <p>Flashcards de japonés por lotes</p>
+      </header>
+
+      <section class="controls">
+        <label>
+          Lote
+          <select id="batchSelect" aria-label="Seleccionar lote"></select>
+        </label>
+        <label>
+          Categoría
+          <select id="categorySelect" aria-label="Seleccionar categoría"></select>
+        </label>
+      </section>
+
+      <section class="card-section">
+        <div id="card" class="card" role="button" tabindex="0" aria-label="Flashcard (toca para girar)">
+          <div class="card-inner">
+            <article class="card-face card-front">
+              <p class="badge" id="cardType"></p>
+              <h2 id="cardJapanese"></h2>
+              <p id="cardReading"></p>
+            </article>
+            <article class="card-face card-back">
+              <h2 id="cardSpanish"></h2>
+              <p id="cardRomaji"></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="meta">
+        <span id="cardCounter">0 / 0</span>
+        <span id="seenCounter">Vistas: 0</span>
+        <span id="knownCounter">Conocidas: 0</span>
+      </section>
+
+      <section class="actions">
+        <button id="prevBtn" type="button">← Anterior</button>
+        <button id="knownBtn" type="button">Marcar conocida</button>
+        <button id="nextBtn" type="button">Siguiente →</button>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+  </html>
