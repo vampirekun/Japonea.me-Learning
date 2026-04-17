@@ -358,9 +358,10 @@ function getDisplayKana(card) {
 function getDisplayKanji(card) {
   const kana = getDisplayKana(card);
   const kanji = (card.kanji || "").trim();
+  const hasKana = normalizeJapaneseText(kana).length > 0;
   if (!kanji) return "";
   if (normalizeJapaneseText(kanji) === normalizeJapaneseText(kana)) return "";
-  if (isKatakanaOnly(kanji) && normalizeJapaneseText(kana)) return "";
+  if (isKatakanaOnly(kanji) && hasKana) return "";
   return kanji;
 }
 
@@ -637,6 +638,7 @@ function normalizeJapaneseText(value = "") {
 
 function isKatakanaOnly(value = "") {
   if (!value) return false;
+  // Katakana block + prolonged sound mark + middle dot + spaces.
   return /^[\u30A0-\u30FFー・\s]+$/.test(value.trim());
 }
 
