@@ -2,11 +2,14 @@ const STORAGE_KEYS = {
   seen: "japonea_seen_cards",
   known: "japonea_known_cards",
   lastBatch: "japonea_last_batch",
-  quizStats: "japonea_quiz_stats"
+  quizStats: "japonea_quiz_stats",
+  hideKnown: "japonea_hide_known",
+  shuffleCards: "japonea_shuffle_cards"
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
+const QUIZ_HIGH_SCORE_THRESHOLD = 70;
 const UI_LABELS_ES = {
   all: "Todas",
   phrases: "Frases",
@@ -17,6 +20,11 @@ const UI_LABELS_ES = {
   country: "País",
   occupation: "Ocupación",
   like: "Gusto"
+};
+const BATCH_TITLE_TRANSLATIONS = {
+  basics: "Básicos",
+  intermediate: "Intermedio",
+  advanced: "Avanzado"
 };
 
 const state = {
@@ -31,6 +39,10 @@ const state = {
   quizAnswerId: "",
   quizSelectedId: "",
   quizAutoNextTimer: null,
+  hideKnown: readBooleanStorage(STORAGE_KEYS.hideKnown),
+  shuffleCards: readBooleanStorage(STORAGE_KEYS.shuffleCards),
+  quizSession: { total: 0, answered: 0, correct: 0, incorrect: 0, answeredIds: new Set() },
+  quizCompleted: false,
   seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
   knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]")),
   quizStatsByBatch: readQuizStats()
@@ -56,15 +68,34 @@ const ui = {
   quizNextBtn: document.getElementById("quizNextBtn"),
   quizStats: document.getElementById("quizStats"),
   progressFill: document.getElementById("progressFill"),
-  progressLabel: document.getElementById("progressLabel")
+  progressLabel: document.getElementById("progressLabel"),
+  hideKnownToggle: document.getElementById("hideKnownToggle"),
+  shuffleToggle: document.getElementById("shuffleToggle"),
+  splashScreen: document.getElementById("splashScreen"),
+  quizResultScreen: document.getElementById("quizResultScreen"),
+  quizResultState: document.getElementById("quizResultState"),
+  quizResultTitle: document.getElementById("quizResultTitle"),
+  quizResultTotal: document.getElementById("quizResultTotal"),
+  quizResultCorrect: document.getElementById("quizResultCorrect"),
+  quizResultIncorrect: document.getElementById("quizResultIncorrect"),
+  quizResultAccuracy: document.getElementById("quizResultAccuracy"),
+  retryQuizBtn: document.getElementById("retryQuizBtn"),
+  goHomeBtn: document.getElementById("goHomeBtn")
 };
 
 async function init() {
+  ui.hideKnownToggle.checked = state.hideKnown;
+  ui.shuffleToggle.checked = state.shuffleCards;
+
   const response = await fetch("./data/batches.json");
   const data = await response.json();
   state.batches = data.batches || [];
 
-  if (!state.batches.length) return;
+  if (!state.batches.length) {
+    setTimeout(hideSplashScreen, 1200);
+    registerServiceWorker();
+    return;
+  }
 
   const storedBatch = localStorage.getItem(STORAGE_KEYS.lastBatch);
   const fallbackBatch = state.batches[0].id;
@@ -74,11 +105,13 @@ async function init() {
   renderCategoryOptions();
   updateFilteredCards();
   bindEvents();
+  setTimeout(hideSplashScreen, 1200);
+  registerServiceWorker();
 }
 
 function renderBatchOptions() {
   ui.batchSelect.innerHTML = state.batches
-    .map((batch) => `<option value="${batch.id}">${batch.title}</option>`)
+    .map((batch) => `<option value="${batch.id}">${translateBatchTitle(batch.title)}</option>`)
     .join("");
   ui.batchSelect.value = state.activeBatchId;
 }
@@ -105,12 +138,17 @@ function renderCategoryOptions() {
 function updateFilteredCards() {
   const batch = getActiveBatch();
   state.batchCards = flattenBatchCards(batch);
-  state.cards =
+  const categoryCards =
     state.activeCategory === "all"
       ? state.batchCards
       : state.batchCards.filter((item) => item._category === state.activeCategory);
 
+  const knownFiltered = state.hideKnown ? categoryCards.filter((item) => !state.knownCards.has(item._id)) : categoryCards;
+  state.cards = state.shuffleCards ? shuffle([...knownFiltered]) : knownFiltered;
+
   state.index = 0;
+  resetQuizSession();
+  hideQuizResult();
   renderCard();
 }
 
@@ -180,13 +218,37 @@ function bindEvents() {
     updateFilteredCards();
   });
 
+  ui.hideKnownToggle.addEventListener("change", (event) => {
+    state.hideKnown = event.target.checked;
+    localStorage.setItem(STORAGE_KEYS.hideKnown, String(state.hideKnown));
+    updateFilteredCards();
+  });
+
+  ui.shuffleToggle.addEventListener("change", (event) => {
+    state.shuffleCards = event.target.checked;
+    localStorage.setItem(STORAGE_KEYS.shuffleCards, String(state.shuffleCards));
+    updateFilteredCards();
+  });
+
   ui.prevBtn.addEventListener("click", () => moveCard(-1));
   ui.nextBtn.addEventListener("click", () => moveCard(1));
   ui.quizNextBtn.addEventListener("click", () => moveCard(1));
+  ui.retryQuizBtn.addEventListener("click", () => {
+    resetQuizSession();
+    hideQuizResult();
+    state.index = 0;
+    renderCard();
+  });
+  ui.goHomeBtn.addEventListener("click", () => {
+    hideQuizResult();
+    state.index = 0;
+    renderCard();
+  });
 
   ui.knownBtn.addEventListener("click", () => {
     const card = state.cards[state.index];
     if (!card) return;
+    const wasKnown = state.knownCards.has(card._id);
     if (state.knownCards.has(card._id)) {
       state.knownCards.delete(card._id);
     } else {
@@ -195,6 +257,11 @@ function bindEvents() {
     localStorage.setItem(STORAGE_KEYS.known, JSON.stringify([...state.knownCards]));
     ui.knownBtn.classList.add("is-pulse");
     setTimeout(() => ui.knownBtn.classList.remove("is-pulse"), KNOWN_FEEDBACK_DELAY);
+    const becameKnown = !wasKnown && state.knownCards.has(card._id);
+    if (state.hideKnown && becameKnown) {
+      removeKnownCardFromActiveView(card._id);
+      return;
+    }
     renderCard();
   });
 
@@ -221,7 +288,7 @@ function bindEvents() {
 }
 
 function moveCard(step) {
-  if (!state.cards.length) return;
+  if (!state.cards.length || state.quizCompleted) return;
   clearQuizAutoNext();
   state.index = (state.index + step + state.cards.length) % state.cards.length;
   renderCard();
@@ -276,7 +343,9 @@ function getDisplayKanji(card) {
 }
 
 function buildQuizOptions(card) {
-  const pool = state.batchCards.filter((entry) => entry._id !== card._id);
+  const primaryPool = state.cards.filter((entry) => entry._id !== card._id);
+  const fallbackPool = state.batchCards.filter((entry) => entry._id !== card._id && !state.knownCards.has(entry._id));
+  const pool = primaryPool.length >= 3 ? primaryPool : fallbackPool;
   const uniquePool = [];
   const seenEs = new Set();
 
@@ -341,15 +410,32 @@ function renderQuizOptions() {
 }
 
 function handleQuizAnswer(optionId) {
-  if (!state.cards.length || state.hasAnsweredQuiz) return;
+  if (!state.cards.length || state.hasAnsweredQuiz || state.quizCompleted) return;
   state.hasAnsweredQuiz = true;
   state.quizSelectedId = optionId;
 
   const isCorrect = optionId === state.quizAnswerId;
+  const card = state.cards[state.index];
+  if (card && !state.quizSession.answeredIds.has(card._id)) {
+    state.quizSession.answeredIds.add(card._id);
+    state.quizSession.answered += 1;
+    if (isCorrect) {
+      state.quizSession.correct += 1;
+    } else {
+      state.quizSession.incorrect += 1;
+    }
+  }
+
   updateQuizStats(isCorrect);
   renderQuizOptions();
   renderQuizStats();
   ui.quizNextBtn.hidden = false;
+
+  if (state.quizSession.answered >= state.quizSession.total && state.quizSession.total > 0) {
+    state.quizCompleted = true;
+    showQuizResult();
+    return;
+  }
 
   clearQuizAutoNext();
   state.quizAutoNextTimer = setTimeout(() => {
@@ -391,10 +477,81 @@ function readQuizStats() {
   }
 }
 
+function resetQuizSession() {
+  state.quizCompleted = false;
+  state.quizSession = {
+    total: state.cards.length,
+    answered: 0,
+    correct: 0,
+    incorrect: 0,
+    answeredIds: new Set()
+  };
+}
+
 function clearQuizAutoNext() {
   if (!state.quizAutoNextTimer) return;
   clearTimeout(state.quizAutoNextTimer);
   state.quizAutoNextTimer = null;
+}
+
+function showQuizResult() {
+  clearQuizAutoNext();
+  const { total, correct, incorrect } = state.quizSession;
+  const accuracy = total ? Number(((correct / total) * 100).toFixed(1)) : 0;
+  const highScore = accuracy >= QUIZ_HIGH_SCORE_THRESHOLD;
+
+  ui.quizResultScreen.hidden = false;
+  ui.quizResultScreen.classList.toggle("is-high", highScore);
+  ui.quizResultScreen.classList.toggle("is-low", !highScore);
+  ui.quizResultState.textContent = highScore ? "¡Excelente!" : "Buen intento";
+  ui.quizResultTitle.textContent = highScore ? "¡Gran resultado en tu quiz!" : "Sigue practicando, vas muy bien";
+  ui.quizResultTotal.textContent = String(total);
+  ui.quizResultCorrect.textContent = String(correct);
+  ui.quizResultIncorrect.textContent = String(incorrect);
+  ui.quizResultAccuracy.textContent = `${accuracy}%`;
+  document.body.classList.add("showing-result");
+}
+
+function hideQuizResult() {
+  ui.quizResultScreen.hidden = true;
+  ui.quizResultScreen.classList.remove("is-high", "is-low");
+  document.body.classList.remove("showing-result");
+}
+
+function hideSplashScreen() {
+  if (!ui.splashScreen) return;
+  ui.splashScreen.classList.add("is-hidden");
+  setTimeout(() => {
+    ui.splashScreen.hidden = true;
+  }, 380);
+}
+
+function removeKnownCardFromActiveView(cardId) {
+  if (!state.cards.length) return;
+  const wasAnswered = state.quizSession.answeredIds.has(cardId);
+  const nextCards = state.cards.filter((item) => item._id !== cardId);
+  if (nextCards.length === state.cards.length) {
+    renderCard();
+    return;
+  }
+  state.cards = nextCards;
+  state.index = Math.min(state.index, Math.max(state.cards.length - 1, 0));
+  if (!wasAnswered) {
+    state.quizSession.total = Math.max(state.quizSession.total - 1, 0);
+  }
+  hideQuizResult();
+  renderCard();
+}
+
+function readBooleanStorage(key) {
+  return localStorage.getItem(key) === "true";
+}
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.register("./sw.js").catch((error) => {
+    console.warn("No se pudo registrar el service worker:", error);
+  });
 }
 
 function animateCardTransition() {
@@ -425,6 +582,15 @@ function capitalize(value = "") {
 
 function getSpanishLabel(value = "") {
   return UI_LABELS_ES[value] || capitalize(value);
+}
+
+function translateBatchTitle(title = "") {
+  const match = title.match(/^Week\s+(\d+)\s*-\s*(.+)$/i);
+  if (!match) return title;
+  const [, week, level] = match;
+  const levelKey = level.trim().toLowerCase();
+  const translatedLevel = BATCH_TITLE_TRANSLATIONS[levelKey] || level.trim();
+  return `Semana ${week} - ${translatedLevel}`;
 }
 
 init();

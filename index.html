@@ -3,10 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e4007c" />
     <title>Japonea.me Learning</title>
+    <link rel="icon" type="image/png" href="./assets/cropped-japoneame-1.png" />
+    <link rel="apple-touch-icon" href="./assets/cropped-japoneame-1.png" />
+    <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div id="splashScreen" class="splash-screen" aria-hidden="true">
+      <img src="./assets/cropped-japoneame-1.png" alt="Japonea.me" class="splash-logo" width="180" height="60" />
+    </div>
+
     <main class="app">
       <header class="app-header">
         <img class="brand-logo" src="./assets/cropped-japoneame-1.png" alt="Logo de Japonea.me" width="160" height="48" />
@@ -24,6 +32,14 @@
         <label>
           Categoría
           <select id="categorySelect" aria-label="Seleccionar categoría"></select>
+        </label>
+        <label class="toggle-row" for="hideKnownToggle">
+          <span>Ocultar conocidas</span>
+          <input id="hideKnownToggle" type="checkbox" />
+        </label>
+        <label class="toggle-row" for="shuffleToggle">
+          <span>Mezclar tarjetas</span>
+          <input id="shuffleToggle" type="checkbox" />
         </label>
       </section>
 
@@ -72,6 +88,23 @@
         <button id="nextBtn" type="button">Siguiente →</button>
       </section>
     </main>
+
+    <section id="quizResultScreen" class="quiz-result-screen" hidden aria-live="polite">
+      <article class="quiz-result-card">
+        <p id="quizResultState" class="quiz-result-state"></p>
+        <h2 id="quizResultTitle" class="quiz-result-title"></h2>
+        <div class="quiz-result-metrics">
+          <p>Total: <strong id="quizResultTotal">0</strong></p>
+          <p>Correctas: <strong id="quizResultCorrect">0</strong></p>
+          <p>Incorrectas: <strong id="quizResultIncorrect">0</strong></p>
+          <p>Precisión: <strong id="quizResultAccuracy">0%</strong></p>
+        </div>
+        <div class="quiz-result-actions">
+          <button id="retryQuizBtn" type="button">Reintentar quiz</button>
+          <button id="goHomeBtn" type="button">Volver al inicio</button>
+        </div>
+      </article>
+    </section>
 
     <script type="module" src="./app.js"></script>
   </body>
