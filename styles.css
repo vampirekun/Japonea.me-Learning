@@ -481,6 +481,10 @@ button:disabled {
   visibility: hidden;
 }
 
+.splash-screen[hidden] {
+  display: none !important;
+}
+
 .splash-logo {
   width: min(64vw, 220px);
   height: auto;
@@ -504,6 +508,10 @@ button:disabled {
   place-items: center;
   padding: 1rem;
   text-align: center;
+}
+
+.quiz-result-screen[hidden] {
+  display: none !important;
 }
 
 .quiz-result-screen.is-high {

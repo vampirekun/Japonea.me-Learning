@@ -105,7 +105,7 @@ async function init() {
 
 function renderBatchOptions() {
   ui.batchSelect.innerHTML = state.batches
-    .map((batch) => `<option value="${batch.id}">${batch.title}</option>`)
+    .map((batch) => `<option value="${batch.id}">${translateBatchTitle(batch.title)}</option>`)
     .join("");
   ui.batchSelect.value = state.activeBatchId;
 }
@@ -559,6 +559,10 @@ function capitalize(value = "") {
 
 function getSpanishLabel(value = "") {
   return UI_LABELS_ES[value] || capitalize(value);
+}
+
+function translateBatchTitle(title = "") {
+  return title.replace(/\bWeek\b/gi, "Semana").replace(/\bBasics\b/gi, "Básicos");
 }
 
 init();
