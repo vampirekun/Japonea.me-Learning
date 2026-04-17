@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
+const QUIZ_HIGH_SCORE_THRESHOLD = 70;
 const UI_LABELS_ES = {
   all: "Todas",
   phrases: "Frases",
@@ -497,7 +498,7 @@ function showQuizResult() {
   clearQuizAutoNext();
   const { total, correct, incorrect } = state.quizSession;
   const accuracy = total ? Number(((correct / total) * 100).toFixed(1)) : 0;
-  const highScore = accuracy >= 70;
+  const highScore = accuracy >= QUIZ_HIGH_SCORE_THRESHOLD;
 
   ui.quizResultScreen.hidden = false;
   ui.quizResultScreen.classList.toggle("is-high", highScore);
@@ -527,6 +528,7 @@ function hideSplashScreen() {
 
 function removeKnownCardFromActiveView(cardId) {
   if (!state.cards.length) return;
+  const wasAnswered = state.quizSession.answeredIds.has(cardId);
   const nextCards = state.cards.filter((item) => item._id !== cardId);
   if (nextCards.length === state.cards.length) {
     renderCard();
@@ -534,7 +536,9 @@ function removeKnownCardFromActiveView(cardId) {
   }
   state.cards = nextCards;
   state.index = Math.min(state.index, Math.max(state.cards.length - 1, 0));
-  state.quizSession.total = Math.max(state.quizSession.total - 1, 0);
+  if (!wasAnswered) {
+    state.quizSession.total = Math.max(state.quizSession.total - 1, 0);
+  }
   hideQuizResult();
   renderCard();
 }
