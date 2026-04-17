@@ -12,6 +12,7 @@
   --accent: #00a8e8;
   --success: #11b47a;
   --success-soft: #dbfff0;
+  --success-gradient: linear-gradient(135deg, var(--accent), var(--success));
   --error: #ffe8e8;
   --error-border: #f9b8b8;
   --border: #e8ecf4;
@@ -345,7 +346,7 @@ button:disabled {
 }
 
 .quiz-option.is-correct {
-  background: linear-gradient(135deg, var(--accent), var(--success));
+  background: var(--success-gradient);
   color: #ffffff;
   border-color: transparent;
   animation: optionCorrect 260ms ease;

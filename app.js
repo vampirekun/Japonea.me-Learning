@@ -20,6 +20,9 @@ const UI_LABELS_ES = {
   occupation: "Ocupación",
   like: "Gusto"
 };
+const BATCH_TITLE_TRANSLATIONS = {
+  "Week 1 - Basics": "Semana 1 - Básicos"
+};
 
 const state = {
   batches: [],
@@ -527,7 +530,9 @@ function readBooleanStorage(key) {
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register("./sw.js").catch((error) => {
+      console.warn("No se pudo registrar el service worker:", error);
+    });
   });
 }
 
@@ -562,7 +567,7 @@ function getSpanishLabel(value = "") {
 }
 
 function translateBatchTitle(title = "") {
-  return title.replace(/\bWeek\b/gi, "Semana").replace(/\bBasics\b/gi, "Básicos");
+  return BATCH_TITLE_TRANSLATIONS[title] || title;
 }
 
 init();
