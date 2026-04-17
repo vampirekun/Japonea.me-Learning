@@ -58,6 +58,294 @@
             "type": "phrase",
             "kana": "こちらこそ よろしく おねがいします",
             "kanji": ""
+          },
+          {
+            "jp": "MITE KUDASAI",
+            "reading": "",
+            "romaji": "mite kudasai",
+            "es": "Mira, por favor",
+            "type": "phrase",
+            "kana": "みて ください",
+            "kanji": ""
+          },
+          {
+            "jp": "KIITE KUDASAI",
+            "reading": "",
+            "romaji": "kiite kudasai",
+            "es": "Escucha, por favor",
+            "type": "phrase",
+            "kana": "きいて ください",
+            "kanji": ""
+          },
+          {
+            "jp": "ITTE KUDASAI",
+            "reading": "",
+            "romaji": "itte kudasai",
+            "es": "Dilo, por favor",
+            "type": "phrase",
+            "kana": "いって ください",
+            "kanji": ""
+          },
+          {
+            "jp": "YONDE KUDASAI",
+            "reading": "",
+            "romaji": "yonde kudasai",
+            "es": "Léelo, por favor",
+            "type": "phrase",
+            "kana": "よんで ください",
+            "kanji": ""
+          },
+          {
+            "jp": "KAITE KUDASAI",
+            "reading": "",
+            "romaji": "kaite kudasai",
+            "es": "Escríbelo, por favor",
+            "type": "phrase",
+            "kana": "かいて ください",
+            "kanji": ""
+          },
+          {
+            "jp": "HANASHITE KUDASAI",
+            "reading": "",
+            "romaji": "hanashite kudasai",
+            "es": "Hablen, por favor",
+            "type": "phrase",
+            "kana": "はなして ください",
+            "kanji": ""
+          },
+          {
+            "jp": "TATTE KUDASAI",
+            "reading": "",
+            "romaji": "tatte kudasai",
+            "es": "De pie, por favor",
+            "type": "phrase",
+            "kana": "たって ください",
+            "kanji": ""
+          },
+          {
+            "jp": "SUWATTE KUDASAI",
+            "reading": "",
+            "romaji": "suwatte kudasai",
+            "es": "Siéntate, por favor",
+            "type": "phrase",
+            "kana": "すわって ください",
+            "kanji": ""
+          },
+          {
+            "jp": "OBOETE KUDASAI",
+            "reading": "",
+            "romaji": "oboete kudasai",
+            "es": "Memorízalo, por favor",
+            "type": "phrase",
+            "kana": "おぼえて ください",
+            "kanji": ""
+          },
+          {
+            "jp": "MINA SAN",
+            "reading": "",
+            "romaji": "mina san",
+            "es": "Todos (cuando te diriges a un grupo de personas)",
+            "type": "phrase",
+            "kana": "みなさん",
+            "kanji": "皆さん"
+          },
+          {
+            "jp": "~SAN",
+            "reading": "",
+            "romaji": "~san",
+            "es": "Sufijo de respeto",
+            "type": "phrase",
+            "kana": "さん",
+            "kanji": ""
+          },
+          {
+            "jp": "~SENSEI",
+            "reading": "",
+            "romaji": "~sensei",
+            "es": "Maestro/a...",
+            "type": "phrase",
+            "kana": "せんせい",
+            "kanji": "先生"
+          },
+          {
+            "jp": "HAJIMEMASHOU",
+            "reading": "",
+            "romaji": "hajimemashou",
+            "es": "Comencemos",
+            "type": "phrase",
+            "kana": "はじめましょう",
+            "kanji": ""
+          },
+          {
+            "jp": "YASUMIMASHOU",
+            "reading": "",
+            "romaji": "yasumimashou",
+            "es": "Descansemos",
+            "type": "phrase",
+            "kana": "やすみましょう",
+            "kanji": "休みましょう"
+          },
+          {
+            "jp": "OWARIMASHOU",
+            "reading": "",
+            "romaji": "owarimashou",
+            "es": "Terminemos",
+            "type": "phrase",
+            "kana": "おわりましょう",
+            "kanji": "終わりましょう"
+          },
+          {
+            "jp": "WAKARIMASHITA",
+            "reading": "",
+            "romaji": "wakarimashita",
+            "es": "Entendido",
+            "type": "phrase",
+            "kana": "わかりました",
+            "kanji": ""
+          },
+          {
+            "jp": "WAKARIMASEN",
+            "reading": "",
+            "romaji": "wakarimasen",
+            "es": "No entiendo",
+            "type": "phrase",
+            "kana": "わかりません",
+            "kanji": ""
+          },
+          {
+            "jp": "HAI",
+            "reading": "",
+            "romaji": "hai",
+            "es": "Sí",
+            "type": "phrase",
+            "kana": "はい",
+            "kanji": ""
+          },
+          {
+            "jp": "IIE",
+            "reading": "",
+            "romaji": "iie",
+            "es": "No",
+            "type": "phrase",
+            "kana": "いいえ",
+            "kanji": ""
+          },
+          {
+            "jp": "SHUKUDAI",
+            "reading": "",
+            "romaji": "shukudai",
+            "es": "Tarea",
+            "type": "phrase",
+            "kana": "しゅくだい",
+            "kanji": "宿題"
+          },
+          {
+            "jp": "OHAYOU GOZAIMASU",
+            "reading": "",
+            "romaji": "ohayou gozaimasu",
+            "es": "Buenos días",
+            "type": "phrase",
+            "kana": "おはよう ございます",
+            "kanji": ""
+          },
+          {
+            "jp": "KONNICHIWA",
+            "reading": "",
+            "romaji": "konnichiwa",
+            "es": "Buenas tardes",
+            "type": "phrase",
+            "kana": "こんにちは",
+            "kanji": ""
+          },
+          {
+            "jp": "KONBANWA",
+            "reading": "",
+            "romaji": "konbanwa",
+            "es": "Buenas noches (para saludar)",
+            "type": "phrase",
+            "kana": "こんばんは",
+            "kanji": "今晩は"
+          },
+          {
+            "jp": "SAYOUNARA",
+            "reading": "",
+            "romaji": "sayounara",
+            "es": "Adiós",
+            "type": "phrase",
+            "kana": "さようなら",
+            "kanji": ""
+          },
+          {
+            "jp": "OYASUMI NASAI",
+            "reading": "",
+            "romaji": "oyasumi nasai",
+            "es": "Buenas noches (para dormir)",
+            "type": "phrase",
+            "kana": "おやすみ なさい",
+            "kanji": "お休みなさい"
+          },
+          {
+            "jp": "DOUZO",
+            "reading": "",
+            "romaji": "douzo",
+            "es": "Adelante (para dar permiso o entregar algo)",
+            "type": "phrase",
+            "kana": "どうぞ",
+            "kanji": ""
+          },
+          {
+            "jp": "ARIGATOU GOZAIMASU",
+            "reading": "",
+            "romaji": "arigatou gozaimasu",
+            "es": "Gracias",
+            "type": "phrase",
+            "kana": "ありがとうございます",
+            "kanji": ""
+          },
+          {
+            "jp": "IIE, DOU ITASHIMASHITE",
+            "reading": "",
+            "romaji": "iie, dou itashimashite",
+            "es": "De nada",
+            "type": "phrase",
+            "kana": "いいえ、どう いたしまして",
+            "kanji": ""
+          },
+          {
+            "jp": "SUMIMASEN",
+            "reading": "",
+            "romaji": "sumimasen",
+            "es": "Lo siento",
+            "type": "phrase",
+            "kana": "すみません",
+            "kanji": ""
+          },
+          {
+            "jp": "SHITSUREI SHIMASU",
+            "reading": "",
+            "romaji": "shitsurei shimasu",
+            "es": "Disculpe (para pedir permiso)",
+            "type": "phrase",
+            "kana": "しつれい します",
+            "kanji": "失礼します"
+          },
+          {
+            "jp": "ONEGAI SHIMASU",
+            "reading": "",
+            "romaji": "onegai shimasu",
+            "es": "Por favor",
+            "type": "phrase",
+            "kana": "おねがい します",
+            "kanji": "お願いします"
+          },
+          {
+            "jp": "MOU ICHIDO ONEGAISHIMASU",
+            "reading": "",
+            "romaji": "mou ichido onegaishimasu",
+            "es": "Otra vez, por favor",
+            "type": "phrase",
+            "kana": "もう いちど おねがいします",
+            "kanji": "もう一度お願いします"
           }
         ],
         "countries": [
@@ -85,8 +373,8 @@
             "romaji": "amerika",
             "es": "Estados Unidos",
             "type": "country",
-            "kana": "あめりか",
-            "kanji": "アメリカ"
+            "kana": "アメリカ",
+            "kanji": ""
           },
           {
             "jp": "SUPEIN",
@@ -94,8 +382,8 @@
             "romaji": "supein",
             "es": "España",
             "type": "country",
-            "kana": "すぺいん",
-            "kanji": "スペイン"
+            "kana": "スペイン",
+            "kanji": ""
           },
           {
             "jp": "ITARIA",
@@ -103,8 +391,8 @@
             "romaji": "itaria",
             "es": "Italia",
             "type": "country",
-            "kana": "いたりあ",
-            "kanji": "イタリア"
+            "kana": "イタリア",
+            "kanji": ""
           },
           {
             "jp": "ROSHIA",
@@ -112,8 +400,8 @@
             "romaji": "roshia",
             "es": "Rusia",
             "type": "country",
-            "kana": "ろしあ",
-            "kanji": "ロシア"
+            "kana": "ロシア",
+            "kanji": ""
           },
           {
             "jp": "BURAJIRU",
@@ -121,8 +409,8 @@
             "romaji": "burajiru",
             "es": "Brasil",
             "type": "country",
-            "kana": "ぶらじる",
-            "kanji": "ブラジル"
+            "kana": "ブラジル",
+            "kanji": ""
           },
           {
             "jp": "OOSUTORARIA",
@@ -130,8 +418,8 @@
             "romaji": "oosutoraria",
             "es": "Australia",
             "type": "country",
-            "kana": "おーすとらりあ",
-            "kanji": "オーストラリア"
+            "kana": "オーストラリア",
+            "kanji": ""
           },
           {
             "jp": "CHUUGOKU",
@@ -148,8 +436,8 @@
             "romaji": "mekishiko",
             "es": "México",
             "type": "country",
-            "kana": "めきしこ",
-            "kanji": "メキシコ"
+            "kana": "メキシコ",
+            "kanji": ""
           },
           {
             "jp": "KANADA",
@@ -157,8 +445,8 @@
             "romaji": "kanada",
             "es": "Canadá",
             "type": "country",
-            "kana": "かなだ",
-            "kanji": "カナダ"
+            "kana": "カナダ",
+            "kanji": ""
           },
           {
             "jp": "FURANSU",
@@ -166,8 +454,8 @@
             "romaji": "furansu",
             "es": "Francia",
             "type": "country",
-            "kana": "ふらんす",
-            "kanji": "フランス"
+            "kana": "フランス",
+            "kanji": ""
           },
           {
             "jp": "IGIRISU",
@@ -175,8 +463,8 @@
             "romaji": "igirisu",
             "es": "Inglaterra",
             "type": "country",
-            "kana": "いぎりす",
-            "kanji": "イギリス"
+            "kana": "イギリス",
+            "kanji": ""
           },
           {
             "jp": "DOITSU",
@@ -184,8 +472,8 @@
             "romaji": "doitsu",
             "es": "Alemania",
             "type": "country",
-            "kana": "どいつ",
-            "kanji": "ドイツ"
+            "kana": "ドイツ",
+            "kanji": ""
           },
           {
             "jp": "ARUZENCHIN",
@@ -193,8 +481,8 @@
             "romaji": "aruzenchin",
             "es": "Argentina",
             "type": "country",
-            "kana": "あるぜんちん",
-            "kanji": "アルゼンチン"
+            "kana": "アルゼンチン",
+            "kanji": ""
           }
         ],
         "occupations": [
@@ -258,8 +546,8 @@
             "romaji": "enjinia",
             "es": "Ingeniero",
             "type": "occupation",
-            "kana": "えんじにあ",
-            "kanji": "エンジニア"
+            "kana": "エンジニア",
+            "kanji": ""
           },
           {
             "jp": "MYUUJISHAN",
@@ -267,8 +555,8 @@
             "romaji": "myuujishan",
             "es": "Músico",
             "type": "occupation",
-            "kana": "みゅーじしゃん",
-            "kanji": "ミュージシャン"
+            "kana": "ミュージシャン",
+            "kanji": ""
           },
           {
             "jp": "GAKUSEI",
@@ -330,8 +618,8 @@
             "romaji": "dezainaa",
             "es": "Diseñador",
             "type": "occupation",
-            "kana": "でざいなー",
-            "kanji": "デザイナー"
+            "kana": "デザイナー",
+            "kanji": ""
           }
         ],
         "likes": [
@@ -368,8 +656,8 @@
             "romaji": "geemu",
             "es": "Videojuegos",
             "type": "like",
-            "kana": "げーむ",
-            "kanji": "ゲーム"
+            "kana": "ゲーム",
+            "kanji": ""
           },
           {
             "jp": "RYOKOU",
@@ -386,8 +674,8 @@
             "romaji": "sakkaa",
             "es": "Fútbol",
             "type": "like",
-            "kana": "さっかー",
-            "kanji": "サッカー"
+            "kana": "サッカー",
+            "kanji": ""
           },
           {
             "jp": "EIGA",
@@ -404,8 +692,8 @@
             "romaji": "biiru",
             "es": "Cerveza",
             "type": "like",
-            "kana": "びーる",
-            "kanji": "ビール"
+            "kana": "ビール",
+            "kanji": ""
           },
           {
             "jp": "DORAMA",
@@ -413,8 +701,8 @@
             "romaji": "dorama",
             "es": "Series de TV",
             "type": "like",
-            "kana": "どらま",
-            "kanji": "ドラマ"
+            "kana": "ドラマ",
+            "kanji": ""
           },
           {
             "jp": "NEKO",
