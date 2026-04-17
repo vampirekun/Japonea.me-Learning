@@ -4,7 +4,8 @@ const STORAGE_KEYS = {
   lastBatch: "japonea_last_batch",
   quizStats: "japonea_quiz_stats",
   hideKnown: "japonea_hide_known",
-  shuffleCards: "japonea_shuffle_cards"
+  shuffleCards: "japonea_shuffle_cards",
+  mode: "japonea_mode"
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
@@ -16,6 +17,7 @@ const UI_LABELS_ES = {
   countries: "Países",
   occupations: "Ocupaciones",
   likes: "Gustos",
+  vocabulary: "Vocabulario",
   phrase: "Frase",
   country: "País",
   occupation: "Ocupación",
@@ -41,6 +43,7 @@ const state = {
   quizAutoNextTimer: null,
   hideKnown: readBooleanStorage(STORAGE_KEYS.hideKnown),
   shuffleCards: readBooleanStorage(STORAGE_KEYS.shuffleCards),
+  mode: readModeStorage(),
   quizSession: { total: 0, answered: 0, correct: 0, incorrect: 0, answeredIds: new Set() },
   quizCompleted: false,
   seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
@@ -50,6 +53,7 @@ const state = {
 
 const ui = {
   batchSelect: document.getElementById("batchSelect"),
+  modeSelect: document.getElementById("modeSelect"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
   cardType: document.getElementById("cardType"),
@@ -86,6 +90,8 @@ const ui = {
 async function init() {
   ui.hideKnownToggle.checked = state.hideKnown;
   ui.shuffleToggle.checked = state.shuffleCards;
+  ui.modeSelect.value = state.mode;
+  applyModeUI();
 
   const response = await fetch("./data/batches.json");
   const data = await response.json();
@@ -161,7 +167,7 @@ function renderCard() {
   state.hasAnsweredQuiz = false;
   state.quizSelectedId = "";
   state.quizAnswerId = card ? card._id : "";
-  state.quizOptions = card ? buildQuizOptions(card) : [];
+  state.quizOptions = card && state.mode === "quiz" ? buildQuizOptions(card) : [];
 
   ui.card.classList.remove("is-flipped");
 
@@ -188,7 +194,7 @@ function renderCard() {
   ui.nextBtn.disabled = !hasCards;
   ui.knownBtn.disabled = !hasCards;
   ui.quizNextBtn.hidden = true;
-  ui.quizNextBtn.disabled = !hasCards;
+  ui.quizNextBtn.disabled = !hasCards || state.mode !== "quiz";
   renderProgress(total, hasCards ? state.index + 1 : 0);
 
   if (card) {
@@ -205,6 +211,17 @@ function renderCard() {
 }
 
 function bindEvents() {
+  ui.modeSelect.addEventListener("change", (event) => {
+    state.mode = event.target.value === "quiz" ? "quiz" : "learning";
+    localStorage.setItem(STORAGE_KEYS.mode, state.mode);
+    applyModeUI();
+    clearQuizAutoNext();
+    hideQuizResult();
+    state.index = 0;
+    resetQuizSession();
+    renderCard();
+  });
+
   ui.batchSelect.addEventListener("change", (event) => {
     state.activeBatchId = event.target.value;
     localStorage.setItem(STORAGE_KEYS.lastBatch, state.activeBatchId);
@@ -295,6 +312,7 @@ function moveCard(step) {
 }
 
 function flipCard() {
+  if (state.mode !== "learning") return;
   ui.card.classList.toggle("is-flipped");
 }
 
@@ -339,13 +357,17 @@ function getDisplayKana(card) {
 }
 
 function getDisplayKanji(card) {
-  return card.kanji || "";
+  const kana = getDisplayKana(card);
+  const kanji = (card.kanji || "").trim();
+  const hasKana = normalizeJapaneseText(kana).length > 0;
+  if (!kanji) return "";
+  if (normalizeJapaneseText(kanji) === normalizeJapaneseText(kana)) return "";
+  if (isKatakanaOnly(kanji) && hasKana) return "";
+  return kanji;
 }
 
 function buildQuizOptions(card) {
-  const primaryPool = state.cards.filter((entry) => entry._id !== card._id);
-  const fallbackPool = state.batchCards.filter((entry) => entry._id !== card._id && !state.knownCards.has(entry._id));
-  const pool = primaryPool.length >= 3 ? primaryPool : fallbackPool;
+  const pool = state.batchCards.filter((entry) => entry._id !== card._id && entry._category === card._category);
   const uniquePool = [];
   const seenEs = new Set();
 
@@ -383,7 +405,8 @@ function buildQuizOptions(card) {
 function renderQuizOptions() {
   ui.quizOptions.innerHTML = "";
 
-  if (!state.cards.length) {
+  if (state.mode !== "quiz" || !state.cards.length) {
+    ui.quizNextBtn.hidden = true;
     return;
   }
 
@@ -410,7 +433,7 @@ function renderQuizOptions() {
 }
 
 function handleQuizAnswer(optionId) {
-  if (!state.cards.length || state.hasAnsweredQuiz || state.quizCompleted) return;
+  if (state.mode !== "quiz" || !state.cards.length || state.hasAnsweredQuiz || state.quizCompleted) return;
   state.hasAnsweredQuiz = true;
   state.quizSelectedId = optionId;
 
@@ -510,12 +533,14 @@ function showQuizResult() {
   ui.quizResultIncorrect.textContent = String(incorrect);
   ui.quizResultAccuracy.textContent = `${accuracy}%`;
   document.body.classList.add("showing-result");
+  if (highScore) triggerConfetti();
 }
 
 function hideQuizResult() {
   ui.quizResultScreen.hidden = true;
   ui.quizResultScreen.classList.remove("is-high", "is-low");
   document.body.classList.remove("showing-result");
+  document.querySelectorAll(".confetti-layer").forEach((node) => node.remove());
 }
 
 function hideSplashScreen() {
@@ -547,6 +572,17 @@ function readBooleanStorage(key) {
   return localStorage.getItem(key) === "true";
 }
 
+function readModeStorage() {
+  const mode = localStorage.getItem(STORAGE_KEYS.mode);
+  return mode === "quiz" ? "quiz" : "learning";
+}
+
+function applyModeUI() {
+  document.body.classList.toggle("mode-quiz", state.mode === "quiz");
+  document.body.classList.toggle("mode-learning", state.mode === "learning");
+  ui.card.setAttribute("aria-label", state.mode === "learning" ? "Tarjeta (toca para girar)" : "Tarjeta de quiz");
+}
+
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   navigator.serviceWorker.register("./sw.js").catch((error) => {
@@ -561,7 +597,11 @@ function animateCardTransition() {
 }
 
 function getKanaFromItem(item) {
-  return (item?.kana || item?.reading || "").trim();
+  const kana = (item?.kana || item?.reading || "").trim();
+  const kanji = (item?.kanji || "").trim();
+  if (isKatakanaOnly(kana)) return kana;
+  if (isKatakanaOnly(kanji)) return kanji;
+  return kana;
 }
 
 function getOptionLabel(item) {
@@ -591,6 +631,33 @@ function translateBatchTitle(title = "") {
   const levelKey = level.trim().toLowerCase();
   const translatedLevel = BATCH_TITLE_TRANSLATIONS[levelKey] || level.trim();
   return `Semana ${week} - ${translatedLevel}`;
+}
+
+function normalizeJapaneseText(value = "") {
+  return value.replace(/\s+/g, "").trim();
+}
+
+function isKatakanaOnly(value = "") {
+  if (!value) return false;
+  // Katakana block + prolonged sound mark + middle dot + spaces.
+  return /^[\u30A0-\u30FFー・\s]+$/.test(value.trim());
+}
+
+function triggerConfetti() {
+  const layer = document.createElement("div");
+  layer.className = "confetti-layer";
+  const colors = ["#e4007c", "#00a8e8", "#ffca3a", "#11b47a", "#ff7b00"];
+  for (let i = 0; i < 30; i += 1) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.backgroundColor = colors[i % colors.length];
+    piece.style.animationDelay = `${Math.random() * 0.25}s`;
+    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 140}px`);
+    layer.appendChild(piece);
+  }
+  document.body.appendChild(layer);
+  setTimeout(() => layer.remove(), 2600);
 }
 
 init();

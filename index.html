@@ -17,14 +17,17 @@
 
     <main class="app">
       <header class="app-header">
-        <img class="brand-logo" src="./assets/cropped-japoneame-1.png" alt="Logo de Japonea.me" width="160" height="48" />
-        <div class="brand-copy">
-          <h1 class="brand-title">Japonea.me Learning</h1>
-          <p class="brand-subtitle">Aprende japonés con tarjetas y quiz rápido</p>
-        </div>
+        <img class="brand-logo" src="./assets/cropped-japoneame-1.png" alt="Logo de Japonea.me" width="640" height="192" />
       </header>
 
       <section class="controls">
+        <label>
+          Modo
+          <select id="modeSelect" aria-label="Seleccionar modo">
+            <option value="learning">Modo aprendizaje</option>
+            <option value="quiz">Modo quiz</option>
+          </select>
+        </label>
         <label>
           Lote
           <select id="batchSelect" aria-label="Seleccionar lote"></select>
@@ -87,6 +90,8 @@
         <button id="knownBtn" type="button">Marcar conocida</button>
         <button id="nextBtn" type="button">Siguiente →</button>
       </section>
+
+      <footer class="app-footer">Created by Alejandro Mellado (c) 2026</footer>
     </main>
 
     <section id="quizResultScreen" class="quiz-result-screen" hidden aria-live="polite">
