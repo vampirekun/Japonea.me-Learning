@@ -1,0 +1,25 @@
+{
+  "name": "Japonea.me Learning",
+  "short_name": "Japonea.me",
+  "description": "Aprende japonés con flashcards y quiz rápido.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e4007c",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "./assets/cropped-japoneame-1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/cropped-japoneame-1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
