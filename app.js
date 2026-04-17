@@ -21,7 +21,9 @@ const UI_LABELS_ES = {
   like: "Gusto"
 };
 const BATCH_TITLE_TRANSLATIONS = {
-  "Week 1 - Basics": "Semana 1 - Básicos"
+  basics: "Básicos",
+  intermediate: "Intermedio",
+  advanced: "Avanzado"
 };
 
 const state = {
@@ -245,6 +247,7 @@ function bindEvents() {
   ui.knownBtn.addEventListener("click", () => {
     const card = state.cards[state.index];
     if (!card) return;
+    const wasKnown = state.knownCards.has(card._id);
     if (state.knownCards.has(card._id)) {
       state.knownCards.delete(card._id);
     } else {
@@ -253,8 +256,9 @@ function bindEvents() {
     localStorage.setItem(STORAGE_KEYS.known, JSON.stringify([...state.knownCards]));
     ui.knownBtn.classList.add("is-pulse");
     setTimeout(() => ui.knownBtn.classList.remove("is-pulse"), KNOWN_FEEDBACK_DELAY);
-    if (state.hideKnown) {
-      updateFilteredCards();
+    const becameKnown = !wasKnown && state.knownCards.has(card._id);
+    if (state.hideKnown && becameKnown) {
+      removeKnownCardFromActiveView(card._id);
       return;
     }
     renderCard();
@@ -338,7 +342,9 @@ function getDisplayKanji(card) {
 }
 
 function buildQuizOptions(card) {
-  const pool = state.cards.filter((entry) => entry._id !== card._id);
+  const primaryPool = state.cards.filter((entry) => entry._id !== card._id);
+  const fallbackPool = state.batchCards.filter((entry) => entry._id !== card._id && !state.knownCards.has(entry._id));
+  const pool = primaryPool.length >= 3 ? primaryPool : fallbackPool;
   const uniquePool = [];
   const seenEs = new Set();
 
@@ -423,10 +429,6 @@ function handleQuizAnswer(optionId) {
   renderQuizOptions();
   renderQuizStats();
   ui.quizNextBtn.hidden = false;
-
-  if (isCorrect && "vibrate" in navigator) {
-    navigator.vibrate(25);
-  }
 
   if (state.quizSession.answered >= state.quizSession.total && state.quizSession.total > 0) {
     state.quizCompleted = true;
@@ -523,16 +525,28 @@ function hideSplashScreen() {
   }, 380);
 }
 
+function removeKnownCardFromActiveView(cardId) {
+  if (!state.cards.length) return;
+  const nextCards = state.cards.filter((item) => item._id !== cardId);
+  if (nextCards.length === state.cards.length) {
+    renderCard();
+    return;
+  }
+  state.cards = nextCards;
+  state.index = Math.min(state.index, Math.max(state.cards.length - 1, 0));
+  state.quizSession.total = Math.max(state.quizSession.total - 1, 0);
+  hideQuizResult();
+  renderCard();
+}
+
 function readBooleanStorage(key) {
   return localStorage.getItem(key) === "true";
 }
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch((error) => {
-      console.warn("No se pudo registrar el service worker:", error);
-    });
+  navigator.serviceWorker.register("./sw.js").catch((error) => {
+    console.warn("No se pudo registrar el service worker:", error);
   });
 }
 
@@ -567,7 +581,12 @@ function getSpanishLabel(value = "") {
 }
 
 function translateBatchTitle(title = "") {
-  return BATCH_TITLE_TRANSLATIONS[title] || title;
+  const match = title.match(/^Week\s+(\d+)\s*-\s*(.+)$/i);
+  if (!match) return title;
+  const [, week, level] = match;
+  const levelKey = level.trim().toLowerCase();
+  const translatedLevel = BATCH_TITLE_TRANSLATIONS[levelKey] || level.trim();
+  return `Semana ${week} - ${translatedLevel}`;
 }
 
 init();

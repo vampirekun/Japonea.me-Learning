@@ -7,7 +7,9 @@ const ASSETS_TO_CACHE = [
   "./manifest.json",
   "./data/batches.json",
   "./assets/cropped-japoneame-1.png",
-  "./assets/japonea-logo.svg"
+  "./assets/japonea-logo.svg",
+  "./assets/icon-192.svg",
+  "./assets/icon-512.svg"
 ];
 
 self.addEventListener("install", (event) => {

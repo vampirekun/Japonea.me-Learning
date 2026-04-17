@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-label="Japonea.me icono">
+  <defs>
+    <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff4fa6" />
+      <stop offset="100%" stop-color="#e4007c" />
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="42" fill="url(#pink)" />
+  <circle cx="96" cy="96" r="62" fill="#ffffff" opacity="0.16" />
+  <text x="96" y="112" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="78" font-weight="800" fill="#ffffff">J</text>
+</svg>
