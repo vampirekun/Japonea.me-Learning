@@ -713,6 +713,143 @@
             "kana": "ねこ",
             "kanji": "猫"
           }
+        ],
+        "vocabulary": [
+          {
+            "jp": "SHITA",
+            "reading": "",
+            "romaji": "shita",
+            "es": "Abajo",
+            "type": "vocabulary",
+            "kana": "した",
+            "kanji": "下"
+          },
+          {
+            "jp": "MOJI",
+            "reading": "",
+            "romaji": "moji",
+            "es": "Letra",
+            "type": "vocabulary",
+            "kana": "もじ",
+            "kanji": "文字"
+          },
+          {
+            "jp": "MIZU",
+            "reading": "",
+            "romaji": "mizu",
+            "es": "Agua",
+            "type": "vocabulary",
+            "kana": "みず",
+            "kanji": "水"
+          },
+          {
+            "jp": "TSUCHI",
+            "reading": "",
+            "romaji": "tsuchi",
+            "es": "Tierra",
+            "type": "vocabulary",
+            "kana": "つち",
+            "kanji": "土"
+          },
+          {
+            "jp": "HIGE",
+            "reading": "",
+            "romaji": "hige",
+            "es": "Barba",
+            "type": "vocabulary",
+            "kana": "ひげ",
+            "kanji": "髭"
+          },
+          {
+            "jp": "YUKI",
+            "reading": "",
+            "romaji": "yuki",
+            "es": "Nieve",
+            "type": "vocabulary",
+            "kana": "ゆき",
+            "kanji": "雪"
+          },
+          {
+            "jp": "WATASHI",
+            "reading": "",
+            "romaji": "watashi",
+            "es": "Yo",
+            "type": "vocabulary",
+            "kana": "わたし",
+            "kanji": "私"
+          },
+          {
+            "jp": "KAWA",
+            "reading": "",
+            "romaji": "kawa",
+            "es": "Río",
+            "type": "vocabulary",
+            "kana": "かわ",
+            "kanji": "川"
+          },
+          {
+            "jp": "HIGEKI",
+            "reading": "",
+            "romaji": "higeki",
+            "es": "Tragedia",
+            "type": "vocabulary",
+            "kana": "ひげき",
+            "kanji": "悲劇"
+          },
+          {
+            "jp": "MUSHI",
+            "reading": "",
+            "romaji": "mushi",
+            "es": "Insecto",
+            "type": "vocabulary",
+            "kana": "むし",
+            "kanji": "虫"
+          },
+          {
+            "jp": "KAJI",
+            "reading": "",
+            "romaji": "kaji",
+            "es": "Incendio",
+            "type": "vocabulary",
+            "kana": "かじ",
+            "kanji": "火事"
+          },
+          {
+            "jp": "KAZE",
+            "reading": "",
+            "romaji": "kaze",
+            "es": "Viento",
+            "type": "vocabulary",
+            "kana": "かぜ",
+            "kanji": "風"
+          },
+          {
+            "jp": "ICHI",
+            "reading": "",
+            "romaji": "ichi",
+            "es": "Uno",
+            "type": "vocabulary",
+            "kana": "いち",
+            "kanji": "一"
+          },
+          {
+            "jp": "KUTSU",
+            "reading": "",
+            "romaji": "kutsu",
+            "es": "Zapatos",
+            "type": "vocabulary",
+            "kana": "くつ",
+            "kanji": "靴"
+          },
+          {
+            "jp": "YORU",
+            "reading": "",
+            "romaji": "yoru",
+            "es": "Noche",
+            "type": "vocabulary",
+            "kana": "よる",
+            "kanji": "夜"
+          }
         ]
       }
     }

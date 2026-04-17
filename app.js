@@ -17,6 +17,7 @@ const UI_LABELS_ES = {
   countries: "Países",
   occupations: "Ocupaciones",
   likes: "Gustos",
+  vocabulary: "Vocabulario",
   phrase: "Frase",
   country: "País",
   occupation: "Ocupación",
