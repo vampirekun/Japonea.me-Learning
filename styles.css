@@ -524,7 +524,12 @@ button:disabled {
 
 @media (max-height: 420px) {
   .app-header {
-    display: none;
+    display: block;
+    padding: 0 0 0.22rem;
+  }
+
+  .brand-logo {
+    max-height: 32px;
   }
 
   .controls {
@@ -568,7 +573,7 @@ button:disabled {
   }
 
   .card {
-    max-height: min(20dvh, 80px);
+    max-height: min(24dvh, 100px);
   }
 
   .badge {
