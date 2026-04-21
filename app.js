@@ -780,7 +780,7 @@ function generateBeginnerExamplePair(card) {
 
   const templates = {
     phrase: [
-      { jp: `${jpWord}っていいます`, es: `Digo: ${esWord}` },
+      { jp: `${jpWord}といいます`, es: `Digo: ${esWord}` },
       { jp: `${jpWord}をよくつかいます`, es: `Uso mucho: ${esWord}` }
     ],
     place: [
