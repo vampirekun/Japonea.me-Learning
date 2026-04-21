@@ -502,6 +502,39 @@ button:disabled {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.audio-tutor-panel {
+  display: none;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.audio-tutor-status,
+.audio-tutor-progress {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-strong);
+  text-align: center;
+}
+
+.audio-tutor-progress {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.audio-tutor-controls {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.audio-tutor-controls button {
+  min-height: 52px;
+}
+
 #knownBtn.is-known {
   background: var(--primary-hover);
 }
@@ -520,6 +553,21 @@ button:disabled {
 
 .mode-learning .card {
   max-height: none;
+}
+
+.mode-audio-tutor .quiz,
+.mode-audio-tutor .progress-shell,
+.mode-audio-tutor .meta,
+.mode-audio-tutor .actions {
+  display: none;
+}
+
+.mode-audio-tutor .audio-tutor-panel {
+  display: grid;
+}
+
+.mode-audio-tutor .card {
+  max-height: min(56dvh, 320px);
 }
 
 .app-footer {
