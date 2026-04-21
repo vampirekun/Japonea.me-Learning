@@ -15,7 +15,7 @@ const KNOWN_FEEDBACK_DELAY = 280;
 const QUIZ_HIGH_SCORE_THRESHOLD = 70;
 const MIN_SPEECH_RATE = 0.4;
 const MAX_SPEECH_RATE = 1.6;
-const ALLOWED_AUDIO_SPEEDS = [0.75, 1, 1.25];
+const VALID_AUDIO_SPEEDS = [0.75, 1, 1.25];
 const AUDIO_TUTOR_CONFIG = {
   jpToEsDelayMs: 1000,
   repetitionDelayMs: 3500,
@@ -1074,7 +1074,7 @@ function renderAudioTutorProgress() {
   if (!ui.audioTutorProgress) return;
   const total = state.cards.length;
   const current = total ? state.index + 1 : 0;
-  ui.audioTutorProgress.textContent = `${UI_LABELS_ES.card} ${current} / ${total}`;
+  ui.audioTutorProgress.textContent = `Progreso: ${current} / ${total}`;
 }
 
 function getAudioSpeechRate() {
@@ -1089,7 +1089,7 @@ function readAudioSpeedStorage() {
 }
 
 function isValidAudioSpeed(value) {
-  return ALLOWED_AUDIO_SPEEDS.includes(value);
+  return VALID_AUDIO_SPEEDS.includes(value);
 }
 
 function showRepeatPromptOverlay() {
