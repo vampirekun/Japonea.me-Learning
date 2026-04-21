@@ -768,7 +768,7 @@ function getCardExamples(card) {
 
 function generateBeginnerExamplePair(card) {
   const jpWord = getExampleJapaneseToken(card);
-  const esWord = normalizeExampleToken(card?.es || "") || "esa palabra";
+  const esWord = normalizeExampleToken(card?.es || "") || "esta palabra";
   const type = (card?.type || card?._category || "").toLowerCase();
   const category = /(country|país|place|lugar)/.test(type)
     ? "place"
