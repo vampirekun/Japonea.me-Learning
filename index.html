@@ -48,6 +48,7 @@
           <span>Mezclar tarjetas</span>
           <input id="shuffleToggle" type="checkbox" />
         </label>
+        <button id="audioTutorBtn" type="button">Modo tutor de audio</button>
       </div>
     </aside>
 
@@ -107,6 +108,17 @@
         <button id="prevBtn" type="button">← Anterior</button>
         <button id="knownBtn" type="button">Marcar conocida</button>
         <button id="nextBtn" type="button">Siguiente →</button>
+      </section>
+
+      <section id="audioTutorPanel" class="audio-tutor-panel" hidden aria-live="polite">
+        <p id="audioTutorStatus" class="audio-tutor-status">Tutor de audio listo</p>
+        <p id="audioTutorProgress" class="audio-tutor-progress">0 / 0</p>
+        <div class="audio-tutor-controls">
+          <button id="audioTutorPlayPauseBtn" type="button">Pausar</button>
+          <button id="audioTutorPrevBtn" type="button">←</button>
+          <button id="audioTutorNextBtn" type="button">→</button>
+          <button id="audioTutorExitBtn" type="button">Salir</button>
+        </div>
       </section>
 
       <footer class="app-footer">Created by Alejandro Mellado © 2026</footer>
