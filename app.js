@@ -13,6 +13,8 @@ const STORAGE_KEYS = {
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
 const QUIZ_HIGH_SCORE_THRESHOLD = 70;
+const MIN_SPEECH_RATE = 0.4;
+const MAX_SPEECH_RATE = 1.6;
 const ALLOWED_AUDIO_SPEEDS = [0.75, 1, 1.25];
 const AUDIO_TUTOR_CONFIG = {
   jpToEsDelayMs: 1000,
@@ -41,7 +43,8 @@ const UI_LABELS_ES = {
   phrase: "Frase",
   country: "País",
   occupation: "Ocupación",
-  like: "Gusto"
+  like: "Gusto",
+  card: "Tarjeta"
 };
 const BATCH_TITLE_TRANSLATIONS = {
   basics: "Básicos",
@@ -448,27 +451,21 @@ function flattenBatchCards(batch) {
 }
 
 function normalizeCard(item, batchId, category, categoryIndex, itemIndex) {
-  const romaji = (item.romaji || item.jp || "").trim();
-  const kana = getKanaFromItem(item);
-  const kanji = (item.kanji || "").trim();
-  const examples = getCardExamples({
-    ...item,
-    romaji,
-    kana,
-    kanji,
-    _category: category
-  });
-
-  return {
+  const baseCard = {
     ...item,
     reading: (item.reading || "").trim(),
-    romaji,
-    kana,
-    kanji,
+    romaji: (item.romaji || item.jp || "").trim(),
+    kana: getKanaFromItem(item),
+    kanji: (item.kanji || "").trim(),
+    _category: category
+  };
+  const examples = getCardExamples(baseCard);
+
+  return {
+    ...baseCard,
     example_jp: examples.example_jp,
     example_es: examples.example_es,
-    _category: category,
-    _id: `${batchId}:${category}:${romaji || item.es || "card"}:${categoryIndex}:${itemIndex}`
+    _id: `${batchId}:${category}:${baseCard.romaji || item.es || "card"}:${categoryIndex}:${itemIndex}`
   };
 }
 
@@ -785,7 +782,7 @@ function generateBeginnerExamplePair(card) {
 function normalizeExampleToken(value = "") {
   return String(value)
     .replace(/\[[^\]]+]/g, "")
-    .replace(/[~]/g, "")
+    .replace(/~/g, "")
     .trim();
 }
 
@@ -1077,12 +1074,12 @@ function renderAudioTutorProgress() {
   if (!ui.audioTutorProgress) return;
   const total = state.cards.length;
   const current = total ? state.index + 1 : 0;
-  ui.audioTutorProgress.textContent = `Tarjeta ${current} / ${total}`;
+  ui.audioTutorProgress.textContent = `${UI_LABELS_ES.card} ${current} / ${total}`;
 }
 
 function getAudioSpeechRate() {
   const rate = AUDIO_TUTOR_CONFIG.baseSpeechRate * state.audioTutor.speedMultiplier;
-  return Math.max(0.4, Math.min(rate, 1.6));
+  return Math.max(MIN_SPEECH_RATE, Math.min(rate, MAX_SPEECH_RATE));
 }
 
 function readAudioSpeedStorage() {
