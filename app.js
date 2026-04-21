@@ -53,7 +53,7 @@ const state = {
 
 const ui = {
   batchSelect: document.getElementById("batchSelect"),
-  modeSelect: document.getElementById("modeSelect"),
+  modeToggle: document.getElementById("modeToggle"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
   cardType: document.getElementById("cardType"),
@@ -76,6 +76,10 @@ const ui = {
   hideKnownToggle: document.getElementById("hideKnownToggle"),
   shuffleToggle: document.getElementById("shuffleToggle"),
   splashScreen: document.getElementById("splashScreen"),
+  hamburgerBtn: document.getElementById("hamburgerBtn"),
+  closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+  drawerMenu: document.getElementById("drawerMenu"),
+  drawerOverlay: document.getElementById("drawerOverlay"),
   quizResultScreen: document.getElementById("quizResultScreen"),
   quizResultState: document.getElementById("quizResultState"),
   quizResultTitle: document.getElementById("quizResultTitle"),
@@ -90,7 +94,7 @@ const ui = {
 async function init() {
   ui.hideKnownToggle.checked = state.hideKnown;
   ui.shuffleToggle.checked = state.shuffleCards;
-  ui.modeSelect.value = state.mode;
+  ui.modeToggle.checked = state.mode === "quiz";
   applyModeUI();
 
   const response = await fetch("./data/batches.json");
@@ -211,8 +215,8 @@ function renderCard() {
 }
 
 function bindEvents() {
-  ui.modeSelect.addEventListener("change", (event) => {
-    state.mode = event.target.value === "quiz" ? "quiz" : "learning";
+  ui.modeToggle.addEventListener("change", (event) => {
+    state.mode = event.target.checked ? "quiz" : "learning";
     localStorage.setItem(STORAGE_KEYS.mode, state.mode);
     applyModeUI();
     clearQuizAutoNext();
@@ -302,6 +306,27 @@ function bindEvents() {
     if (Math.abs(delta) < 35) return;
     moveCard(delta > 0 ? -1 : 1);
   });
+
+  ui.hamburgerBtn.addEventListener("click", openDrawer);
+  ui.closeDrawerBtn.addEventListener("click", closeDrawer);
+  ui.drawerOverlay.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && ui.drawerMenu.classList.contains("is-open")) {
+      closeDrawer();
+    }
+  });
+}
+
+function openDrawer() {
+  ui.drawerMenu.classList.add("is-open");
+  ui.drawerOverlay.classList.add("is-open");
+  ui.hamburgerBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeDrawer() {
+  ui.drawerMenu.classList.remove("is-open");
+  ui.drawerOverlay.classList.remove("is-open");
+  ui.hamburgerBtn.setAttribute("aria-expanded", "false");
 }
 
 function moveCard(step) {
@@ -578,6 +603,9 @@ function readModeStorage() {
 }
 
 function applyModeUI() {
+  if (ui.modeToggle) {
+    ui.modeToggle.checked = state.mode === "quiz";
+  }
   document.body.classList.toggle("mode-quiz", state.mode === "quiz");
   document.body.classList.toggle("mode-learning", state.mode === "learning");
   ui.card.setAttribute("aria-label", state.mode === "learning" ? "Tarjeta (toca para girar)" : "Tarjeta de quiz");

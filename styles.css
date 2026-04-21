@@ -45,13 +45,43 @@ body {
 }
 
 .app-header {
+  display: flex;
+  align-items: center;
   padding: 0.2rem 0 0.55rem;
 }
 
+.hamburger-btn {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  box-shadow: none;
+  padding: 0.3rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.hamburger-btn:hover:not(:disabled) {
+  background: var(--bg-soft);
+  transform: none;
+  box-shadow: none;
+}
+
+.hamburger-btn:active:not(:disabled) {
+  transform: none;
+}
+
 .brand-logo {
-  width: auto;
-  max-width: 100%;
-  max-height: clamp(56px, 13dvh, 90px);
+  flex: 1;
+  min-width: 0;
+  max-width: min(56vw, 300px);
+  max-height: clamp(46px, 9.5dvh, 68px);
   height: auto;
   display: block;
   margin: 0 auto;
@@ -59,10 +89,109 @@ body {
   filter: drop-shadow(0 4px 10px rgba(255, 82, 82, 0.2));
 }
 
-.controls {
+.header-spacer {
+  flex-shrink: 0;
+  width: 2.4rem;
+}
+
+/* ── Drawer ──────────────────────────────────────────── */
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 280ms ease, visibility 280ms ease;
+}
+
+.drawer-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(82vw, 320px);
+  z-index: 80;
+  background: #ffffff;
+  border-right: 1px solid var(--border);
+  box-shadow: 4px 0 24px rgba(25, 30, 55, 0.14);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer.is-open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.drawer-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-strong);
+}
+
+.drawer-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  padding: 0.25rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.drawer-close:hover:not(:disabled) {
+  background: var(--bg-soft);
+  transform: none;
+  box-shadow: none;
+}
+
+.drawer-close:active:not(:disabled) {
+  transform: none;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.drawer-body label {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: 0.32rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.drawer-body .toggle-row {
+  display: flex;
 }
 
 label {
@@ -99,6 +228,41 @@ button {
   width: 1.1rem;
   height: 1.1rem;
   accent-color: var(--primary);
+}
+
+.toggle-row .toggle-switch {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 2.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  border: 1px solid #cfd7e5;
+  background: #dfe5f0;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.toggle-row .toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.25);
+  transition: transform 220ms ease;
+}
+
+.toggle-row .toggle-switch:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.toggle-row .toggle-switch:checked::after {
+  transform: translateX(1rem);
 }
 
 select {
@@ -445,10 +609,6 @@ button:disabled {
 }
 
 @media (max-width: 520px) {
-  .controls {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .card {
     max-height: min(44dvh, 235px);
   }
@@ -471,11 +631,8 @@ button:disabled {
   }
 
   .brand-logo {
-    max-height: clamp(44px, 10dvh, 68px);
-  }
-
-  .controls {
-    gap: 0.42rem;
+    max-width: min(50vw, 250px);
+    max-height: clamp(38px, 8dvh, 56px);
   }
 
   label {
@@ -524,17 +681,13 @@ button:disabled {
 
 @media (max-height: 420px) {
   .app-header {
-    display: block;
+    display: flex;
     padding: 0 0 0.22rem;
   }
 
   .brand-logo {
-    max-height: 32px;
-  }
-
-  .controls {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.3rem;
+    max-width: min(46vw, 200px);
+    max-height: 26px;
   }
 
   label {
