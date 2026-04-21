@@ -21,12 +21,9 @@
       </header>
 
       <section class="controls">
-        <label>
-          Modo
-          <select id="modeSelect" aria-label="Seleccionar modo">
-            <option value="learning">Modo aprendizaje</option>
-            <option value="quiz">Modo quiz</option>
-          </select>
+        <label class="toggle-row" for="modeToggle">
+          <span>Modo aprendizaje / Modo quiz</span>
+          <input id="modeToggle" class="toggle-switch" type="checkbox" role="switch" aria-label="Cambiar entre modo aprendizaje y modo quiz" />
         </label>
         <label>
           Lote
@@ -91,7 +88,7 @@
         <button id="nextBtn" type="button">Siguiente →</button>
       </section>
 
-      <footer class="app-footer">Created by Alejandro Mellado (c) 2026</footer>
+      <footer class="app-footer">Created by Alejandro Mellado © 2026</footer>
     </main>
 
     <section id="quizResultScreen" class="quiz-result-screen" hidden aria-live="polite">

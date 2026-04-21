@@ -53,7 +53,7 @@ const state = {
 
 const ui = {
   batchSelect: document.getElementById("batchSelect"),
-  modeSelect: document.getElementById("modeSelect"),
+  modeToggle: document.getElementById("modeToggle"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
   cardType: document.getElementById("cardType"),
@@ -90,7 +90,7 @@ const ui = {
 async function init() {
   ui.hideKnownToggle.checked = state.hideKnown;
   ui.shuffleToggle.checked = state.shuffleCards;
-  ui.modeSelect.value = state.mode;
+  ui.modeToggle.checked = state.mode === "quiz";
   applyModeUI();
 
   const response = await fetch("./data/batches.json");
@@ -211,8 +211,8 @@ function renderCard() {
 }
 
 function bindEvents() {
-  ui.modeSelect.addEventListener("change", (event) => {
-    state.mode = event.target.value === "quiz" ? "quiz" : "learning";
+  ui.modeToggle.addEventListener("change", (event) => {
+    state.mode = event.target.checked ? "quiz" : "learning";
     localStorage.setItem(STORAGE_KEYS.mode, state.mode);
     applyModeUI();
     clearQuizAutoNext();
@@ -578,6 +578,9 @@ function readModeStorage() {
 }
 
 function applyModeUI() {
+  if (ui.modeToggle) {
+    ui.modeToggle.checked = state.mode === "quiz";
+  }
   document.body.classList.toggle("mode-quiz", state.mode === "quiz");
   document.body.classList.toggle("mode-learning", state.mode === "learning");
   ui.card.setAttribute("aria-label", state.mode === "learning" ? "Tarjeta (toca para girar)" : "Tarjeta de quiz");
