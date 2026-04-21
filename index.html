@@ -28,27 +28,51 @@
         </button>
       </div>
       <div class="drawer-body">
-        <label class="toggle-row" for="modeToggle">
-          <span>Modo Quiz</span>
-          <input id="modeToggle" type="checkbox" aria-label="Activar modo quiz" />
-        </label>
-        <label>
-          Lote
-          <select id="batchSelect" aria-label="Seleccionar lote"></select>
-        </label>
-        <label>
-          Categoría
-          <select id="categorySelect" aria-label="Seleccionar categoría"></select>
-        </label>
-        <label class="toggle-row" for="hideKnownToggle">
-          <span>Ocultar conocidas</span>
-          <input id="hideKnownToggle" type="checkbox" />
-        </label>
-        <label class="toggle-row" for="shuffleToggle">
-          <span>Mezclar tarjetas</span>
-          <input id="shuffleToggle" type="checkbox" />
-        </label>
-        <button id="audioTutorBtn" type="button">Modo tutor de audio</button>
+        <section class="settings-group" aria-label="Modo">
+          <h3 class="settings-group-title">Modo</h3>
+          <label>
+            Selector
+            <select id="modeSelect" aria-label="Seleccionar modo">
+              <option value="learning">Aprendizaje</option>
+              <option value="quiz">Quiz</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="settings-group" aria-label="Contenido">
+          <h3 class="settings-group-title">Contenido</h3>
+          <label>
+            Lote
+            <select id="batchSelect" aria-label="Seleccionar lote"></select>
+          </label>
+          <label>
+            Categoría
+            <select id="categorySelect" aria-label="Seleccionar categoría"></select>
+          </label>
+        </section>
+
+        <section class="settings-group" aria-label="Opciones">
+          <h3 class="settings-group-title">Opciones</h3>
+          <label class="switch-row" for="hideKnownToggle">
+            <span>Ocultar conocidas</span>
+            <span class="switch">
+              <input id="hideKnownToggle" type="checkbox" />
+              <span class="switch-slider" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="switch-row" for="shuffleToggle">
+            <span>Mezclar tarjetas</span>
+            <span class="switch">
+              <input id="shuffleToggle" type="checkbox" />
+              <span class="switch-slider" aria-hidden="true"></span>
+            </span>
+          </label>
+        </section>
+
+        <section class="settings-group" aria-label="Audio">
+          <h3 class="settings-group-title">Audio</h3>
+          <button id="audioTutorBtn" type="button">Modo tutor de audio</button>
+        </section>
       </div>
     </aside>
 
@@ -75,16 +99,25 @@
       <section class="focus-stage" aria-label="Zona principal de estudio">
         <section class="card-section">
           <div id="card" class="card" role="button" tabindex="0" aria-label="Tarjeta (toca para girar)">
+            <button id="cardAudioBtn" class="card-audio-btn" type="button" aria-label="Reproducir pronunciación en japonés">🔊</button>
             <div class="card-inner">
               <article class="card-face card-front">
                 <p class="badge" id="cardType"></p>
                 <h2 id="cardRomajiFront"></h2>
                 <p id="cardKana"></p>
                 <p id="cardKanji"></p>
+                <div id="cardExampleBlockFront" class="card-example-block" hidden>
+                  <p id="cardExampleJpFront" class="card-example-jp"></p>
+                  <p id="cardExampleEsFront" class="card-example-es"></p>
+                </div>
               </article>
               <article class="card-face card-back">
                 <h2 id="cardSpanish"></h2>
                 <p id="cardRomaji"></p>
+                <div id="cardExampleBlockBack" class="card-example-block" hidden>
+                  <p id="cardExampleJpBack" class="card-example-jp"></p>
+                  <p id="cardExampleEsBack" class="card-example-es"></p>
+                </div>
               </article>
             </div>
           </div>
@@ -113,6 +146,14 @@
       <section id="audioTutorPanel" class="audio-tutor-panel" hidden aria-live="polite">
         <p id="audioTutorStatus" class="audio-tutor-status">Tutor de audio listo</p>
         <p id="audioTutorProgress" class="audio-tutor-progress">0 / 0</p>
+        <label class="audio-speed-control">
+          Velocidad
+          <select id="audioSpeedSelect" aria-label="Seleccionar velocidad de audio">
+            <option value="0.75">0.75x</option>
+            <option value="1">1x</option>
+            <option value="1.25">1.25x</option>
+          </select>
+        </label>
         <div class="audio-tutor-controls">
           <button id="audioTutorPlayPauseBtn" type="button">Pausar</button>
           <button id="audioTutorPrevBtn" type="button">←</button>
@@ -123,6 +164,13 @@
 
       <footer class="app-footer">Created by Alejandro Mellado © 2026</footer>
     </main>
+
+    <section id="repeatPromptOverlay" class="repeat-prompt-overlay" hidden aria-live="polite" aria-label="Repite en voz alta">
+      <div class="repeat-prompt-content">
+        <p class="repeat-prompt-icon" aria-hidden="true">🎤</p>
+        <p class="repeat-prompt-text">Repite en voz alta</p>
+      </div>
+    </section>
 
     <section id="quizResultScreen" class="quiz-result-screen" hidden aria-live="polite">
       <article class="quiz-result-card">

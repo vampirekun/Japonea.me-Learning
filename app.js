@@ -6,16 +6,20 @@ const STORAGE_KEYS = {
   hideKnown: "japonea_hide_known",
   shuffleCards: "japonea_shuffle_cards",
   mode: "japonea_mode",
-  audioTutorProgress: "japonea_audio_tutor_progress"
+  audioTutorProgress: "japonea_audio_tutor_progress",
+  audioTutorSpeed: "japonea_audio_tutor_speed"
 };
 
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
 const QUIZ_HIGH_SCORE_THRESHOLD = 70;
+const MIN_SPEECH_RATE = 0.4;
+const MAX_SPEECH_RATE = 1.6;
+const VALID_AUDIO_SPEEDS = [0.75, 1, 1.25];
 const AUDIO_TUTOR_CONFIG = {
   jpToEsDelayMs: 1000,
-  repetitionDelayMs: 2500,
-  speechRate: 0.9
+  repetitionDelayMs: 3500,
+  baseSpeechRate: 0.9
 };
 const UI_LABELS_ES = {
   all: "Todas",
@@ -39,7 +43,8 @@ const UI_LABELS_ES = {
   phrase: "Frase",
   country: "País",
   occupation: "Ocupación",
-  like: "Gusto"
+  like: "Gusto",
+  card: "Tarjeta"
 };
 const BATCH_TITLE_TRANSLATIONS = {
   basics: "Básicos",
@@ -68,6 +73,7 @@ const state = {
     active: false,
     isPlaying: false,
     runId: 0,
+    speedMultiplier: readAudioSpeedStorage(),
     unsupported: !("speechSynthesis" in window && "SpeechSynthesisUtterance" in window)
   },
   seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
@@ -77,15 +83,22 @@ const state = {
 
 const ui = {
   batchSelect: document.getElementById("batchSelect"),
-  modeToggle: document.getElementById("modeToggle"),
+  modeSelect: document.getElementById("modeSelect"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
+  cardAudioBtn: document.getElementById("cardAudioBtn"),
   cardType: document.getElementById("cardType"),
   cardRomajiFront: document.getElementById("cardRomajiFront"),
   cardKana: document.getElementById("cardKana"),
   cardKanji: document.getElementById("cardKanji"),
   cardSpanish: document.getElementById("cardSpanish"),
   cardRomaji: document.getElementById("cardRomaji"),
+  cardExampleBlockFront: document.getElementById("cardExampleBlockFront"),
+  cardExampleJpFront: document.getElementById("cardExampleJpFront"),
+  cardExampleEsFront: document.getElementById("cardExampleEsFront"),
+  cardExampleBlockBack: document.getElementById("cardExampleBlockBack"),
+  cardExampleJpBack: document.getElementById("cardExampleJpBack"),
+  cardExampleEsBack: document.getElementById("cardExampleEsBack"),
   cardCounter: document.getElementById("cardCounter"),
   seenCounter: document.getElementById("seenCounter"),
   knownCounter: document.getElementById("knownCounter"),
@@ -117,16 +130,19 @@ const ui = {
   audioTutorPanel: document.getElementById("audioTutorPanel"),
   audioTutorStatus: document.getElementById("audioTutorStatus"),
   audioTutorProgress: document.getElementById("audioTutorProgress"),
+  audioSpeedSelect: document.getElementById("audioSpeedSelect"),
   audioTutorPlayPauseBtn: document.getElementById("audioTutorPlayPauseBtn"),
   audioTutorPrevBtn: document.getElementById("audioTutorPrevBtn"),
   audioTutorNextBtn: document.getElementById("audioTutorNextBtn"),
-  audioTutorExitBtn: document.getElementById("audioTutorExitBtn")
+  audioTutorExitBtn: document.getElementById("audioTutorExitBtn"),
+  repeatPromptOverlay: document.getElementById("repeatPromptOverlay")
 };
 
 async function init() {
   ui.hideKnownToggle.checked = state.hideKnown;
   ui.shuffleToggle.checked = state.shuffleCards;
-  ui.modeToggle.checked = state.mode === "quiz";
+  ui.modeSelect.value = state.mode;
+  ui.audioSpeedSelect.value = String(state.audioTutor.speedMultiplier);
   applyModeUI();
   updateAudioTutorPlayPauseButton();
 
@@ -218,6 +234,7 @@ function renderCard() {
   ui.cardKanji.hidden = !kanji;
   ui.cardSpanish.textContent = card ? card.es : "Selecciona otra categoría";
   ui.cardRomaji.textContent = card ? `JP: ${card.jp || getDisplayRomaji(card)}` : "";
+  renderCardExamples(card);
 
   if (card) {
     markSeen(card._id);
@@ -230,6 +247,7 @@ function renderCard() {
   ui.prevBtn.disabled = !hasCards;
   ui.nextBtn.disabled = !hasCards;
   ui.knownBtn.disabled = !hasCards;
+  ui.cardAudioBtn.disabled = !hasCards || state.audioTutor.active;
   ui.quizNextBtn.hidden = true;
   ui.quizNextBtn.disabled = !hasCards || state.mode !== "quiz";
   renderProgress(total, hasCards ? state.index + 1 : 0);
@@ -249,11 +267,11 @@ function renderCard() {
 }
 
 function bindEvents() {
-  ui.modeToggle.addEventListener("change", (event) => {
+  ui.modeSelect.addEventListener("change", (event) => {
     if (state.audioTutor.active) {
       deactivateAudioTutorMode("Tutor de audio detenido");
     }
-    state.mode = event.target.checked ? "quiz" : "learning";
+    state.mode = event.target.value === "quiz" ? "quiz" : "learning";
     localStorage.setItem(STORAGE_KEYS.mode, state.mode);
     applyModeUI();
     clearQuizAutoNext();
@@ -336,6 +354,10 @@ function bindEvents() {
   });
 
   ui.card.addEventListener("click", flipCard);
+  ui.cardAudioBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    playCardJapaneseAudio();
+  });
   ui.card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -372,6 +394,11 @@ function bindEvents() {
   ui.audioTutorPrevBtn.addEventListener("click", () => audioTutorStep(-1));
   ui.audioTutorNextBtn.addEventListener("click", () => audioTutorStep(1));
   ui.audioTutorExitBtn.addEventListener("click", () => deactivateAudioTutorMode("Tutor de audio detenido"));
+  ui.audioSpeedSelect.addEventListener("change", (event) => {
+    const selected = Number(event.target.value);
+    state.audioTutor.speedMultiplier = isValidAudioSpeed(selected) ? selected : 1;
+    localStorage.setItem(STORAGE_KEYS.audioTutorSpeed, String(state.audioTutor.speedMultiplier));
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && ui.drawerMenu.classList.contains("is-open")) {
       closeDrawer();
@@ -424,17 +451,21 @@ function flattenBatchCards(batch) {
 }
 
 function normalizeCard(item, batchId, category, categoryIndex, itemIndex) {
-  const romaji = (item.romaji || item.jp || "").trim();
-  const kana = getKanaFromItem(item);
-  const kanji = (item.kanji || "").trim();
+  const baseCard = {
+    ...item,
+    reading: (item.reading || "").trim(),
+    romaji: (item.romaji || item.jp || "").trim(),
+    kana: getKanaFromItem(item),
+    kanji: (item.kanji || "").trim(),
+    _category: category
+  };
+  const examples = getCardExamples(baseCard);
 
   return {
-    ...item,
-    romaji,
-    kana,
-    kanji,
-    _category: category,
-    _id: `${batchId}:${category}:${romaji || item.es || "card"}:${categoryIndex}:${itemIndex}`
+    ...baseCard,
+    example_jp: examples.example_jp,
+    example_es: examples.example_es,
+    _id: `${batchId}:${category}:${baseCard.romaji || item.es || "card"}:${categoryIndex}:${itemIndex}`
   };
 }
 
@@ -668,8 +699,8 @@ function readModeStorage() {
 }
 
 function applyModeUI() {
-  if (ui.modeToggle) {
-    ui.modeToggle.checked = state.mode === "quiz";
+  if (ui.modeSelect) {
+    ui.modeSelect.value = state.mode;
   }
   document.body.classList.toggle("mode-quiz", state.mode === "quiz");
   document.body.classList.toggle("mode-learning", state.mode === "learning");
@@ -691,6 +722,80 @@ function animateCardTransition() {
   ui.card.classList.remove("is-switching");
   void ui.card.offsetWidth;
   ui.card.classList.add("is-switching");
+}
+
+function renderCardExamples(card) {
+  const exampleJp = (card?.example_jp || "").trim();
+  const exampleEs = (card?.example_es || "").trim();
+  const hasExamples = Boolean(exampleJp || exampleEs);
+
+  ui.cardExampleBlockFront.hidden = !hasExamples;
+  ui.cardExampleBlockBack.hidden = !hasExamples;
+  ui.cardExampleJpFront.textContent = exampleJp;
+  ui.cardExampleEsFront.textContent = exampleEs;
+  ui.cardExampleJpBack.textContent = exampleJp;
+  ui.cardExampleEsBack.textContent = exampleEs;
+}
+
+function getCardExamples(card) {
+  const existingJp = (card?.example_jp || "").trim();
+  const existingEs = (card?.example_es || "").trim();
+  if (existingJp || existingEs) {
+    return {
+      example_jp: existingJp,
+      example_es: existingEs
+    };
+  }
+  return generateBeginnerExamplePair(card);
+}
+
+function generateBeginnerExamplePair(card) {
+  const rawJpWord = getDisplayKanji(card) || getDisplayKana(card) || getDisplayRomaji(card) || card?.jp || "";
+  const jpWord = normalizeExampleToken(rawJpWord) || "これ";
+  const esWord = normalizeExampleToken(card?.es || "") || "esto";
+  const type = (card?.type || card?._category || "").toLowerCase();
+
+  if (type === "phrase") {
+    return {
+      example_jp: ensureJapanesePunctuation(jpWord),
+      example_es: ensureSpanishPunctuation(card?.es || `Frase: ${esWord}`)
+    };
+  }
+  if (/(country|país|place|lugar)/.test(type)) {
+    return {
+      example_jp: ensureJapanesePunctuation(`${jpWord}へいきます`),
+      example_es: ensureSpanishPunctuation(`Voy a ${esWord}`)
+    };
+  }
+  if (/(occupation|profesi|person)/.test(type)) {
+    return {
+      example_jp: ensureJapanesePunctuation(`わたしは${jpWord}です`),
+      example_es: ensureSpanishPunctuation(`Yo soy ${esWord}`)
+    };
+  }
+  return {
+    example_jp: ensureJapanesePunctuation(`これは${jpWord}です`),
+    example_es: ensureSpanishPunctuation(`Esto es ${esWord}`)
+  };
+}
+
+function normalizeExampleToken(value = "") {
+  return String(value)
+    .replace(/\[[^\]]+]/g, "")
+    .replace(/~/g, "")
+    .trim();
+}
+
+function ensureJapanesePunctuation(value = "") {
+  const text = value.trim();
+  if (!text) return "";
+  return /[。！？]$/.test(text) ? text : `${text}。`;
+}
+
+function ensureSpanishPunctuation(value = "") {
+  const text = value.trim();
+  if (!text) return "";
+  return /[.!?¡¿]$/.test(text) ? text : `${text}.`;
 }
 
 function getKanaFromItem(item) {
@@ -759,6 +864,7 @@ function triggerConfetti() {
 
 function activateAudioTutorMode() {
   state.audioTutor.active = true;
+  hideRepeatPromptOverlay();
   if (state.cards.length) {
     state.index = readAudioTutorProgressIndex();
   }
@@ -838,7 +944,9 @@ async function runAudioTutorLoop() {
     if (!isAudioTutorRunActive(runId)) return;
 
     updateAudioTutorStatus("Repite en voz alta");
+    showRepeatPromptOverlay();
     await waitForAudioTutor(AUDIO_TUTOR_CONFIG.repetitionDelayMs, runId);
+    hideRepeatPromptOverlay();
     if (!isAudioTutorRunActive(runId)) return;
 
     if (state.index >= state.cards.length - 1) {
@@ -857,6 +965,7 @@ function isAudioTutorRunActive(runId) {
 
 function stopAudioTutorPlayback(resetPlaying = true) {
   state.audioTutor.runId += 1;
+  hideRepeatPromptOverlay();
   if (resetPlaying) {
     state.audioTutor.isPlaying = false;
   }
@@ -891,7 +1000,7 @@ function speakWithTutorVoice(text, language) {
 
     const utterance = new SpeechSynthesisUtterance(phrase);
     utterance.lang = language === "es-MX" ? resolveSpanishVoiceLang() : "ja-JP";
-    utterance.rate = AUDIO_TUTOR_CONFIG.speechRate;
+    utterance.rate = getAudioSpeechRate();
 
     const voice = pickTutorVoice(utterance.lang);
     if (voice) {
@@ -965,7 +1074,40 @@ function renderAudioTutorProgress() {
   if (!ui.audioTutorProgress) return;
   const total = state.cards.length;
   const current = total ? state.index + 1 : 0;
-  ui.audioTutorProgress.textContent = `${current} / ${total}`;
+  ui.audioTutorProgress.textContent = `Progreso: ${current} / ${total}`;
+}
+
+function getAudioSpeechRate() {
+  const rate = AUDIO_TUTOR_CONFIG.baseSpeechRate * state.audioTutor.speedMultiplier;
+  return Math.max(MIN_SPEECH_RATE, Math.min(rate, MAX_SPEECH_RATE));
+}
+
+function readAudioSpeedStorage() {
+  const raw = Number(localStorage.getItem(STORAGE_KEYS.audioTutorSpeed));
+  if (isValidAudioSpeed(raw)) return raw;
+  return 1;
+}
+
+function isValidAudioSpeed(value) {
+  return VALID_AUDIO_SPEEDS.includes(value);
+}
+
+function showRepeatPromptOverlay() {
+  if (!ui.repeatPromptOverlay) return;
+  ui.repeatPromptOverlay.hidden = false;
+}
+
+function hideRepeatPromptOverlay() {
+  if (!ui.repeatPromptOverlay) return;
+  ui.repeatPromptOverlay.hidden = true;
+}
+
+function playCardJapaneseAudio() {
+  if (state.audioTutor.unsupported || state.audioTutor.active || !state.cards.length) return;
+  const card = state.cards[state.index];
+  if (!card) return;
+  window.speechSynthesis.cancel();
+  speakWithTutorVoice(getAudioTutorJapaneseText(card), "ja-JP");
 }
 
 init();
