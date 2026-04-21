@@ -230,41 +230,6 @@ button {
   accent-color: var(--primary);
 }
 
-.toggle-row .toggle-switch {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 2.45rem;
-  height: 1.45rem;
-  border-radius: 999px;
-  border: 1px solid #cfd7e5;
-  background: #dfe5f0;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 220ms ease, border-color 220ms ease;
-}
-
-.toggle-row .toggle-switch::after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.25);
-  transition: transform 220ms ease;
-}
-
-.toggle-row .toggle-switch:checked {
-  background: var(--primary);
-  border-color: var(--primary);
-}
-
-.toggle-row .toggle-switch:checked::after {
-  transform: translateX(1rem);
-}
-
 select {
   width: 100%;
   appearance: none;
@@ -551,6 +516,10 @@ button:disabled {
 
 .mode-learning .quiz {
   display: none;
+}
+
+.mode-learning .card {
+  max-height: none;
 }
 
 .app-footer {
