@@ -76,6 +76,10 @@ const ui = {
   hideKnownToggle: document.getElementById("hideKnownToggle"),
   shuffleToggle: document.getElementById("shuffleToggle"),
   splashScreen: document.getElementById("splashScreen"),
+  hamburgerBtn: document.getElementById("hamburgerBtn"),
+  closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+  drawerMenu: document.getElementById("drawerMenu"),
+  drawerOverlay: document.getElementById("drawerOverlay"),
   quizResultScreen: document.getElementById("quizResultScreen"),
   quizResultState: document.getElementById("quizResultState"),
   quizResultTitle: document.getElementById("quizResultTitle"),
@@ -302,6 +306,27 @@ function bindEvents() {
     if (Math.abs(delta) < 35) return;
     moveCard(delta > 0 ? -1 : 1);
   });
+
+  ui.hamburgerBtn.addEventListener("click", openDrawer);
+  ui.closeDrawerBtn.addEventListener("click", closeDrawer);
+  ui.drawerOverlay.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && ui.drawerMenu.classList.contains("is-open")) {
+      closeDrawer();
+    }
+  });
+}
+
+function openDrawer() {
+  ui.drawerMenu.classList.add("is-open");
+  ui.drawerOverlay.classList.add("is-open");
+  ui.hamburgerBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeDrawer() {
+  ui.drawerMenu.classList.remove("is-open");
+  ui.drawerOverlay.classList.remove("is-open");
+  ui.hamburgerBtn.setAttribute("aria-expanded", "false");
 }
 
 function moveCard(step) {
