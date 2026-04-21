@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
 const QUIZ_HIGH_SCORE_THRESHOLD = 70;
+const REPEAT_PROMPT_TIMEOUT_MS = 3600;
 const MIN_SPEECH_RATE = 0.4;
 const MAX_SPEECH_RATE = 1.6;
 const VALID_AUDIO_SPEEDS = [0.75, 1, 1.25];
@@ -86,7 +87,8 @@ const ui = {
   modeSelect: document.getElementById("modeSelect"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
-  cardAudioBtn: document.getElementById("cardAudioBtn"),
+  cardAudioBtnFront: document.getElementById("cardAudioBtnFront"),
+  cardAudioBtnBack: document.getElementById("cardAudioBtnBack"),
   cardType: document.getElementById("cardType"),
   cardRomajiFront: document.getElementById("cardRomajiFront"),
   cardKana: document.getElementById("cardKana"),
@@ -137,6 +139,8 @@ const ui = {
   audioTutorExitBtn: document.getElementById("audioTutorExitBtn"),
   repeatPromptOverlay: document.getElementById("repeatPromptOverlay")
 };
+let repeatPromptAutoHideTimer = null;
+let quizSuccessAudioContext = null;
 
 async function init() {
   ui.hideKnownToggle.checked = state.hideKnown;
@@ -247,7 +251,11 @@ function renderCard() {
   ui.prevBtn.disabled = !hasCards;
   ui.nextBtn.disabled = !hasCards;
   ui.knownBtn.disabled = !hasCards;
-  ui.cardAudioBtn.disabled = !hasCards || state.audioTutor.active;
+  const disableCardAudio = !hasCards || state.audioTutor.active;
+  ui.cardAudioBtnFront.disabled = disableCardAudio;
+  ui.cardAudioBtnBack.disabled = disableCardAudio;
+  ui.cardAudioBtnFront.hidden = state.audioTutor.active;
+  ui.cardAudioBtnBack.hidden = state.audioTutor.active;
   ui.quizNextBtn.hidden = true;
   ui.quizNextBtn.disabled = !hasCards || state.mode !== "quiz";
   renderProgress(total, hasCards ? state.index + 1 : 0);
@@ -354,9 +362,13 @@ function bindEvents() {
   });
 
   ui.card.addEventListener("click", flipCard);
-  ui.cardAudioBtn.addEventListener("click", (event) => {
+  ui.cardAudioBtnFront.addEventListener("click", (event) => {
     event.stopPropagation();
     playCardJapaneseAudio();
+  });
+  ui.cardAudioBtnBack.addEventListener("click", (event) => {
+    event.stopPropagation();
+    playCardSpanishAudio();
   });
   ui.card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -366,6 +378,7 @@ function bindEvents() {
     if (event.key === "ArrowRight") moveCard(1);
     if (event.key === "ArrowLeft") moveCard(-1);
   });
+  document.addEventListener("pointerdown", dismissRepeatPromptOnInteraction, { capture: true });
 
   let touchStartX = 0;
   ui.card.addEventListener("touchstart", (event) => {
@@ -565,6 +578,7 @@ function handleQuizAnswer(optionId) {
     state.quizSession.answered += 1;
     if (isCorrect) {
       state.quizSession.correct += 1;
+      playQuizSuccessChime();
     } else {
       state.quizSession.incorrect += 1;
     }
@@ -727,14 +741,17 @@ function animateCardTransition() {
 function renderCardExamples(card) {
   const exampleJp = (card?.example_jp || "").trim();
   const exampleEs = (card?.example_es || "").trim();
-  const hasExamples = Boolean(exampleJp || exampleEs);
+  const showSpanishExample = state.mode !== "quiz";
+  const hasExamples = Boolean(exampleJp || (showSpanishExample && exampleEs));
 
   ui.cardExampleBlockFront.hidden = !hasExamples;
   ui.cardExampleBlockBack.hidden = !hasExamples;
   ui.cardExampleJpFront.textContent = exampleJp;
-  ui.cardExampleEsFront.textContent = exampleEs;
+  ui.cardExampleEsFront.textContent = showSpanishExample ? exampleEs : "";
   ui.cardExampleJpBack.textContent = exampleJp;
-  ui.cardExampleEsBack.textContent = exampleEs;
+  ui.cardExampleEsBack.textContent = showSpanishExample ? exampleEs : "";
+  ui.cardExampleEsFront.hidden = !showSpanishExample || !exampleEs;
+  ui.cardExampleEsBack.hidden = !showSpanishExample || !exampleEs;
 }
 
 function getCardExamples(card) {
@@ -750,32 +767,41 @@ function getCardExamples(card) {
 }
 
 function generateBeginnerExamplePair(card) {
-  const rawJpWord = getDisplayKanji(card) || getDisplayKana(card) || getDisplayRomaji(card) || card?.jp || "";
-  const jpWord = normalizeExampleToken(rawJpWord) || "これ";
-  const esWord = normalizeExampleToken(card?.es || "") || "esto";
+  const jpWord = getExampleJapaneseToken(card);
+  const esWord = normalizeExampleToken(card?.es || "") || "esta palabra";
   const type = (card?.type || card?._category || "").toLowerCase();
+  const category = /(country|país|place|lugar)/.test(type)
+    ? "place"
+    : /(occupation|profesi|person)/.test(type)
+      ? "person"
+      : type === "phrase"
+        ? "phrase"
+        : "default";
 
-  if (type === "phrase") {
-    return {
-      example_jp: ensureJapanesePunctuation(jpWord),
-      example_es: ensureSpanishPunctuation(card?.es || `Frase: ${esWord}`)
-    };
-  }
-  if (/(country|país|place|lugar)/.test(type)) {
-    return {
-      example_jp: ensureJapanesePunctuation(`${jpWord}へいきます`),
-      example_es: ensureSpanishPunctuation(`Voy a ${esWord}`)
-    };
-  }
-  if (/(occupation|profesi|person)/.test(type)) {
-    return {
-      example_jp: ensureJapanesePunctuation(`わたしは${jpWord}です`),
-      example_es: ensureSpanishPunctuation(`Yo soy ${esWord}`)
-    };
-  }
+  const templates = {
+    phrase: [
+      { jp: `${jpWord}といいます`, es: `Digo: ${esWord}` },
+      { jp: `${jpWord}をよくつかいます`, es: `Uso mucho: ${esWord}` }
+    ],
+    place: [
+      { jp: `${jpWord}にいきたいです`, es: `Quiero ir a ${esWord}` },
+      { jp: `${jpWord}でしゃしんをとります`, es: `Tomo fotos en ${esWord}` }
+    ],
+    person: [
+      { jp: `${jpWord}といっしょにはたらきます`, es: `Trabajo con ${esWord}` },
+      { jp: `${jpWord}にでんわします`, es: `Llamo a ${esWord}` }
+    ],
+    default: [
+      { jp: `${jpWord}をつかいます`, es: `Uso ${esWord}` },
+      { jp: `${jpWord}をかいます`, es: `Compro ${esWord}` },
+      { jp: `${jpWord}がすきです`, es: `Me gusta ${esWord}` },
+      { jp: `${jpWord}をさがしています`, es: `Estoy buscando ${esWord}` }
+    ]
+  };
+  const selected = pickByCardSeed(templates[category], card, 13) || templates.default[0];
   return {
-    example_jp: ensureJapanesePunctuation(`これは${jpWord}です`),
-    example_es: ensureSpanishPunctuation(`Esto es ${esWord}`)
+    example_jp: ensureJapanesePunctuation(sanitizeJapaneseExample(selected.jp)),
+    example_es: ensureSpanishPunctuation(selected.es)
   };
 }
 
@@ -786,8 +812,23 @@ function normalizeExampleToken(value = "") {
     .trim();
 }
 
+function getExampleJapaneseToken(card) {
+  const raw = normalizeExampleToken(getDisplayKana(card) || card?.kana || card?.reading || card?.jp || "");
+  const onlyKana = sanitizeJapaneseExample(raw).replace(/[。！？]/g, "");
+  return onlyKana || "それ";
+}
+
+function sanitizeJapaneseExample(value = "") {
+  const normalized = String(value)
+    .replace(/\[[^\]]+]/g, "")
+    .replace(/\s+/g, "")
+    .trim();
+  const filtered = normalized.replace(/[^\u3040-\u309F\u30A0-\u30FFー・。！？]/g, "");
+  return filtered || "";
+}
+
 function ensureJapanesePunctuation(value = "") {
-  const text = value.trim();
+  const text = sanitizeJapaneseExample(value).trim();
   if (!text) return "";
   return /[。！？]$/.test(text) ? text : `${text}。`;
 }
@@ -882,8 +923,19 @@ function activateAudioTutorMode() {
     return;
   }
   state.audioTutor.isPlaying = true;
-  updateAudioTutorStatus("Iniciando tutor de audio...");
+  updateAudioTutorStatus("Preparando tutor de audio...");
   updateAudioTutorPlayPauseButton();
+  startAudioTutorPlayback();
+}
+
+async function startAudioTutorPlayback() {
+  const introMessage = buildAudioTutorIntroMessage();
+  if (introMessage) {
+    await speakWithTutorVoice(introMessage, "es-MX");
+    if (!state.audioTutor.active || !state.audioTutor.isPlaying) return;
+    await waitForAudioTutor(420, state.audioTutor.runId);
+    if (!state.audioTutor.active || !state.audioTutor.isPlaying) return;
+  }
   runAudioTutorLoop();
 }
 
@@ -1095,11 +1147,40 @@ function isValidAudioSpeed(value) {
 function showRepeatPromptOverlay() {
   if (!ui.repeatPromptOverlay) return;
   ui.repeatPromptOverlay.hidden = false;
+  clearRepeatPromptTimeout();
+  repeatPromptAutoHideTimer = setTimeout(() => {
+    hideRepeatPromptOverlay();
+  }, REPEAT_PROMPT_TIMEOUT_MS);
 }
 
 function hideRepeatPromptOverlay() {
   if (!ui.repeatPromptOverlay) return;
+  clearRepeatPromptTimeout();
   ui.repeatPromptOverlay.hidden = true;
+}
+
+function clearRepeatPromptTimeout() {
+  if (!repeatPromptAutoHideTimer) return;
+  clearTimeout(repeatPromptAutoHideTimer);
+  repeatPromptAutoHideTimer = null;
+}
+
+function dismissRepeatPromptOnInteraction() {
+  if (!ui.repeatPromptOverlay || ui.repeatPromptOverlay.hidden) return;
+  hideRepeatPromptOverlay();
+  if (state.audioTutor.active && state.audioTutor.isPlaying) {
+    state.audioTutor.isPlaying = false;
+    stopAudioTutorPlayback(false);
+    updateAudioTutorStatus("Pausado");
+    updateAudioTutorPlayPauseButton();
+  }
+}
+
+function buildAudioTutorIntroMessage() {
+  const batch = getActiveBatch();
+  const batchTitle = translateBatchTitle(batch?.title || "");
+  if (!batchTitle) return "";
+  return `Bienvenido al modo tutor de audio de Japonea.me. En este momento estudiaremos ${batchTitle}.`;
 }
 
 function playCardJapaneseAudio() {
@@ -1108,6 +1189,58 @@ function playCardJapaneseAudio() {
   if (!card) return;
   window.speechSynthesis.cancel();
   speakWithTutorVoice(getAudioTutorJapaneseText(card), "ja-JP");
+}
+
+function playCardSpanishAudio() {
+  if (state.audioTutor.unsupported || state.audioTutor.active || !state.cards.length) return;
+  const card = state.cards[state.index];
+  if (!card) return;
+  window.speechSynthesis.cancel();
+  speakWithTutorVoice(card.es, "es-MX");
+}
+
+function playQuizSuccessChime() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+  if (!quizSuccessAudioContext) {
+    quizSuccessAudioContext = new AudioCtx();
+  }
+  const context = quizSuccessAudioContext;
+  if (context.state === "suspended") {
+    context.resume().catch(() => {});
+  }
+  const start = context.currentTime + 0.01;
+  const gain = context.createGain();
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(0.06, start + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.45);
+  gain.connect(context.destination);
+
+  const oscA = context.createOscillator();
+  oscA.type = "sine";
+  oscA.frequency.setValueAtTime(880, start);
+  oscA.frequency.exponentialRampToValueAtTime(1174, start + 0.18);
+  oscA.connect(gain);
+  oscA.start(start);
+  oscA.stop(start + 0.25);
+
+  const oscB = context.createOscillator();
+  oscB.type = "triangle";
+  oscB.frequency.setValueAtTime(1320, start + 0.06);
+  oscB.frequency.exponentialRampToValueAtTime(1760, start + 0.3);
+  oscB.connect(gain);
+  oscB.start(start + 0.06);
+  oscB.stop(start + 0.42);
+}
+
+function pickByCardSeed(options, card, offset = 0) {
+  if (!Array.isArray(options) || !options.length) return null;
+  const seedSource = String(card?._id || card?.romaji || card?.jp || card?.es || "card");
+  let seed = offset;
+  for (const char of seedSource) {
+    seed = (seed * 31 + char.charCodeAt(0)) % 2147483647;
+  }
+  return options[Math.abs(seed) % options.length];
 }
 
 init();

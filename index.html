@@ -99,9 +99,14 @@
       <section class="focus-stage" aria-label="Zona principal de estudio">
         <section class="card-section">
           <div id="card" class="card" role="button" tabindex="0" aria-label="Tarjeta (toca para girar)">
-            <button id="cardAudioBtn" class="card-audio-btn" type="button" aria-label="Reproducir pronunciación en japonés">🔊</button>
             <div class="card-inner">
               <article class="card-face card-front">
+                <button
+                  id="cardAudioBtnFront"
+                  class="card-audio-btn"
+                  type="button"
+                  aria-label="Reproducir pronunciación en japonés"
+                >🔊</button>
                 <p class="badge" id="cardType"></p>
                 <h2 id="cardRomajiFront"></h2>
                 <p id="cardKana"></p>
@@ -112,6 +117,12 @@
                 </div>
               </article>
               <article class="card-face card-back">
+                <button
+                  id="cardAudioBtnBack"
+                  class="card-audio-btn"
+                  type="button"
+                  aria-label="Reproducir significado en español"
+                >🔊</button>
                 <h2 id="cardSpanish"></h2>
                 <p id="cardRomaji"></p>
                 <div id="cardExampleBlockBack" class="card-example-block" hidden>
@@ -162,7 +173,7 @@
         </div>
       </section>
 
-      <footer class="app-footer">Created by Alejandro Mellado © 2026</footer>
+      <footer class="app-footer">Alejandro Mellado © 2026</footer>
     </main>
 
     <section id="repeatPromptOverlay" class="repeat-prompt-overlay" hidden aria-live="polite" aria-label="Repite en voz alta">
