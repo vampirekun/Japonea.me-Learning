@@ -852,6 +852,524 @@
           }
         ]
       }
+    },
+    {
+      "id": "batch-2",
+      "title": "Week 2 - Kana Vocabulary",
+      "categories": {
+        "vowels": [
+          {
+            "jp": "あい",
+            "reading": "あい",
+            "romaji": "ai",
+            "es": "amor",
+            "type": "noun",
+            "kana": "あい",
+            "kanji": "愛"
+          },
+          {
+            "jp": "あお",
+            "reading": "あお",
+            "romaji": "ao",
+            "es": "azul",
+            "type": "noun",
+            "kana": "あお",
+            "kanji": "青"
+          },
+          {
+            "jp": "あか",
+            "reading": "あか",
+            "romaji": "aka",
+            "es": "rojo",
+            "type": "noun",
+            "kana": "あか",
+            "kanji": "赤"
+          },
+          {
+            "jp": "あご",
+            "reading": "あご",
+            "romaji": "ago",
+            "es": "mandíbula",
+            "type": "noun",
+            "kana": "あご",
+            "kanji": "顎"
+          },
+          {
+            "jp": "あさ",
+            "reading": "あさ",
+            "romaji": "asa",
+            "es": "mañana (parte del día)",
+            "type": "noun",
+            "kana": "あさ",
+            "kanji": "朝"
+          },
+          {
+            "jp": "あざ",
+            "reading": "あざ",
+            "romaji": "aza",
+            "es": "moretón",
+            "type": "noun",
+            "kana": "あざ",
+            "kanji": ""
+          },
+          {
+            "jp": "あじ",
+            "reading": "あじ",
+            "romaji": "aji",
+            "es": "sabor",
+            "type": "noun",
+            "kana": "あじ",
+            "kanji": "味"
+          },
+          {
+            "jp": "あす",
+            "reading": "あす",
+            "romaji": "asu",
+            "es": "mañana (hoy o futuro)",
+            "type": "noun",
+            "kana": "あす",
+            "kanji": "明日"
+          },
+          {
+            "jp": "いい",
+            "reading": "いい",
+            "romaji": "ii",
+            "es": "bien",
+            "type": "other",
+            "kana": "いい",
+            "kanji": "良い"
+          },
+          {
+            "jp": "いいえ",
+            "reading": "いいえ",
+            "romaji": "iie",
+            "es": "no",
+            "type": "other",
+            "kana": "いいえ",
+            "kanji": ""
+          },
+          {
+            "jp": "いえ",
+            "reading": "いえ",
+            "romaji": "ie",
+            "es": "casa",
+            "type": "noun",
+            "kana": "いえ",
+            "kanji": "家"
+          },
+          {
+            "jp": "いけ",
+            "reading": "いけ",
+            "romaji": "ike",
+            "es": "estanque",
+            "type": "noun",
+            "kana": "いけ",
+            "kanji": "池"
+          },
+          {
+            "jp": "うえ",
+            "reading": "うえ",
+            "romaji": "ue",
+            "es": "arriba",
+            "type": "other",
+            "kana": "うえ",
+            "kanji": "上"
+          },
+          {
+            "jp": "うがい",
+            "reading": "うがい",
+            "romaji": "ugai",
+            "es": "gárgaras",
+            "type": "noun",
+            "kana": "うがい",
+            "kanji": ""
+          },
+          {
+            "jp": "うそ",
+            "reading": "うそ",
+            "romaji": "uso",
+            "es": "mentira",
+            "type": "noun",
+            "kana": "うそ",
+            "kanji": "嘘"
+          },
+          {
+            "jp": "え",
+            "reading": "え",
+            "romaji": "e",
+            "es": "dibujo",
+            "type": "noun",
+            "kana": "え",
+            "kanji": "絵"
+          },
+          {
+            "jp": "えいが",
+            "reading": "えいが",
+            "romaji": "eiga",
+            "es": "película",
+            "type": "noun",
+            "kana": "えいが",
+            "kanji": "映画"
+          },
+          {
+            "jp": "えいご",
+            "reading": "えいご",
+            "romaji": "eigo",
+            "es": "inglés",
+            "type": "language",
+            "kana": "えいご",
+            "kanji": "英語"
+          },
+          {
+            "jp": "えき",
+            "reading": "えき",
+            "romaji": "eki",
+            "es": "estación",
+            "type": "place",
+            "kana": "えき",
+            "kanji": "駅"
+          },
+          {
+            "jp": "おう",
+            "reading": "おう",
+            "romaji": "ou",
+            "es": "rey",
+            "type": "noun",
+            "kana": "おう",
+            "kanji": "王"
+          }
+        ],
+        "ka_row": [
+          {
+            "jp": "かい",
+            "reading": "かい",
+            "romaji": "kai",
+            "es": "concha",
+            "type": "noun",
+            "kana": "かい",
+            "kanji": "貝"
+          },
+          {
+            "jp": "かいぎ",
+            "reading": "かいぎ",
+            "romaji": "kaigi",
+            "es": "reunión",
+            "type": "noun",
+            "kana": "かいぎ",
+            "kanji": "会議"
+          },
+          {
+            "jp": "かいけい",
+            "reading": "かいけい",
+            "romaji": "kaikei",
+            "es": "contabilidad",
+            "type": "noun",
+            "kana": "かいけい",
+            "kanji": "会計"
+          },
+          {
+            "jp": "かいけいし",
+            "reading": "かいけいし",
+            "romaji": "kaikeishi",
+            "es": "contador",
+            "type": "profession",
+            "kana": "かいけいし",
+            "kanji": "会計士"
+          },
+          {
+            "jp": "かお",
+            "reading": "かお",
+            "romaji": "kao",
+            "es": "cara",
+            "type": "noun",
+            "kana": "かお",
+            "kanji": "顔"
+          },
+          {
+            "jp": "かず",
+            "reading": "かず",
+            "romaji": "kazu",
+            "es": "número",
+            "type": "noun",
+            "kana": "かず",
+            "kanji": "数"
+          },
+          {
+            "jp": "かぜ",
+            "reading": "かぜ",
+            "romaji": "kaze",
+            "es": "viento",
+            "type": "noun",
+            "kana": "かぜ",
+            "kanji": "風"
+          },
+          {
+            "jp": "かぞく",
+            "reading": "かぞく",
+            "romaji": "kazoku",
+            "es": "familia",
+            "type": "noun",
+            "kana": "かぞく",
+            "kanji": "家族"
+          },
+          {
+            "jp": "きかい",
+            "reading": "きかい",
+            "romaji": "kikai",
+            "es": "máquina",
+            "type": "noun",
+            "kana": "きかい",
+            "kanji": "機械"
+          },
+          {
+            "jp": "きこく",
+            "reading": "きこく",
+            "romaji": "kikoku",
+            "es": "regreso al país",
+            "type": "other",
+            "kana": "きこく",
+            "kanji": "帰国"
+          },
+          {
+            "jp": "くうき",
+            "reading": "くうき",
+            "romaji": "kuuki",
+            "es": "aire",
+            "type": "noun",
+            "kana": "くうき",
+            "kanji": "空気"
+          },
+          {
+            "jp": "くうこう",
+            "reading": "くうこう",
+            "romaji": "kuukou",
+            "es": "aeropuerto",
+            "type": "place",
+            "kana": "くうこう",
+            "kanji": "空港"
+          },
+          {
+            "jp": "け",
+            "reading": "け",
+            "romaji": "ke",
+            "es": "pelo",
+            "type": "noun",
+            "kana": "け",
+            "kanji": "毛"
+          },
+          {
+            "jp": "けが",
+            "reading": "けが",
+            "romaji": "kega",
+            "es": "herida",
+            "type": "noun",
+            "kana": "けが",
+            "kanji": "怪我"
+          },
+          {
+            "jp": "こうこう",
+            "reading": "こうこう",
+            "romaji": "koukou",
+            "es": "preparatoria",
+            "type": "place",
+            "kana": "こうこう",
+            "kanji": "高校"
+          }
+        ],
+        "ga_row": [
+          {
+            "jp": "がいこく",
+            "reading": "がいこく",
+            "romaji": "gaikoku",
+            "es": "país extranjero",
+            "type": "country",
+            "kana": "がいこく",
+            "kanji": "外国"
+          },
+          {
+            "jp": "がくせい",
+            "reading": "がくせい",
+            "romaji": "gakusei",
+            "es": "estudiante",
+            "type": "person",
+            "kana": "がくせい",
+            "kanji": "学生"
+          },
+          {
+            "jp": "ぎんこう",
+            "reading": "ぎんこう",
+            "romaji": "ginkou",
+            "es": "banco",
+            "type": "place",
+            "kana": "ぎんこう",
+            "kanji": "銀行"
+          },
+          {
+            "jp": "げき",
+            "reading": "げき",
+            "romaji": "geki",
+            "es": "obra de teatro",
+            "type": "noun",
+            "kana": "げき",
+            "kanji": "劇"
+          },
+          {
+            "jp": "ごご",
+            "reading": "ごご",
+            "romaji": "gogo",
+            "es": "tarde",
+            "type": "noun",
+            "kana": "ごご",
+            "kanji": "午後"
+          }
+        ],
+        "sa_za_row": [
+          {
+            "jp": "さけ",
+            "reading": "さけ",
+            "romaji": "sake",
+            "es": "licor japonés",
+            "type": "noun",
+            "kana": "さけ",
+            "kanji": "酒"
+          },
+          {
+            "jp": "ざくろ",
+            "reading": "ざくろ",
+            "romaji": "zakuro",
+            "es": "granada",
+            "type": "noun",
+            "kana": "ざくろ",
+            "kanji": "柘榴"
+          },
+          {
+            "jp": "しお",
+            "reading": "しお",
+            "romaji": "shio",
+            "es": "sal",
+            "type": "noun",
+            "kana": "しお",
+            "kanji": "塩"
+          },
+          {
+            "jp": "しか",
+            "reading": "しか",
+            "romaji": "shika",
+            "es": "venado",
+            "type": "noun",
+            "kana": "しか",
+            "kanji": "鹿"
+          },
+          {
+            "jp": "じこ",
+            "reading": "じこ",
+            "romaji": "jiko",
+            "es": "accidente",
+            "type": "noun",
+            "kana": "じこ",
+            "kanji": "事故"
+          },
+          {
+            "jp": "じしん",
+            "reading": "じしん",
+            "romaji": "jishin",
+            "es": "terremoto",
+            "type": "noun",
+            "kana": "じしん",
+            "kanji": "地震"
+          },
+          {
+            "jp": "すし",
+            "reading": "すし",
+            "romaji": "sushi",
+            "es": "sushi",
+            "type": "noun",
+            "kana": "すし",
+            "kanji": "寿司"
+          },
+          {
+            "jp": "せいざ",
+            "reading": "せいざ",
+            "romaji": "seiza",
+            "es": "constelación",
+            "type": "noun",
+            "kana": "せいざ",
+            "kanji": "星座"
+          },
+          {
+            "jp": "せかい",
+            "reading": "せかい",
+            "romaji": "sekai",
+            "es": "mundo",
+            "type": "noun",
+            "kana": "せかい",
+            "kanji": "世界"
+          },
+          {
+            "jp": "せき",
+            "reading": "せき",
+            "romaji": "seki",
+            "es": "asiento",
+            "type": "noun",
+            "kana": "せき",
+            "kanji": "席"
+          },
+          {
+            "jp": "せんせい",
+            "reading": "せんせい",
+            "romaji": "sensei",
+            "es": "maestro(a)",
+            "type": "profession",
+            "kana": "せんせい",
+            "kanji": "先生"
+          },
+          {
+            "jp": "ぜい",
+            "reading": "ぜい",
+            "romaji": "zei",
+            "es": "impuesto",
+            "type": "noun",
+            "kana": "ぜい",
+            "kanji": "税"
+          },
+          {
+            "jp": "ぜん",
+            "reading": "ぜん",
+            "romaji": "zen",
+            "es": "Zen (budismo)",
+            "type": "noun",
+            "kana": "ぜん",
+            "kanji": "禅"
+          },
+          {
+            "jp": "そうじ",
+            "reading": "そうじ",
+            "romaji": "souji",
+            "es": "limpieza",
+            "type": "noun",
+            "kana": "そうじ",
+            "kanji": "掃除"
+          },
+          {
+            "jp": "そうじき",
+            "reading": "そうじき",
+            "romaji": "soujiki",
+            "es": "aspiradora",
+            "type": "object",
+            "kana": "そうじき",
+            "kanji": "掃除機"
+          },
+          {
+            "jp": "ぞう",
+            "reading": "ぞう",
+            "romaji": "zou",
+            "es": "elefante",
+            "type": "noun",
+            "kana": "ぞう",
+            "kanji": "象"
+          }
+        ]
+      }
     }
   ]
 }
