@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
 const QUIZ_AUTO_NEXT_DELAY = 1200;
 const KNOWN_FEEDBACK_DELAY = 280;
 const QUIZ_HIGH_SCORE_THRESHOLD = 70;
+const ALLOWED_AUDIO_SPEEDS = [0.75, 1, 1.25];
 const AUDIO_TUTOR_CONFIG = {
   jpToEsDelayMs: 1000,
   repetitionDelayMs: 3500,
@@ -392,7 +393,7 @@ function bindEvents() {
   ui.audioTutorExitBtn.addEventListener("click", () => deactivateAudioTutorMode("Tutor de audio detenido"));
   ui.audioSpeedSelect.addEventListener("change", (event) => {
     const selected = Number(event.target.value);
-    state.audioTutor.speedMultiplier = selected === 0.75 || selected === 1 || selected === 1.25 ? selected : 1;
+    state.audioTutor.speedMultiplier = isValidAudioSpeed(selected) ? selected : 1;
     localStorage.setItem(STORAGE_KEYS.audioTutorSpeed, String(state.audioTutor.speedMultiplier));
   });
   document.addEventListener("keydown", (event) => {
@@ -1086,8 +1087,12 @@ function getAudioSpeechRate() {
 
 function readAudioSpeedStorage() {
   const raw = Number(localStorage.getItem(STORAGE_KEYS.audioTutorSpeed));
-  if (raw === 0.75 || raw === 1 || raw === 1.25) return raw;
+  if (isValidAudioSpeed(raw)) return raw;
   return 1;
+}
+
+function isValidAudioSpeed(value) {
+  return ALLOWED_AUDIO_SPEEDS.includes(value);
 }
 
 function showRepeatPromptOverlay() {
