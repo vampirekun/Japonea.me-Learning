@@ -518,6 +518,10 @@ button:disabled {
   display: none;
 }
 
+.mode-learning .card {
+  max-height: none;
+}
+
 .app-footer {
   text-align: center;
   font-size: 0.74rem;
