@@ -71,7 +71,16 @@
 
         <section class="settings-group" aria-label="Audio">
           <h3 class="settings-group-title">Audio</h3>
-          <button id="audioTutorBtn" type="button">Modo tutor de audio</button>
+          <label>
+            Velocidad
+            <select id="audioSpeedSelect" aria-label="Seleccionar velocidad de audio">
+              <option value="0.75">0.75x</option>
+              <option value="1">1x</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+            </select>
+          </label>
+          <button id="audioTutorBtn" type="button">Iniciar modo tutor de audio</button>
         </section>
       </div>
     </aside>
@@ -86,14 +95,17 @@
           </svg>
         </button>
         <img class="brand-logo" src="./assets/cropped-japoneame-1.png" alt="Logo de Japonea.me" width="640" height="192" />
-        <span class="header-spacer" aria-hidden="true"></span>
+        <p id="modeBadge" class="mode-badge" aria-live="polite">🎓 Modo Aprendizaje</p>
       </header>
 
       <section class="progress-shell" aria-label="Progreso del lote">
         <div class="progress-track">
           <span id="progressFill" class="progress-fill"></span>
         </div>
-        <p id="progressLabel" class="progress-label">Progreso: 0%</p>
+        <div class="progress-meta">
+          <p id="progressLabel" class="progress-label">Progreso: 0%</p>
+          <p id="progressCounter" class="progress-counter">0 / 0</p>
+        </div>
       </section>
 
       <section class="focus-stage" aria-label="Zona principal de estudio">
@@ -101,12 +113,6 @@
           <div id="card" class="card" role="button" tabindex="0" aria-label="Tarjeta (toca para girar)">
             <div class="card-inner">
               <article class="card-face card-front">
-                <button
-                  id="cardAudioBtnFront"
-                  class="card-audio-btn"
-                  type="button"
-                  aria-label="Reproducir pronunciación en japonés"
-                >🔊</button>
                 <p class="badge" id="cardType"></p>
                 <h2 id="cardRomajiFront"></h2>
                 <p id="cardKana"></p>
@@ -117,12 +123,6 @@
                 </div>
               </article>
               <article class="card-face card-back">
-                <button
-                  id="cardAudioBtnBack"
-                  class="card-audio-btn"
-                  type="button"
-                  aria-label="Reproducir significado en español"
-                >🔊</button>
                 <h2 id="cardSpanish"></h2>
                 <p id="cardRomaji"></p>
                 <div id="cardExampleBlockBack" class="card-example-block" hidden>
@@ -131,6 +131,7 @@
                 </div>
               </article>
             </div>
+            <button id="cardAudioBtn" class="card-audio-btn" type="button" aria-label="Reproducir pronunciación en japonés">🔊</button>
           </div>
         </section>
 
@@ -157,14 +158,6 @@
       <section id="audioTutorPanel" class="audio-tutor-panel" hidden aria-live="polite">
         <p id="audioTutorStatus" class="audio-tutor-status">Tutor de audio listo</p>
         <p id="audioTutorProgress" class="audio-tutor-progress">0 / 0</p>
-        <label class="audio-speed-control">
-          Velocidad
-          <select id="audioSpeedSelect" aria-label="Seleccionar velocidad de audio">
-            <option value="0.75">0.75x</option>
-            <option value="1">1x</option>
-            <option value="1.25">1.25x</option>
-          </select>
-        </label>
         <div class="audio-tutor-controls">
           <button id="audioTutorPlayPauseBtn" type="button">Pausar</button>
           <button id="audioTutorPrevBtn" type="button">←</button>

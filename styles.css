@@ -47,6 +47,7 @@ body {
 .app-header {
   display: flex;
   align-items: center;
+  gap: 0.55rem;
   padding: 0.2rem 0 0.55rem;
 }
 
@@ -78,20 +79,41 @@ body {
 }
 
 .brand-logo {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
-  max-width: min(56vw, 300px);
+  max-width: min(44vw, 260px);
   max-height: clamp(46px, 9.5dvh, 68px);
   height: auto;
   display: block;
-  margin: 0 auto;
+  margin: 0;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgba(255, 82, 82, 0.2));
 }
 
-.header-spacer {
-  flex-shrink: 0;
-  width: 2.4rem;
+.mode-badge {
+  margin: 0;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #cfe0ff;
+  background: #eef4ff;
+  color: #1e4aa5;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+body.mode-quiz .mode-badge {
+  border-color: #ccebdc;
+  background: #e9fbf1;
+  color: #0f7f56;
+}
+
+body.mode-audio-tutor .mode-badge {
+  border-color: #e2d7ff;
+  background: #f2ecff;
+  color: #5c2ea7;
 }
 
 /* ── Drawer ──────────────────────────────────────────── */
@@ -342,6 +364,20 @@ button:disabled {
   font-weight: 700;
 }
 
+.progress-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.progress-counter {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
 .focus-stage {
   display: flex;
   flex-direction: column;
@@ -368,7 +404,7 @@ button:disabled {
   max-width: 500px;
   min-height: 0;
   height: 100%;
-  max-height: min(46dvh, 280px);
+  max-height: min(60dvh, 360px);
   border-radius: 20px;
   outline: none;
   position: relative;
@@ -412,9 +448,9 @@ button:disabled {
   top: 0.55rem;
   right: 0.55rem;
   z-index: 2;
-  width: 2.15rem;
+  min-width: 6.2rem;
   height: 2.15rem;
-  padding: 0;
+  padding: 0 0.55rem;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -422,6 +458,9 @@ button:disabled {
   background: #ffffff;
   color: var(--primary);
   box-shadow: 0 8px 16px rgba(25, 30, 55, 0.14);
+  z-index: 5;
+  font-size: 0.8rem;
+  font-weight: 800;
 }
 
 .card-audio-btn:hover:not(:disabled) {
@@ -557,6 +596,7 @@ button:disabled {
   background: var(--success-gradient);
   color: #ffffff;
   border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(17, 180, 122, 0.2), 0 0 22px rgba(17, 180, 122, 0.35);
   animation: optionCorrect 260ms ease;
 }
 
@@ -657,7 +697,6 @@ button:disabled {
 }
 
 .mode-audio-tutor .quiz,
-.mode-audio-tutor .progress-shell,
 .mode-audio-tutor .meta,
 .mode-audio-tutor .actions {
   display: none;
@@ -668,14 +707,18 @@ button:disabled {
 }
 
 .mode-audio-tutor .card-audio-btn {
-  display: none !important;
+  opacity: 0.45;
 }
 
 .app-footer {
   text-align: center;
   font-size: 0.74rem;
   color: var(--muted-soft);
-  padding: 0.1rem 0 0;
+  padding: 0.25rem 0 0;
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, #ffffff 72%, rgba(255, 255, 255, 0));
 }
 
 @keyframes cardEnter {
@@ -728,7 +771,7 @@ button:disabled {
 
 @media (max-width: 520px) {
   .card {
-    max-height: min(44dvh, 235px);
+    max-height: min(58dvh, 310px);
   }
 
   .quiz-option {
@@ -749,8 +792,13 @@ button:disabled {
   }
 
   .brand-logo {
-    max-width: min(50vw, 250px);
+    max-width: min(38vw, 220px);
     max-height: clamp(38px, 8dvh, 56px);
+  }
+
+  .mode-badge {
+    font-size: 0.67rem;
+    padding: 0.3rem 0.55rem;
   }
 
   label {
@@ -769,7 +817,7 @@ button:disabled {
   }
 
   .card {
-    max-height: min(34dvh, 210px);
+    max-height: min(44dvh, 260px);
   }
 
   .quiz {
@@ -792,9 +840,6 @@ button:disabled {
     gap: 0.42rem;
   }
 
-  .app-footer {
-    display: none;
-  }
 }
 
 @media (max-height: 420px) {
@@ -804,8 +849,13 @@ button:disabled {
   }
 
   .brand-logo {
-    max-width: min(46vw, 200px);
+    max-width: min(36vw, 170px);
     max-height: 26px;
+  }
+
+  .mode-badge {
+    font-size: 0.58rem;
+    padding: 0.2rem 0.45rem;
   }
 
   label {
@@ -844,7 +894,7 @@ button:disabled {
   }
 
   .card {
-    max-height: min(24dvh, 100px);
+    max-height: min(32dvh, 150px);
   }
 
   .badge {
@@ -909,7 +959,7 @@ button:disabled {
   position: fixed;
   inset: 0;
   z-index: 65;
-  background: rgba(10, 14, 24, 0.2);
+  background: rgba(10, 14, 24, 0.28);
   display: grid;
   place-items: center;
   padding: 1rem;

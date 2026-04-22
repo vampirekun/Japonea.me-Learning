@@ -16,7 +16,12 @@ const QUIZ_HIGH_SCORE_THRESHOLD = 70;
 const REPEAT_PROMPT_TIMEOUT_MS = 3600;
 const MIN_SPEECH_RATE = 0.4;
 const MAX_SPEECH_RATE = 1.6;
-const VALID_AUDIO_SPEEDS = [0.75, 1, 1.25];
+const VALID_AUDIO_SPEEDS = [0.75, 1, 1.25, 1.5];
+const MODE_BADGES = {
+  learning: "🎓 Modo Aprendizaje",
+  quiz: "❓ Modo Quiz",
+  audioTutor: "🔊 Modo Tutor de Audio"
+};
 const AUDIO_TUTOR_CONFIG = {
   jpToEsDelayMs: 1000,
   repetitionDelayMs: 3500,
@@ -77,6 +82,10 @@ const state = {
     speedMultiplier: readAudioSpeedStorage(),
     unsupported: !("speechSynthesis" in window && "SpeechSynthesisUtterance" in window)
   },
+  audio: {
+    isAudioPlaying: false,
+    currentMode: "learning"
+  },
   seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
   knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]")),
   quizStatsByBatch: readQuizStats()
@@ -87,8 +96,7 @@ const ui = {
   modeSelect: document.getElementById("modeSelect"),
   categorySelect: document.getElementById("categorySelect"),
   card: document.getElementById("card"),
-  cardAudioBtnFront: document.getElementById("cardAudioBtnFront"),
-  cardAudioBtnBack: document.getElementById("cardAudioBtnBack"),
+  cardAudioBtn: document.getElementById("cardAudioBtn"),
   cardType: document.getElementById("cardType"),
   cardRomajiFront: document.getElementById("cardRomajiFront"),
   cardKana: document.getElementById("cardKana"),
@@ -112,6 +120,8 @@ const ui = {
   quizStats: document.getElementById("quizStats"),
   progressFill: document.getElementById("progressFill"),
   progressLabel: document.getElementById("progressLabel"),
+  progressCounter: document.getElementById("progressCounter"),
+  modeBadge: document.getElementById("modeBadge"),
   hideKnownToggle: document.getElementById("hideKnownToggle"),
   shuffleToggle: document.getElementById("shuffleToggle"),
   splashScreen: document.getElementById("splashScreen"),
@@ -252,10 +262,7 @@ function renderCard() {
   ui.nextBtn.disabled = !hasCards;
   ui.knownBtn.disabled = !hasCards;
   const disableCardAudio = !hasCards || state.audioTutor.active;
-  ui.cardAudioBtnFront.disabled = disableCardAudio;
-  ui.cardAudioBtnBack.disabled = disableCardAudio;
-  ui.cardAudioBtnFront.hidden = state.audioTutor.active;
-  ui.cardAudioBtnBack.hidden = state.audioTutor.active;
+  ui.cardAudioBtn.disabled = disableCardAudio;
   ui.quizNextBtn.hidden = true;
   ui.quizNextBtn.disabled = !hasCards || state.mode !== "quiz";
   renderProgress(total, hasCards ? state.index + 1 : 0);
@@ -271,6 +278,7 @@ function renderCard() {
 
   renderQuizOptions();
   renderQuizStats();
+  updateCardAudioButton();
   animateCardTransition();
 }
 
@@ -362,13 +370,13 @@ function bindEvents() {
   });
 
   ui.card.addEventListener("click", flipCard);
-  ui.cardAudioBtnFront.addEventListener("click", (event) => {
+  ui.cardAudioBtn.addEventListener("click", (event) => {
     event.stopPropagation();
+    if (ui.card.classList.contains("is-flipped")) {
+      playCardSpanishAudio();
+      return;
+    }
     playCardJapaneseAudio();
-  });
-  ui.cardAudioBtnBack.addEventListener("click", (event) => {
-    event.stopPropagation();
-    playCardSpanishAudio();
   });
   ui.card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -444,6 +452,7 @@ function moveCard(step) {
 function flipCard() {
   if (state.mode !== "learning" || state.audioTutor.active) return;
   ui.card.classList.toggle("is-flipped");
+  updateCardAudioButton();
 }
 
 function getActiveBatch() {
@@ -624,6 +633,9 @@ function renderProgress(total, position) {
   const percent = total ? Math.round((position / total) * 100) : 0;
   ui.progressFill.style.width = `${percent}%`;
   ui.progressLabel.textContent = `Progreso: ${percent}%`;
+  if (ui.progressCounter) {
+    ui.progressCounter.textContent = `${position} / ${total}`;
+  }
 }
 
 function readQuizStats() {
@@ -719,10 +731,18 @@ function applyModeUI() {
   document.body.classList.toggle("mode-quiz", state.mode === "quiz");
   document.body.classList.toggle("mode-learning", state.mode === "learning");
   document.body.classList.toggle("mode-audio-tutor", state.audioTutor.active);
+  state.audio.currentMode = state.audioTutor.active ? "audioTutor" : state.mode;
   ui.card.setAttribute("aria-label", state.mode === "learning" ? "Tarjeta (toca para girar)" : "Tarjeta de quiz");
+  if (ui.modeBadge) {
+    ui.modeBadge.textContent = state.audioTutor.active ? MODE_BADGES.audioTutor : MODE_BADGES[state.mode];
+  }
   if (ui.audioTutorPanel) {
     ui.audioTutorPanel.hidden = !state.audioTutor.active;
   }
+  if (ui.audioTutorBtn) {
+    ui.audioTutorBtn.textContent = state.audioTutor.active ? "Detener modo tutor de audio" : "Iniciar modo tutor de audio";
+  }
+  updateCardAudioButton();
 }
 
 function registerServiceWorker() {
@@ -904,6 +924,7 @@ function triggerConfetti() {
 }
 
 function activateAudioTutorMode() {
+  stopAudioTutorPlayback(false);
   state.audioTutor.active = true;
   hideRepeatPromptOverlay();
   if (state.cards.length) {
@@ -981,6 +1002,7 @@ async function runAudioTutorLoop() {
     if (!card) break;
 
     ui.card.classList.remove("is-flipped");
+    updateCardAudioButton();
     renderAudioTutorProgress();
     saveAudioTutorProgress();
     updateAudioTutorStatus("Escucha la pronunciación en japonés");
@@ -991,6 +1013,7 @@ async function runAudioTutorLoop() {
     if (!isAudioTutorRunActive(runId)) return;
 
     ui.card.classList.add("is-flipped");
+    updateCardAudioButton();
     updateAudioTutorStatus("Escucha el significado en español");
     await speakWithTutorVoice(card.es, "es-MX");
     if (!isAudioTutorRunActive(runId)) return;
@@ -1021,9 +1044,7 @@ function stopAudioTutorPlayback(resetPlaying = true) {
   if (resetPlaying) {
     state.audioTutor.isPlaying = false;
   }
-  if (!state.audioTutor.unsupported) {
-    window.speechSynthesis.cancel();
-  }
+  cancelSpeechSynthesisAudio();
 }
 
 function waitForAudioTutor(ms, runId) {
@@ -1050,6 +1071,7 @@ function speakWithTutorVoice(text, language) {
       return;
     }
 
+    cancelSpeechSynthesisAudio();
     const utterance = new SpeechSynthesisUtterance(phrase);
     utterance.lang = language === "es-MX" ? resolveSpanishVoiceLang() : "ja-JP";
     utterance.rate = getAudioSpeechRate();
@@ -1059,8 +1081,15 @@ function speakWithTutorVoice(text, language) {
       utterance.voice = voice;
     }
 
-    utterance.onend = () => resolve();
-    utterance.onerror = () => resolve();
+    state.audio.isAudioPlaying = true;
+    utterance.onend = () => {
+      state.audio.isAudioPlaying = false;
+      resolve();
+    };
+    utterance.onerror = () => {
+      state.audio.isAudioPlaying = false;
+      resolve();
+    };
     window.speechSynthesis.speak(utterance);
   });
 }
@@ -1180,14 +1209,13 @@ function buildAudioTutorIntroMessage() {
   const batch = getActiveBatch();
   const batchTitle = translateBatchTitle(batch?.title || "");
   if (!batchTitle) return "";
-  return `Bienvenido al modo tutor de audio de Japonea.me. En este momento estudiaremos ${batchTitle}.`;
+  return `Bienvenido al modo tutor de audio de Japonea.me. Estudiaremos: ${batchTitle}.`;
 }
 
 function playCardJapaneseAudio() {
   if (state.audioTutor.unsupported || state.audioTutor.active || !state.cards.length) return;
   const card = state.cards[state.index];
   if (!card) return;
-  window.speechSynthesis.cancel();
   speakWithTutorVoice(getAudioTutorJapaneseText(card), "ja-JP");
 }
 
@@ -1195,11 +1223,13 @@ function playCardSpanishAudio() {
   if (state.audioTutor.unsupported || state.audioTutor.active || !state.cards.length) return;
   const card = state.cards[state.index];
   if (!card) return;
-  window.speechSynthesis.cancel();
   speakWithTutorVoice(card.es, "es-MX");
 }
 
 function playQuizSuccessChime() {
+  if (state.mode === "quiz") {
+    cancelSpeechSynthesisAudio();
+  }
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   if (!AudioCtx) return;
   if (!quizSuccessAudioContext) {
@@ -1230,7 +1260,23 @@ function playQuizSuccessChime() {
   oscB.frequency.exponentialRampToValueAtTime(1760, start + 0.3);
   oscB.connect(gain);
   oscB.start(start + 0.06);
-  oscB.stop(start + 0.42);
+  oscB.stop(start + 0.5);
+}
+
+function cancelSpeechSynthesisAudio() {
+  if (state.audioTutor.unsupported) return;
+  window.speechSynthesis.cancel();
+  state.audio.isAudioPlaying = false;
+}
+
+function updateCardAudioButton() {
+  if (!ui.cardAudioBtn) return;
+  const isBack = ui.card.classList.contains("is-flipped");
+  ui.cardAudioBtn.textContent = isBack ? "🔊 Español" : "🔊 Japonés";
+  ui.cardAudioBtn.setAttribute(
+    "aria-label",
+    isBack ? "Reproducir significado en español" : "Reproducir pronunciación en japonés"
+  );
 }
 
 function pickByCardSeed(options, card, offset = 0) {
