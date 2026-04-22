@@ -448,7 +448,7 @@ button:disabled {
   top: 0.55rem;
   right: 0.55rem;
   z-index: 2;
-  min-width: 3.6rem;
+  min-width: 6.2rem;
   height: 2.15rem;
   padding: 0 0.55rem;
   display: grid;
@@ -597,7 +597,7 @@ button:disabled {
   color: #ffffff;
   border-color: transparent;
   box-shadow: 0 0 0 2px rgba(17, 180, 122, 0.2), 0 0 22px rgba(17, 180, 122, 0.35);
-  animation: optionCorrect 280ms ease;
+  animation: optionCorrect 260ms ease;
 }
 
 .quiz-option.is-incorrect {

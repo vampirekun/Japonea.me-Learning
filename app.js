@@ -731,7 +731,7 @@ function applyModeUI() {
   document.body.classList.toggle("mode-quiz", state.mode === "quiz");
   document.body.classList.toggle("mode-learning", state.mode === "learning");
   document.body.classList.toggle("mode-audio-tutor", state.audioTutor.active);
-  state.audio.currentMode = state.audioTutor.active ? "audio-tutor" : state.mode;
+  state.audio.currentMode = state.audioTutor.active ? "audioTutor" : state.mode;
   ui.card.setAttribute("aria-label", state.mode === "learning" ? "Tarjeta (toca para girar)" : "Tarjeta de quiz");
   if (ui.modeBadge) {
     ui.modeBadge.textContent = state.audioTutor.active ? MODE_BADGES.audioTutor : MODE_BADGES[state.mode];
@@ -1227,7 +1227,9 @@ function playCardSpanishAudio() {
 }
 
 function playQuizSuccessChime() {
-  cancelSpeechSynthesisAudio();
+  if (state.mode === "quiz") {
+    cancelSpeechSynthesisAudio();
+  }
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   if (!AudioCtx) return;
   if (!quizSuccessAudioContext) {
@@ -1270,7 +1272,7 @@ function cancelSpeechSynthesisAudio() {
 function updateCardAudioButton() {
   if (!ui.cardAudioBtn) return;
   const isBack = ui.card.classList.contains("is-flipped");
-  ui.cardAudioBtn.textContent = isBack ? "🔊 ES" : "🔊 JP";
+  ui.cardAudioBtn.textContent = isBack ? "🔊 Español" : "🔊 Japonés";
   ui.cardAudioBtn.setAttribute(
     "aria-label",
     isBack ? "Reproducir significado en español" : "Reproducir pronunciación en japonés"
