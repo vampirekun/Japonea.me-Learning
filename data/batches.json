@@ -865,7 +865,9 @@
             "es": "la mañana",
             "type": "noun",
             "kana": "あさ",
-            "kanji": "朝"
+            "kanji": "朝",
+            "example_jp": "あさはやくおきます",
+            "example_es": "Me levanto temprano por la mañana"
           },
           {
             "jp": "あす",
@@ -874,7 +876,9 @@
             "es": "mañana (día siguiente)",
             "type": "noun",
             "kana": "あす",
-            "kanji": "明日"
+            "kanji": "明日",
+            "example_jp": "あすともだちとあいます",
+            "example_es": "Mañana me veo con mi amigo"
           },
           {
             "jp": "ごご",
@@ -883,7 +887,9 @@
             "es": "tarde",
             "type": "noun",
             "kana": "ごご",
-            "kanji": "午後"
+            "kanji": "午後",
+            "example_jp": "ごごにコーヒーをのみます",
+            "example_es": "Tomo café por la tarde"
           },
           {
             "jp": "いえ",
@@ -892,7 +898,9 @@
             "es": "casa",
             "type": "noun",
             "kana": "いえ",
-            "kanji": "家"
+            "kanji": "家",
+            "example_jp": "まいにちいえにかえります",
+            "example_es": "Regreso a casa todos los días"
           },
           {
             "jp": "うえ",
@@ -901,7 +909,9 @@
             "es": "arriba",
             "type": "other",
             "kana": "うえ",
-            "kanji": "上"
+            "kanji": "上",
+            "example_jp": "テーブルのうえにほんがあります",
+            "example_es": "Hay un libro sobre la mesa"
           },
           {
             "jp": "かお",
@@ -910,7 +920,9 @@
             "es": "cara",
             "type": "noun",
             "kana": "かお",
-            "kanji": "顔"
+            "kanji": "顔",
+            "example_jp": "あさかおをあらいます",
+            "example_es": "Me lavo la cara por la mañana"
           },
           {
             "jp": "あご",
@@ -919,7 +931,9 @@
             "es": "mandíbula",
             "type": "noun",
             "kana": "あご",
-            "kanji": "顎"
+            "kanji": "顎",
+            "example_jp": "あごがいたいです",
+            "example_es": "Me duele la mandíbula"
           },
           {
             "jp": "け",
@@ -928,7 +942,9 @@
             "es": "pelo",
             "type": "noun",
             "kana": "け",
-            "kanji": "毛"
+            "kanji": "毛",
+            "example_jp": "かのじょのけはながいです",
+            "example_es": "Ella tiene el cabello largo"
           },
           {
             "jp": "けが",
@@ -937,7 +953,9 @@
             "es": "herida",
             "type": "noun",
             "kana": "けが",
-            "kanji": "怪我"
+            "kanji": "怪我",
+            "example_jp": "あしにけがをしました",
+            "example_es": "Me lastimé el pie"
           },
           {
             "jp": "あざ",
@@ -946,7 +964,9 @@
             "es": "moretón",
             "type": "noun",
             "kana": "あざ",
-            "kanji": ""
+            "kanji": "",
+            "example_jp": "うでにあざができました",
+            "example_es": "Me salió un moretón en el brazo"
           },
           {
             "jp": "うがい",
@@ -955,7 +975,9 @@
             "es": "gárgaras",
             "type": "noun",
             "kana": "うがい",
-            "kanji": ""
+            "kanji": "",
+            "example_jp": "まいにちうがいをします",
+            "example_es": "Hago gárgaras todos los días"
           },
           {
             "jp": "あじ",
@@ -964,7 +986,9 @@
             "es": "sabor",
             "type": "noun",
             "kana": "あじ",
-            "kanji": "味"
+            "kanji": "味",
+            "example_jp": "このりょうりはあじがいいです",
+            "example_es": "Esta comida está muy sabrosa"
           },
           {
             "jp": "いい",
@@ -973,7 +997,9 @@
             "es": "bien",
             "type": "other",
             "kana": "いい",
-            "kanji": "良い"
+            "kanji": "良い",
+            "example_jp": "きょうはてんきがいいです",
+            "example_es": "Hoy hace buen tiempo"
           },
           {
             "jp": "いいえ",
@@ -982,7 +1008,9 @@
             "es": "no",
             "type": "other",
             "kana": "いいえ",
-            "kanji": ""
+            "kanji": "",
+            "example_jp": "いいえ、けっこうです",
+            "example_es": "No, gracias"
           },
           {
             "jp": "うそ",
@@ -991,7 +1019,9 @@
             "es": "mentira",
             "type": "noun",
             "kana": "うそ",
-            "kanji": "嘘"
+            "kanji": "嘘",
+            "example_jp": "うそをついてはいけません",
+            "example_es": "No debes mentir"
           },
           {
             "jp": "そうじ",
@@ -1000,7 +1030,9 @@
             "es": "limpieza",
             "type": "noun",
             "kana": "そうじ",
-            "kanji": "掃除"
+            "kanji": "掃除",
+            "example_jp": "まいしゅうそうじをします",
+            "example_es": "Limpio todas las semanas"
           },
           {
             "jp": "そうじき",
@@ -1009,7 +1041,9 @@
             "es": "aspiradora",
             "type": "object",
             "kana": "そうじき",
-            "kanji": "掃除機"
+            "kanji": "掃除機",
+            "example_jp": "そうじきでゆかをそうじします",
+            "example_es": "Paso la aspiradora por el suelo"
           },
           {
             "jp": "くうき",
@@ -1018,7 +1052,9 @@
             "es": "aire",
             "type": "noun",
             "kana": "くうき",
-            "kanji": "空気"
+            "kanji": "空気",
+            "example_jp": "まどをあけてくうきをいれます",
+            "example_es": "Abro la ventana para que entre aire fresco"
           },
           {
             "jp": "せき",
@@ -1027,7 +1063,9 @@
             "es": "asiento",
             "type": "noun",
             "kana": "せき",
-            "kanji": "席"
+            "kanji": "席",
+            "example_jp": "でんしゃのせきにすわります",
+            "example_es": "Me siento en el asiento del tren"
           }
         ],
         "estudio_y_profesion": [
@@ -1038,7 +1076,9 @@
             "es": "reunión",
             "type": "noun",
             "kana": "かいぎ",
-            "kanji": "会議"
+            "kanji": "会議",
+            "example_jp": "あしたかいぎがあります",
+            "example_es": "Mañana hay una reunión"
           },
           {
             "jp": "かいけい",
@@ -1047,7 +1087,9 @@
             "es": "contabilidad",
             "type": "noun",
             "kana": "かいけい",
-            "kanji": "会計"
+            "kanji": "会計",
+            "example_jp": "かいけいのしごとはむずかしいです",
+            "example_es": "El trabajo de contabilidad es difícil"
           },
           {
             "jp": "かいけいし",
@@ -1056,7 +1098,9 @@
             "es": "contador",
             "type": "profession",
             "kana": "かいけいし",
-            "kanji": "会計士"
+            "kanji": "会計士",
+            "example_jp": "かのじょはかいけいしです",
+            "example_es": "Ella es contadora"
           },
           {
             "jp": "がくせい",
@@ -1065,7 +1109,9 @@
             "es": "estudiante",
             "type": "person",
             "kana": "がくせい",
-            "kanji": "学生"
+            "kanji": "学生",
+            "example_jp": "わたしはだいがくのがくせいです",
+            "example_es": "Soy estudiante universitario"
           },
           {
             "jp": "せんせい",
@@ -1074,7 +1120,9 @@
             "es": "maestro(a)",
             "type": "profession",
             "kana": "せんせい",
-            "kanji": "先生"
+            "kanji": "先生",
+            "example_jp": "せんせいにしつもんします",
+            "example_es": "Le pregunto al maestro"
           },
           {
             "jp": "こうこう",
@@ -1083,7 +1131,9 @@
             "es": "preparatoria",
             "type": "place",
             "kana": "こうこう",
-            "kanji": "高校"
+            "kanji": "高校",
+            "example_jp": "こうこうでえいごをべんきょうします",
+            "example_es": "Estudio inglés en la preparatoria"
           },
           {
             "jp": "えいご",
@@ -1092,7 +1142,9 @@
             "es": "inglés",
             "type": "language",
             "kana": "えいご",
-            "kanji": "英語"
+            "kanji": "英語",
+            "example_jp": "まいにちえいごをれんしゅうします",
+            "example_es": "Practico inglés todos los días"
           },
           {
             "jp": "え",
@@ -1101,7 +1153,9 @@
             "es": "dibujo",
             "type": "noun",
             "kana": "え",
-            "kanji": "絵"
+            "kanji": "絵",
+            "example_jp": "じかんがあるときにえをかきます",
+            "example_es": "Cuando tengo tiempo, dibujo"
           },
           {
             "jp": "えいが",
@@ -1110,7 +1164,9 @@
             "es": "película",
             "type": "noun",
             "kana": "えいが",
-            "kanji": "映画"
+            "kanji": "映画",
+            "example_jp": "しゅうまつにえいがをみます",
+            "example_es": "Los fines de semana veo películas"
           },
           {
             "jp": "げき",
@@ -1119,7 +1175,9 @@
             "es": "obra de teatro",
             "type": "noun",
             "kana": "げき",
-            "kanji": "劇"
+            "kanji": "劇",
+            "example_jp": "きょねんげきをみました",
+            "example_es": "El año pasado fui a ver una obra de teatro"
           },
           {
             "jp": "きかい",
@@ -1128,7 +1186,9 @@
             "es": "máquina",
             "type": "noun",
             "kana": "きかい",
-            "kanji": "機械"
+            "kanji": "機械",
+            "example_jp": "きかいのつかいかたをおしえてください",
+            "example_es": "Por favor, enséñame a usar la máquina"
           },
           {
             "jp": "ぜい",
@@ -1137,7 +1197,9 @@
             "es": "impuesto",
             "type": "noun",
             "kana": "ぜい",
-            "kanji": "税"
+            "kanji": "税",
+            "example_jp": "このねだんにはぜいがはいっています",
+            "example_es": "El precio ya incluye el impuesto"
           }
         ],
         "lugares_y_movilidad": [
@@ -1148,7 +1210,9 @@
             "es": "estación",
             "type": "place",
             "kana": "えき",
-            "kanji": "駅"
+            "kanji": "駅",
+            "example_jp": "えきでともだちをまちます",
+            "example_es": "Espero a mi amigo en la estación"
           },
           {
             "jp": "ぎんこう",
@@ -1157,7 +1221,9 @@
             "es": "banco",
             "type": "place",
             "kana": "ぎんこう",
-            "kanji": "銀行"
+            "kanji": "銀行",
+            "example_jp": "ぎんこうにおかねをあずけます",
+            "example_es": "Deposito dinero en el banco"
           },
           {
             "jp": "くうこう",
@@ -1166,7 +1232,9 @@
             "es": "aeropuerto",
             "type": "place",
             "kana": "くうこう",
-            "kanji": "空港"
+            "kanji": "空港",
+            "example_jp": "くうこうまでバスでいきます",
+            "example_es": "Voy al aeropuerto en autobús"
           },
           {
             "jp": "いけ",
@@ -1175,7 +1243,9 @@
             "es": "estanque",
             "type": "noun",
             "kana": "いけ",
-            "kanji": "池"
+            "kanji": "池",
+            "example_jp": "こうえんのいけにさかながいます",
+            "example_es": "Hay peces en el estanque del parque"
           },
           {
             "jp": "がいこく",
@@ -1184,7 +1254,9 @@
             "es": "país extranjero",
             "type": "country",
             "kana": "がいこく",
-            "kanji": "外国"
+            "kanji": "外国",
+            "example_jp": "がいこくにすんでみたいです",
+            "example_es": "Me gustaría vivir en el extranjero"
           },
           {
             "jp": "きこく",
@@ -1193,7 +1265,9 @@
             "es": "regreso al país",
             "type": "other",
             "kana": "きこく",
-            "kanji": "帰国"
+            "kanji": "帰国",
+            "example_jp": "らいねんきこくするつもりです",
+            "example_es": "Planeo regresar a mi país el año que viene"
           },
           {
             "jp": "せかい",
@@ -1202,7 +1276,9 @@
             "es": "mundo",
             "type": "noun",
             "kana": "せかい",
-            "kanji": "世界"
+            "kanji": "世界",
+            "example_jp": "せかいじゅうをたびしたいです",
+            "example_es": "Quiero viajar por todo el mundo"
           }
         ],
         "naturaleza_y_cultura": [
@@ -1213,7 +1289,9 @@
             "es": "azul",
             "type": "noun",
             "kana": "あお",
-            "kanji": "青"
+            "kanji": "青",
+            "example_jp": "そらはあおいです",
+            "example_es": "El cielo es azul"
           },
           {
             "jp": "あか",
@@ -1222,7 +1300,9 @@
             "es": "rojo",
             "type": "noun",
             "kana": "あか",
-            "kanji": "赤"
+            "kanji": "赤",
+            "example_jp": "このはなはあかいです",
+            "example_es": "Esta flor es roja"
           },
           {
             "jp": "かぜ",
@@ -1231,7 +1311,9 @@
             "es": "viento",
             "type": "noun",
             "kana": "かぜ",
-            "kanji": "風"
+            "kanji": "風",
+            "example_jp": "きょうはかぜがつよいです",
+            "example_es": "Hoy el viento está muy fuerte"
           },
           {
             "jp": "ざくろ",
@@ -1240,7 +1322,9 @@
             "es": "granada",
             "type": "noun",
             "kana": "ざくろ",
-            "kanji": "柘榴"
+            "kanji": "柘榴",
+            "example_jp": "ざくろはあまずっぱいです",
+            "example_es": "La granada es agridulce"
           },
           {
             "jp": "しか",
@@ -1249,7 +1333,9 @@
             "es": "venado",
             "type": "noun",
             "kana": "しか",
-            "kanji": "鹿"
+            "kanji": "鹿",
+            "example_jp": "こうえんでしかをみました",
+            "example_es": "Vi un venado en el parque"
           },
           {
             "jp": "ぞう",
@@ -1258,7 +1344,9 @@
             "es": "elefante",
             "type": "noun",
             "kana": "ぞう",
-            "kanji": "象"
+            "kanji": "象",
+            "example_jp": "どうぶつえんでぞうをみました",
+            "example_es": "Vi un elefante en el zoológico"
           },
           {
             "jp": "じしん",
@@ -1267,7 +1355,9 @@
             "es": "terremoto",
             "type": "noun",
             "kana": "じしん",
-            "kanji": "地震"
+            "kanji": "地震",
+            "example_jp": "きのうよるじしんがありました",
+            "example_es": "Anoche hubo un terremoto"
           },
           {
             "jp": "せいざ",
@@ -1276,7 +1366,9 @@
             "es": "constelación",
             "type": "noun",
             "kana": "せいざ",
-            "kanji": "星座"
+            "kanji": "星座",
+            "example_jp": "よるにせいざをかんさつします",
+            "example_es": "Por la noche observo las constelaciones"
           },
           {
             "jp": "ぜん",
@@ -1285,7 +1377,9 @@
             "es": "Zen (budismo)",
             "type": "noun",
             "kana": "ぜん",
-            "kanji": "禅"
+            "kanji": "禅",
+            "example_jp": "ぜんのこころでおちついています",
+            "example_es": "Me mantengo tranquilo con el espíritu del zen"
           },
           {
             "jp": "さけ",
@@ -1294,7 +1388,9 @@
             "es": "licor japonés",
             "type": "noun",
             "kana": "さけ",
-            "kanji": "酒"
+            "kanji": "酒",
+            "example_jp": "にほんでさけをのみました",
+            "example_es": "Bebí sake en Japón"
           },
           {
             "jp": "すし",
@@ -1303,7 +1399,9 @@
             "es": "sushi",
             "type": "noun",
             "kana": "すし",
-            "kanji": "寿司"
+            "kanji": "寿司",
+            "example_jp": "ともだちとすしをたべにいきました",
+            "example_es": "Fui a comer sushi con mi amigo"
           },
           {
             "jp": "しお",
@@ -1312,7 +1410,9 @@
             "es": "sal",
             "type": "noun",
             "kana": "しお",
-            "kanji": "塩"
+            "kanji": "塩",
+            "example_jp": "りょうりにすこしだけしおをいれます",
+            "example_es": "Añado solo un poco de sal a la comida"
           }
         ],
         "sociedad_y_conceptos": [
@@ -1323,7 +1423,9 @@
             "es": "amor",
             "type": "noun",
             "kana": "あい",
-            "kanji": "愛"
+            "kanji": "愛",
+            "example_jp": "かぞくへのあいはたいせつです",
+            "example_es": "El amor hacia la familia es muy importante"
           },
           {
             "jp": "かぞく",
@@ -1332,7 +1434,9 @@
             "es": "familia",
             "type": "noun",
             "kana": "かぞく",
-            "kanji": "家族"
+            "kanji": "家族",
+            "example_jp": "わたしのかぞくはよにんです",
+            "example_es": "Mi familia tiene cuatro integrantes"
           },
           {
             "jp": "かず",
@@ -1341,7 +1445,9 @@
             "es": "número",
             "type": "noun",
             "kana": "かず",
-            "kanji": "数"
+            "kanji": "数",
+            "example_jp": "かずをおぼえることがたいせつです",
+            "example_es": "Es importante memorizar los números"
           },
           {
             "jp": "かい",
@@ -1350,7 +1456,9 @@
             "es": "concha",
             "type": "noun",
             "kana": "かい",
-            "kanji": "貝"
+            "kanji": "貝",
+            "example_jp": "うみでかいをひろいました",
+            "example_es": "Recogí caracolas en la playa"
           },
           {
             "jp": "おう",
@@ -1359,7 +1467,9 @@
             "es": "rey",
             "type": "noun",
             "kana": "おう",
-            "kanji": "王"
+            "kanji": "王",
+            "example_jp": "このものがたりのおうはやさしいです",
+            "example_es": "El rey de esta historia es amable"
           },
           {
             "jp": "じこ",
@@ -1368,7 +1478,759 @@
             "es": "accidente",
             "type": "noun",
             "kana": "じこ",
-            "kanji": "事故"
+            "kanji": "事故",
+            "example_jp": "どうろでじこがありました",
+            "example_es": "Hubo un accidente en la carretera"
+          }
+        ],
+        "vocabulario": [
+          {
+            "jp": "おとな",
+            "reading": "おとな",
+            "romaji": "otona",
+            "es": "Adulto",
+            "type": "noun",
+            "kana": "おとな",
+            "kanji": "大人",
+            "example_jp": "おとなはじぶんでせきにんをとります",
+            "example_es": "Los adultos asumen sus propias responsabilidades"
+          },
+          {
+            "jp": "にじ",
+            "reading": "にじ",
+            "romaji": "niji",
+            "es": "Arcoíris",
+            "type": "noun",
+            "kana": "にじ",
+            "kanji": "虹",
+            "example_jp": "あめのあとでにじがみえます",
+            "example_es": "Después de la lluvia se puede ver un arcoíris"
+          },
+          {
+            "jp": "ぶき",
+            "reading": "ぶき",
+            "romaji": "buki",
+            "es": "Armas",
+            "type": "noun",
+            "kana": "ぶき",
+            "kanji": "武器",
+            "example_jp": "えいがでぶきのシーンがたくさんでてきます",
+            "example_es": "En la película aparecen muchas escenas de armas"
+          },
+          {
+            "jp": "ひこうき",
+            "reading": "ひこうき",
+            "romaji": "hikouki",
+            "es": "Avión",
+            "type": "noun",
+            "kana": "ひこうき",
+            "kanji": "飛行機",
+            "example_jp": "ひこうきでにほんにいきます",
+            "example_es": "Voy a Japón en avión"
+          },
+          {
+            "jp": "てつだう",
+            "reading": "てつだう",
+            "romaji": "tetsudau",
+            "es": "Ayudar",
+            "type": "verb",
+            "kana": "てつだう",
+            "kanji": "手伝う",
+            "example_jp": "ははのりょうりをてつだいます",
+            "example_es": "Ayudo a mamá a cocinar"
+          },
+          {
+            "jp": "さとう",
+            "reading": "さとう",
+            "romaji": "satou",
+            "es": "Azúcar",
+            "type": "noun",
+            "kana": "さとう",
+            "kanji": "砂糖",
+            "example_jp": "コーヒーにさとうをいれません",
+            "example_es": "No le pongo azúcar al café"
+          },
+          {
+            "jp": "ひげ",
+            "reading": "ひげ",
+            "romaji": "hige",
+            "es": "Barba",
+            "type": "noun",
+            "kana": "ひげ",
+            "kanji": "髭",
+            "example_jp": "おとうさんはまいあさひげをそります",
+            "example_es": "Papá se afeita la barba todas las mañanas"
+          },
+          {
+            "jp": "おなか",
+            "reading": "おなか",
+            "romaji": "onaka",
+            "es": "Barriga",
+            "type": "noun",
+            "kana": "おなか",
+            "kanji": "お腹",
+            "example_jp": "おなかがすきました",
+            "example_es": "Tengo hambre"
+          },
+          {
+            "jp": "ふね",
+            "reading": "ふね",
+            "romaji": "fune",
+            "es": "Barco",
+            "type": "noun",
+            "kana": "ふね",
+            "kanji": "船",
+            "example_jp": "ふねでしまにいきます",
+            "example_es": "Voy a la isla en barco"
+          },
+          {
+            "jp": "くち",
+            "reading": "くち",
+            "romaji": "kuchi",
+            "es": "Boca",
+            "type": "noun",
+            "kana": "くち",
+            "kanji": "口",
+            "example_jp": "はをみがくとくちがさっぱりします",
+            "example_es": "Al cepillarme los dientes me queda la boca fresca"
+          },
+          {
+            "jp": "きっぷ",
+            "reading": "きっぷ",
+            "romaji": "kippu",
+            "es": "Boleto de tren",
+            "type": "noun",
+            "kana": "きっぷ",
+            "kanji": "切符",
+            "example_jp": "えきでしんかんせんのきっぷをかいました",
+            "example_es": "Compré un boleto de tren en la estación"
+          },
+          {
+            "jp": "うで",
+            "reading": "うで",
+            "romaji": "ude",
+            "es": "Brazo",
+            "type": "noun",
+            "kana": "うで",
+            "kanji": "腕",
+            "example_jp": "うでのちからをきたえます",
+            "example_es": "Entreno la fuerza de mis brazos"
+          },
+          {
+            "jp": "ほっぺ",
+            "reading": "ほっぺ",
+            "romaji": "hoppe",
+            "es": "Cachetes",
+            "type": "noun",
+            "kana": "ほっぺ",
+            "kanji": "",
+            "example_jp": "あかちゃんのほっぺはやわらかいです",
+            "example_es": "Las mejillas de los bebés son suaves"
+          },
+          {
+            "jp": "くつした",
+            "reading": "くつした",
+            "romaji": "kutsushita",
+            "es": "Calcetines",
+            "type": "noun",
+            "kana": "くつした",
+            "kanji": "靴下",
+            "example_jp": "まいあさあたらしいくつしたをはきます",
+            "example_es": "Cada mañana me pongo calcetines limpios"
+          },
+          {
+            "jp": "さいふ",
+            "reading": "さいふ",
+            "romaji": "saifu",
+            "es": "Cartera",
+            "type": "noun",
+            "kana": "さいふ",
+            "kanji": "財布",
+            "example_jp": "さいふをわすれてこまりました",
+            "example_es": "Se me olvidó la cartera y me metí en un lío"
+          },
+          {
+            "jp": "たき",
+            "reading": "たき",
+            "romaji": "taki",
+            "es": "Cascada",
+            "type": "noun",
+            "kana": "たき",
+            "kanji": "滝",
+            "example_jp": "たきのそばでしゃしんをとりました",
+            "example_es": "Me tomé una foto junto a la cascada"
+          },
+          {
+            "jp": "たばこ",
+            "reading": "たばこ",
+            "romaji": "tabako",
+            "es": "Cigarrillo",
+            "type": "noun",
+            "kana": "たばこ",
+            "kanji": "",
+            "example_jp": "たばこはけんこうによくないです",
+            "example_es": "El cigarro es malo para la salud"
+          },
+          {
+            "jp": "しっぽ",
+            "reading": "しっぽ",
+            "romaji": "shippo",
+            "es": "Cola (animal)",
+            "type": "noun",
+            "kana": "しっぽ",
+            "kanji": "尻尾",
+            "example_jp": "いぬがしっぽをふっています",
+            "example_es": "El perro está moviendo la cola"
+          },
+          {
+            "jp": "べんとう",
+            "reading": "べんとう",
+            "romaji": "bentou",
+            "es": "Comida para llevar",
+            "type": "noun",
+            "kana": "べんとう",
+            "kanji": "弁当",
+            "example_jp": "まいにちおかあさんがべんとうをつくります",
+            "example_es": "Mi mamá me hace un bento todos los días"
+          },
+          {
+            "jp": "へや",
+            "reading": "へや",
+            "romaji": "heya",
+            "es": "Cuarto",
+            "type": "noun",
+            "kana": "へや",
+            "kanji": "部屋",
+            "example_jp": "わたしのへやはせまいです",
+            "example_es": "Mi cuarto es pequeño"
+          },
+          {
+            "jp": "くび",
+            "reading": "くび",
+            "romaji": "kubi",
+            "es": "Cuello",
+            "type": "noun",
+            "kana": "くび",
+            "kanji": "首",
+            "example_jp": "くびがこっています",
+            "example_es": "Tengo el cuello tenso"
+          },
+          {
+            "jp": "おかね",
+            "reading": "おかね",
+            "romaji": "okane",
+            "es": "Dinero",
+            "type": "noun",
+            "kana": "おかね",
+            "kanji": "お金",
+            "example_jp": "おかねをためてりょこうしたいです",
+            "example_es": "Quiero ahorrar dinero para viajar"
+          },
+          {
+            "jp": "どこ",
+            "reading": "どこ",
+            "romaji": "doko",
+            "es": "Dónde",
+            "type": "other",
+            "kana": "どこ",
+            "kanji": "",
+            "example_jp": "トイレはどこですか",
+            "example_es": "¿Dónde está el baño?"
+          },
+          {
+            "jp": "へいじつ",
+            "reading": "へいじつ",
+            "romaji": "heijitsu",
+            "es": "Entre semana",
+            "type": "noun",
+            "kana": "へいじつ",
+            "kanji": "平日",
+            "example_jp": "へいじつはしごとがあります",
+            "example_es": "Entre semana tengo trabajo"
+          },
+          {
+            "jp": "じだい",
+            "reading": "じだい",
+            "romaji": "jidai",
+            "es": "Época",
+            "type": "noun",
+            "kana": "じだい",
+            "kanji": "時代",
+            "example_jp": "むかしのじだいのものがたりがすきです",
+            "example_es": "Me gustan las historias de épocas antiguas"
+          },
+          {
+            "jp": "つくえ",
+            "reading": "つくえ",
+            "romaji": "tsukue",
+            "es": "Escritorio",
+            "type": "noun",
+            "kana": "つくえ",
+            "kanji": "机",
+            "example_jp": "つくえのうえにパソコンをおきます",
+            "example_es": "Pongo la computadora sobre el escritorio"
+          },
+          {
+            "jp": "かど",
+            "reading": "かど",
+            "romaji": "kado",
+            "es": "Esquina",
+            "type": "noun",
+            "kana": "かど",
+            "kanji": "角",
+            "example_jp": "つぎのかどをみぎにまがります",
+            "example_es": "En la siguiente esquina giro a la derecha"
+          },
+          {
+            "jp": "ひがし",
+            "reading": "ひがし",
+            "romaji": "higashi",
+            "es": "Este (dirección)",
+            "type": "noun",
+            "kana": "ひがし",
+            "kanji": "東",
+            "example_jp": "えきのひがしぐちでまってください",
+            "example_es": "Espérame en la salida este de la estación"
+          },
+          {
+            "jp": "ほし",
+            "reading": "ほし",
+            "romaji": "hoshi",
+            "es": "Estrella",
+            "type": "noun",
+            "kana": "ほし",
+            "kanji": "星",
+            "example_jp": "よぞらにほしがたくさんひかっています",
+            "example_es": "En el cielo nocturno brillan muchas estrellas"
+          },
+          {
+            "jp": "ばくはつ",
+            "reading": "ばくはつ",
+            "romaji": "bakuhatsu",
+            "es": "Explosión",
+            "type": "noun",
+            "kana": "ばくはつ",
+            "kanji": "爆発",
+            "example_jp": "えいがのなかでばくはつのシーンがありました",
+            "example_es": "En la película había una escena de explosión"
+          },
+          {
+            "jp": "ねつ",
+            "reading": "ねつ",
+            "romaji": "netsu",
+            "es": "Fiebre",
+            "type": "noun",
+            "kana": "ねつ",
+            "kanji": "熱",
+            "example_jp": "きのうねつがでました",
+            "example_es": "Ayer me dio fiebre"
+          },
+          {
+            "jp": "はな",
+            "reading": "はな",
+            "romaji": "hana",
+            "es": "Flor",
+            "type": "noun",
+            "kana": "はな",
+            "kanji": "花",
+            "example_jp": "こうえんにきれいなはながさいています",
+            "example_es": "En el parque florecen flores preciosas"
+          },
+          {
+            "jp": "おでこ",
+            "reading": "おでこ",
+            "romaji": "odeko",
+            "es": "Frente",
+            "type": "noun",
+            "kana": "おでこ",
+            "kanji": "",
+            "example_jp": "おでこにてをあてるとねつがわかります",
+            "example_es": "Si te pones la mano en la frente, puedes saber si tienes fiebre"
+          },
+          {
+            "jp": "のど",
+            "reading": "のど",
+            "romaji": "nodo",
+            "es": "Garganta",
+            "type": "noun",
+            "kana": "のど",
+            "kanji": "喉",
+            "example_jp": "かぜをひいてのどがいたいです",
+            "example_es": "Tengo la garganta adolorida por el resfriado"
+          },
+          {
+            "jp": "ねこ",
+            "reading": "ねこ",
+            "romaji": "neko",
+            "es": "Gato",
+            "type": "noun",
+            "kana": "ねこ",
+            "kanji": "猫",
+            "example_jp": "うちのねこはまいにちひるねをします",
+            "example_es": "Mi gato duerme la siesta todos los días"
+          },
+          {
+            "jp": "ど",
+            "reading": "ど",
+            "romaji": "do",
+            "es": "Grado/temperatura",
+            "type": "suffix",
+            "kana": "ど",
+            "kanji": "度",
+            "example_jp": "きょうは30どあります",
+            "example_es": "Hoy hace 30 grados"
+          },
+          {
+            "jp": "はっぴ",
+            "reading": "はっぴ",
+            "romaji": "happi",
+            "es": "Happi (ropa tradicional)",
+            "type": "noun",
+            "kana": "はっぴ",
+            "kanji": "法被",
+            "example_jp": "まつりでみんなはっぴをきています",
+            "example_es": "En el festival todos llevan happi"
+          },
+          {
+            "jp": "あに",
+            "reading": "あに",
+            "romaji": "ani",
+            "es": "Hermano mayor",
+            "type": "noun",
+            "kana": "あに",
+            "kanji": "兄",
+            "example_jp": "あにはとうきょうにすんでいます",
+            "example_es": "Mi hermano mayor vive en Tokio"
+          },
+          {
+            "jp": "はっぱ",
+            "reading": "はっぱ",
+            "romaji": "happa",
+            "es": "Hoja",
+            "type": "noun",
+            "kana": "はっぱ",
+            "kanji": "葉",
+            "example_jp": "あきになるとはっぱがあかくなります",
+            "example_es": "En otoño las hojas se vuelven rojas"
+          },
+          {
+            "jp": "ほね",
+            "reading": "ほね",
+            "romaji": "hone",
+            "es": "Hueso",
+            "type": "noun",
+            "kana": "ほね",
+            "kanji": "骨",
+            "example_jp": "いぬがほねをかじっています",
+            "example_es": "El perro está royendo un hueso"
+          },
+          {
+            "jp": "おうふく",
+            "reading": "おうふく",
+            "romaji": "oufuku",
+            "es": "Ida y vuelta",
+            "type": "noun",
+            "kana": "おうふく",
+            "kanji": "往復",
+            "example_jp": "おうふくのきっぷをかってください",
+            "example_es": "Por favor, compra un boleto de ida y vuelta"
+          },
+          {
+            "jp": "て",
+            "reading": "て",
+            "romaji": "te",
+            "es": "Mano",
+            "type": "noun",
+            "kana": "て",
+            "kanji": "手",
+            "example_jp": "てをあらってからたべます",
+            "example_es": "Me lavo las manos antes de comer"
+          },
+          {
+            "jp": "ちず",
+            "reading": "ちず",
+            "romaji": "chizu",
+            "es": "Mapa",
+            "type": "noun",
+            "kana": "ちず",
+            "kanji": "地図",
+            "example_jp": "ちずをみてみちをさがします",
+            "example_es": "Busco el camino en el mapa"
+          },
+          {
+            "jp": "そで",
+            "reading": "そで",
+            "romaji": "sode",
+            "es": "Manga (ropa)",
+            "type": "noun",
+            "kana": "そで",
+            "kanji": "袖",
+            "example_jp": "そでがながいコートをかいました",
+            "example_es": "Compré un abrigo de manga larga"
+          },
+          {
+            "jp": "ちかてつ",
+            "reading": "ちかてつ",
+            "romaji": "chikatetsu",
+            "es": "Metro",
+            "type": "noun",
+            "kana": "ちかてつ",
+            "kanji": "地下鉄",
+            "example_jp": "まいにちちかてつでかいしゃにいきます",
+            "example_es": "Voy a la oficina en metro todos los días"
+          },
+          {
+            "jp": "そぼ",
+            "reading": "そぼ",
+            "romaji": "sobo",
+            "es": "Mi abuela",
+            "type": "noun",
+            "kana": "そぼ",
+            "kanji": "祖母",
+            "example_jp": "そぼのりょうりはいつもおいしいです",
+            "example_es": "La comida de mi abuela siempre está deliciosa"
+          },
+          {
+            "jp": "こいびと",
+            "reading": "こいびと",
+            "romaji": "koibito",
+            "es": "Novio/a",
+            "type": "noun",
+            "kana": "こいびと",
+            "kanji": "恋人",
+            "example_jp": "こいびとといっしょにえいがをみました",
+            "example_es": "Fui al cine con mi pareja"
+          },
+          {
+            "jp": "なみ",
+            "reading": "なみ",
+            "romaji": "nami",
+            "es": "Ola",
+            "type": "noun",
+            "kana": "なみ",
+            "kanji": "波",
+            "example_jp": "うみのなみがきれいです",
+            "example_es": "Las olas del mar son hermosas"
+          },
+          {
+            "jp": "なべ",
+            "reading": "なべ",
+            "romaji": "nabe",
+            "es": "Olla",
+            "type": "noun",
+            "kana": "なべ",
+            "kanji": "鍋",
+            "example_jp": "なべでスープをつくります",
+            "example_es": "Hago sopa en la olla"
+          },
+          {
+            "jp": "はし",
+            "reading": "はし",
+            "romaji": "hashi",
+            "es": "Palillos",
+            "type": "noun",
+            "kana": "はし",
+            "kanji": "箸",
+            "example_jp": "はしのつかいかたをならいました",
+            "example_es": "Aprendí a usar los palillos"
+          },
+          {
+            "jp": "かべ",
+            "reading": "かべ",
+            "romaji": "kabe",
+            "es": "Pared",
+            "type": "noun",
+            "kana": "かべ",
+            "kanji": "壁",
+            "example_jp": "へやのかべにポスターをはりました",
+            "example_es": "Pegué un póster en la pared de mi cuarto"
+          },
+          {
+            "jp": "ぬいぐるみ",
+            "reading": "ぬいぐるみ",
+            "romaji": "nuigurumi",
+            "es": "Peluche",
+            "type": "noun",
+            "kana": "ぬいぐるみ",
+            "kanji": "",
+            "example_jp": "こどものころぬいぐるみをもっていました",
+            "example_es": "De pequeño tenía un peluche"
+          },
+          {
+            "jp": "いぬ",
+            "reading": "いぬ",
+            "romaji": "inu",
+            "es": "Perro",
+            "type": "noun",
+            "kana": "いぬ",
+            "kanji": "犬",
+            "example_jp": "こうえんでいぬとあそびます",
+            "example_es": "Juego con el perro en el parque"
+          },
+          {
+            "jp": "てっぺん",
+            "reading": "てっぺん",
+            "romaji": "teppen",
+            "es": "Pico de la montaña",
+            "type": "noun",
+            "kana": "てっぺん",
+            "kanji": "",
+            "example_jp": "やまのてっぺんからながめがきれいです",
+            "example_es": "Desde la cima de la montaña la vista es preciosa"
+          },
+          {
+            "jp": "けいさつ",
+            "reading": "けいさつ",
+            "romaji": "keisatsu",
+            "es": "Policía",
+            "type": "noun",
+            "kana": "けいさつ",
+            "kanji": "警察",
+            "example_jp": "けいさつにたすけをもとめました",
+            "example_es": "Pedí ayuda a la policía"
+          },
+          {
+            "jp": "びんぼう",
+            "reading": "びんぼう",
+            "romaji": "binbou",
+            "es": "Pobre",
+            "type": "adjective",
+            "kana": "びんぼう",
+            "kanji": "貧乏",
+            "example_jp": "がくせいのときはびんぼうでした",
+            "example_es": "Cuando era estudiante era muy pobre"
+          },
+          {
+            "jp": "たこ",
+            "reading": "たこ",
+            "romaji": "tako",
+            "es": "Pulpo",
+            "type": "noun",
+            "kana": "たこ",
+            "kanji": "蛸",
+            "example_jp": "たこやきにはたこがはいっています",
+            "example_es": "El takoyaki lleva pulpo"
+          },
+          {
+            "jp": "ぶた",
+            "reading": "ぶた",
+            "romaji": "buta",
+            "es": "Puerco",
+            "type": "noun",
+            "kana": "ぶた",
+            "kanji": "豚",
+            "example_jp": "ぶたのにくはおいしいです",
+            "example_es": "La carne de cerdo está deliciosa"
+          },
+          {
+            "jp": "えだ",
+            "reading": "えだ",
+            "romaji": "eda",
+            "es": "Rama",
+            "type": "noun",
+            "kana": "えだ",
+            "kanji": "枝",
+            "example_jp": "きのえだにとりがとまっています",
+            "example_es": "Un pájaro está posado en la rama del árbol"
+          },
+          {
+            "jp": "とけい",
+            "reading": "とけい",
+            "romaji": "tokei",
+            "es": "Reloj",
+            "type": "noun",
+            "kana": "とけい",
+            "kanji": "時計",
+            "example_jp": "かべのとけいをみます",
+            "example_es": "Miro el reloj de la pared"
+          },
+          {
+            "jp": "ふく",
+            "reading": "ふく",
+            "romaji": "fuku",
+            "es": "Ropa",
+            "type": "noun",
+            "kana": "ふく",
+            "kanji": "服",
+            "example_jp": "あたらしいふくをかいました",
+            "example_es": "Compré ropa nueva"
+          },
+          {
+            "jp": "でぐち",
+            "reading": "でぐち",
+            "romaji": "deguchi",
+            "es": "Salida",
+            "type": "noun",
+            "kana": "でぐち",
+            "kanji": "出口",
+            "example_jp": "でぐちはどこですか",
+            "example_es": "¿Dónde está la salida?"
+          },
+          {
+            "jp": "へび",
+            "reading": "へび",
+            "romaji": "hebi",
+            "es": "Serpiente",
+            "type": "noun",
+            "kana": "へび",
+            "kanji": "蛇",
+            "example_jp": "やまでへびをみました",
+            "example_es": "Vi una serpiente en la montaña"
+          },
+          {
+            "jp": "だいず",
+            "reading": "だいず",
+            "romaji": "daizu",
+            "es": "Soja",
+            "type": "noun",
+            "kana": "だいず",
+            "kanji": "大豆",
+            "example_jp": "みそはだいずでつくられます",
+            "example_es": "El miso se hace con soja"
+          },
+          {
+            "jp": "ぼうし",
+            "reading": "ぼうし",
+            "romaji": "boushi",
+            "es": "Sombrero",
+            "type": "noun",
+            "kana": "ぼうし",
+            "kanji": "帽子",
+            "example_jp": "なつはぼうしをかぶります",
+            "example_es": "En verano me pongo sombrero"
+          },
+          {
+            "jp": "だいがく",
+            "reading": "だいがく",
+            "romaji": "daigaku",
+            "es": "Universidad",
+            "type": "noun",
+            "kana": "だいがく",
+            "kanji": "大学",
+            "example_jp": "らいねんだいがくにはいります",
+            "example_es": "El año que viene entro a la universidad"
+          },
+          {
+            "jp": "なつ",
+            "reading": "なつ",
+            "romaji": "natsu",
+            "es": "Verano",
+            "type": "noun",
+            "kana": "なつ",
+            "kanji": "夏",
+            "example_jp": "なつはあついですね",
+            "example_es": "El verano es muy caluroso, ¿verdad?"
+          },
+          {
+            "jp": "くつ",
+            "reading": "くつ",
+            "romaji": "kutsu",
+            "es": "Zapatos",
+            "type": "noun",
+            "kana": "くつ",
+            "kanji": "靴",
+            "example_jp": "あたらしいくつをはいてがっこうにいきます",
+            "example_es": "Voy a la escuela con los zapatos nuevos"
           }
         ]
       }
