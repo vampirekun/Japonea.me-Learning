@@ -1,4 +1,4 @@
-const CACHE_NAME = "japonea-learning-v2";
+const CACHE_NAME = "japonea-learning-v3";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
