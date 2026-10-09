@@ -242,6 +242,7 @@ function renderAssessment(lesson) {
     questions: buildAssessmentQuestions(lesson),
     passed: false,
     submitted: false,
+    score: null,
     threshold
   };
 
@@ -344,6 +345,7 @@ function submitAssessment(event) {
   assessment.passed = score >= assessment.threshold;
   assessment.submitted = true;
   const percent = Math.round(score * 100);
+  assessment.score = percent;
   result.replaceChildren();
   result.className = "assessment-result " + (assessment.passed ? "pass" : "fail");
   const title = document.createElement("strong");
@@ -393,7 +395,7 @@ async function init() {
       if (!active || !assessment.passed || assessment.lessonId !== active.lesson.id || isComplete(active.lesson.id)) return;
       courseState.progress[active.lesson.id] = {
         completedAt: new Date().toISOString(),
-        bestScore: Math.round(assessment.questions.length ? 100 : 0)
+        bestScore: assessment.score
       };
       saveProgress();
       renderCourse();
