@@ -1,5 +1,12 @@
 const PROGRESS_KEY = "japonea_course_progress_v1";
-const courseState = { course: null, activeLesson: null, progress: readProgress() };
+const PASS_FALLBACK = 0.8;
+const QUESTION_COUNT = 5;
+const courseState = {
+  course: null,
+  activeLesson: null,
+  progress: readProgress(),
+  assessment: { lessonId: null, questions: [], passed: false, submitted: false }
+};
 const el = (id) => document.getElementById(id);
 
 function readProgress() {
@@ -12,18 +19,38 @@ function readProgress() {
 }
 
 function saveProgress() {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(courseState.progress));
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(courseState.progress));
+  } catch (error) {
+    console.warn("No se pudo guardar el progreso local", error);
+  }
 }
 
 function allLessons() {
-  return courseState.course.units.flatMap((unit) => unit.lessons.map((lesson) => ({ ...lesson, unitId: unit.id, unitTitle: unit.title })));
+  return courseState.course.units.flatMap((unit) =>
+    unit.lessons.map((lesson) => ({ ...lesson, unitId: unit.id, unitTitle: unit.title, unit }))
+  );
+}
+
+function allPairs() {
+  return allLessons().flatMap(({ lesson }) =>
+    (lesson.learningItems || []).flatMap((item) => {
+      const pairs = [];
+      if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
+      (item.examples || []).forEach((example) => {
+        const jp = example.jp || example.kana;
+        if (jp && example.es) pairs.push({ jp: String(jp), es: String(example.es) });
+      });
+      return pairs;
+    })
+  );
 }
 
 function isComplete(lessonId) {
   return Boolean(courseState.progress[lessonId]?.completedAt);
 }
 
-function isUnitUnlocked(unit, index) {
+function isUnitUnlocked(unit) {
   if (!unit.prerequisites?.length) return true;
   return unit.prerequisites.every((id) => {
     const prerequisite = courseState.course.units.find((candidate) => candidate.id === id);
@@ -49,7 +76,7 @@ function renderCourse() {
   list.replaceChildren();
 
   course.units.forEach((unit, unitIndex) => {
-    const unlocked = isUnitUnlocked(unit, unitIndex);
+    const unlocked = isUnitUnlocked(unit);
     const completedCount = unit.lessons.filter((lesson) => isComplete(lesson.id)).length;
     const card = document.createElement("section");
     card.className = "unit-card";
@@ -99,7 +126,7 @@ function renderCourse() {
   renderStats();
 }
 
-function renderLearningItem(item, index) {
+function renderLearningItem(item) {
   const card = document.createElement("article");
   card.className = "learning-item";
   const type = document.createElement("p");
@@ -158,11 +185,105 @@ function renderLearningItem(item, index) {
   return card;
 }
 
+function shuffle(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function buildAssessmentQuestions(lesson) {
+  const lessonPairs = (lesson.learningItems || []).flatMap((item) => {
+    const pairs = [];
+    if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
+    (item.examples || []).forEach((example) => {
+      const jp = example.jp || example.kana;
+      if (jp && example.es) pairs.push({ jp: String(jp), es: String(example.es) });
+    });
+    return pairs;
+  });
+  const bank = [];
+  lessonPairs.forEach((pair, index) => {
+    bank.push({
+      id: lesson.id + "-jp-" + index,
+      prompt: "¿Qué significa esta expresión?\n" + pair.jp,
+      correct: pair.es,
+      direction: "es"
+    });
+    bank.push({
+      id: lesson.id + "-es-" + index,
+      prompt: "¿Qué expresión corresponde a esta traducción?\n" + pair.es,
+      correct: pair.jp,
+      direction: "jp"
+    });
+  });
+  const unique = bank.filter((question, index) =>
+    bank.findIndex((candidate) => candidate.prompt === question.prompt && candidate.correct === question.correct) === index
+  );
+  return shuffle(unique).slice(0, Math.min(QUESTION_COUNT, unique.length)).map((question) => {
+    const answerPool = [...new Set(allPairs().map((pair) => question.direction === "es" ? pair.es : pair.jp))]
+      .filter((answer) => answer && answer !== question.correct);
+    const distractors = shuffle(answerPool).slice(0, 3);
+    return { ...question, options: shuffle([...new Set([question.correct, ...distractors])]) };
+  });
+}
+
+function renderAssessment(lesson) {
+  const form = el("assessmentForm");
+  const questionsRoot = el("assessmentQuestions");
+  questionsRoot.replaceChildren();
+  const policy = Number(lesson.completionPolicy?.minCorrect);
+  const threshold = Number.isFinite(policy) && policy > 0 && policy <= 1 ? policy : PASS_FALLBACK;
+  el("assessmentThreshold").textContent = Math.round(threshold * 100) + "% para aprobar";
+  courseState.assessment = {
+    lessonId: lesson.id,
+    questions: buildAssessmentQuestions(lesson),
+    passed: false,
+    submitted: false,
+    threshold
+  };
+
+  courseState.assessment.questions.forEach((question, index) => {
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "assessment-question";
+    const legend = document.createElement("legend");
+    legend.textContent = (index + 1) + ". " + question.prompt;
+    fieldset.append(legend);
+    const options = document.createElement("div");
+    options.className = "assessment-options";
+    question.options.forEach((option, optionIndex) => {
+      const label = document.createElement("label");
+      label.className = "assessment-option";
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "question-" + index;
+      input.value = option;
+      input.required = optionIndex === 0;
+      const text = document.createElement("span");
+      text.textContent = option;
+      label.append(input, text);
+      options.append(label);
+    });
+    fieldset.append(options);
+    questionsRoot.append(fieldset);
+  });
+
+  el("assessmentResult").hidden = true;
+  el("assessmentResult").className = "assessment-result";
+  el("submitAssessment").hidden = false;
+  el("submitAssessment").disabled = false;
+  el("retryAssessment").hidden = true;
+  el("completeLesson").disabled = true;
+  el("completeLesson").textContent = "Aprueba la evaluación para completar";
+}
+
 function openLesson(unit, lesson) {
   courseState.activeLesson = { unit, lesson };
   el("courseOverview").hidden = true;
   el("lessonView").hidden = false;
-  el("lessonEyebrow").textContent = "UNIDAD " + (unit.order) + " · LECCIÓN " + lesson.order;
+  el("lessonEyebrow").textContent = "UNIDAD " + unit.order + " · LECCIÓN " + lesson.order;
   el("lessonTitle").textContent = lesson.title;
   el("lessonDescription").textContent = lesson.description || "Avanza por las actividades y repasa los ejemplos a tu ritmo.";
   const objectives = el("objectivesList");
@@ -174,14 +295,19 @@ function openLesson(unit, lesson) {
   });
   const items = el("learningItems");
   items.replaceChildren();
-  lesson.learningItems.forEach((item, index) => items.append(renderLearningItem(item, index)));
+  lesson.learningItems.forEach((item) => items.append(renderLearningItem(item)));
   const lessons = allLessons();
   const position = lessons.findIndex((item) => item.id === lesson.id) + 1;
   el("lessonPosition").textContent = "Lección " + position + " de " + lessons.length;
+  renderAssessment(lesson);
   const completed = isComplete(lesson.id);
-  el("completeLesson").disabled = completed;
-  el("completeLesson").textContent = completed ? "✓ Lección completada" : "Marcar lección como completada";
-  el("completionMessage").textContent = completed ? "Tu progreso está guardado en este dispositivo." : "";
+  if (completed) {
+    el("completeLesson").disabled = true;
+    el("completeLesson").textContent = "✓ Lección completada";
+    el("completionMessage").textContent = "Tu progreso está guardado en este dispositivo. Puedes volver a practicar la evaluación.";
+  } else {
+    el("completionMessage").textContent = "";
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -193,6 +319,64 @@ function showCourse() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function submitAssessment(event) {
+  event.preventDefault();
+  const assessment = courseState.assessment;
+  if (!assessment.questions.length) return;
+  const result = el("assessmentResult");
+  let correctCount = 0;
+  const feedback = [];
+
+  assessment.questions.forEach((question, index) => {
+    const selected = el("assessmentQuestions").querySelector('input[name="question-' + index + '"]:checked');
+    const correct = selected?.value === question.correct;
+    if (correct) correctCount += 1;
+    feedback.push({ question, correct });
+    el("assessmentQuestions").querySelectorAll('input[name="question-' + index + '"]').forEach((input) => {
+      input.disabled = true;
+      const label = input.closest("label");
+      if (input.value === question.correct) label.classList.add("correct");
+      else if (input.checked) label.classList.add("incorrect");
+    });
+  });
+
+  const score = correctCount / assessment.questions.length;
+  assessment.passed = score >= assessment.threshold;
+  assessment.submitted = true;
+  const percent = Math.round(score * 100);
+  result.replaceChildren();
+  result.className = "assessment-result " + (assessment.passed ? "pass" : "fail");
+  const title = document.createElement("strong");
+  title.textContent = assessment.passed ? "¡Evaluación aprobada! " + percent + "%" : "Todavía no. Resultado: " + percent + "%";
+  const summary = document.createElement("p");
+  summary.textContent = correctCount + " de " + assessment.questions.length + " respuestas correctas. " +
+    (assessment.passed ? "Ya puedes completar la lección." : "Necesitas al menos " + Math.round(assessment.threshold * 100) + "%. Revisa los errores e inténtalo otra vez.");
+  result.append(title, summary);
+  const missed = feedback.filter((entry) => !entry.correct);
+  if (missed.length) {
+    const list = document.createElement("ul");
+    missed.forEach(({ question }) => {
+      const li = document.createElement("li");
+      li.textContent = question.prompt.replace("\n", " ") + " — respuesta: " + question.correct;
+      list.append(li);
+    });
+    result.append(list);
+  }
+  result.hidden = false;
+  el("submitAssessment").hidden = true;
+  el("retryAssessment").hidden = assessment.passed;
+  const alreadyComplete = isComplete(assessment.lessonId);
+  el("completeLesson").disabled = !assessment.passed || alreadyComplete;
+  el("completeLesson").textContent = alreadyComplete
+    ? "✓ Lección completada"
+    : assessment.passed ? "Completar lección y guardar progreso" : "Aprueba la evaluación para completar";
+}
+
+function retryAssessment() {
+  const active = courseState.activeLesson;
+  if (active) renderAssessment(active.lesson);
+}
+
 async function init() {
   try {
     const response = await fetch("./data/courses/n5.json");
@@ -201,15 +385,21 @@ async function init() {
     if (!Array.isArray(courseState.course.units) || !courseState.course.units.length) throw new Error("Invalid course structure");
     renderCourse();
     el("backToCourse").addEventListener("click", showCourse);
+    el("assessmentForm").addEventListener("submit", submitAssessment);
+    el("retryAssessment").addEventListener("click", retryAssessment);
     el("completeLesson").addEventListener("click", () => {
       const active = courseState.activeLesson;
-      if (!active) return;
-      courseState.progress[active.lesson.id] = { completedAt: new Date().toISOString() };
+      const assessment = courseState.assessment;
+      if (!active || !assessment.passed || assessment.lessonId !== active.lesson.id || isComplete(active.lesson.id)) return;
+      courseState.progress[active.lesson.id] = {
+        completedAt: new Date().toISOString(),
+        bestScore: Math.round(assessment.questions.length ? 100 : 0)
+      };
       saveProgress();
       renderCourse();
       el("completeLesson").disabled = true;
       el("completeLesson").textContent = "✓ Lección completada";
-      el("completionMessage").textContent = "¡Bien hecho! Tu progreso quedó guardado en este dispositivo.";
+      el("completionMessage").textContent = "¡Bien hecho! Aprobaste la evaluación y tu progreso quedó guardado en este dispositivo.";
     });
   } catch (error) {
     console.error("No se pudo iniciar el curso", error);
