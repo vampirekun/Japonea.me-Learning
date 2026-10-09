@@ -55,7 +55,19 @@
             <p id="lessonDescription" class="course-description"></p>
             <section class="objectives"><h3>Al terminar podrás</h3><ul id="objectivesList"></ul></section>
             <div id="learningItems" class="learning-items"></div>
-            <div class="lesson-footer"><span id="lessonPosition"></span><button id="completeLesson" class="primary-button" type="button">Marcar lección como completada</button></div>
+            <section class="assessment" aria-labelledby="assessmentTitle">
+              <div class="assessment-heading">
+                <div><p class="eyebrow">COMPRUEBA LO APRENDIDO</p><h3 id="assessmentTitle">Evaluación de la lección</h3></div>
+                <span id="assessmentThreshold" class="assessment-threshold">80% para aprobar</span>
+              </div>
+              <p class="assessment-copy">Responde sin consultar las soluciones. Necesitas alcanzar el porcentaje mínimo para completar la lección y desbloquear la siguiente unidad.</p>
+              <form id="assessmentForm">
+                <div id="assessmentQuestions" class="assessment-questions"></div>
+                <div class="assessment-actions"><button id="submitAssessment" class="primary-button" type="submit">Calificar respuestas</button><button id="retryAssessment" class="secondary-button" type="button" hidden>Intentar de nuevo</button></div>
+              </form>
+              <div id="assessmentResult" class="assessment-result" aria-live="polite" hidden></div>
+            </section>
+            <div class="lesson-footer"><span id="lessonPosition"></span><button id="completeLesson" class="primary-button" type="button" disabled>Aprueba la evaluación para completar</button></div>
             <p id="completionMessage" class="completion-message" aria-live="polite"></p>
           </article>
           <p id="loadError" class="load-error" hidden>No se pudo cargar el curso. Revisa tu conexión y vuelve a intentarlo.</p>
