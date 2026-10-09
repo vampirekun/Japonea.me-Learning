@@ -226,8 +226,8 @@ function buildAssessmentQuestions(lesson) {
   if (selected.length < QUESTION_COUNT) {
     const used = new Set(selected.map((question) => question.prompt + "|" + question.correct));
     const reviewBank = allPairs().flatMap((pair, index) => [
-      { id: lesson.id + "-review-jp-" + index, prompt: "Repaso acumulativo: ¿qué significa esta expresión?\\n" + pair.jp, correct: pair.es, direction: "es" },
-      { id: lesson.id + "-review-es-" + index, prompt: "Repaso acumulativo: ¿qué expresión corresponde a esta traducción?\\n" + pair.es, correct: pair.jp, direction: "jp" }
+      { id: lesson.id + "-review-jp-" + index, prompt: "Repaso acumulativo: ¿qué significa esta expresión?\n" + pair.jp, correct: pair.es, direction: "es" },
+      { id: lesson.id + "-review-es-" + index, prompt: "Repaso acumulativo: ¿qué expresión corresponde a esta traducción?\n" + pair.es, correct: pair.jp, direction: "jp" }
     ]).filter((question) => !used.has(question.prompt + "|" + question.correct));
     selected.push(...shuffle(reviewBank).slice(0, QUESTION_COUNT - selected.length));
   }
