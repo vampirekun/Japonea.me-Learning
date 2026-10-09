@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#e4007c" />
+    <meta name="description" content="Avanza por cursos de japonés organizados por niveles, unidades y lecciones." />
+    <title>Cursos | Japonea.me Learning</title>
+    <link rel="icon" type="image/png" href="./assets/cropped-japoneame-1.png" />
+    <link rel="stylesheet" href="./courses.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="Volver al estudio">
+        <img src="./assets/cropped-japoneame-1.png" alt="Japonea.me" />
+      </a>
+      <a class="back-link" href="./index.html">← Estudio de tarjetas</a>
+    </header>
+    <main class="page-shell">
+      <section class="hero">
+        <p class="eyebrow">TU RUTA DE APRENDIZAJE</p>
+        <h1>Cursos de japonés</h1>
+        <p class="hero-copy">Aprende paso a paso: objetivos claros, lecciones cortas y repasos para consolidar lo aprendido.</p>
+        <div class="hero-stats" aria-live="polite">
+          <div><strong id="completedCount">0</strong><span>lecciones completadas</span></div>
+          <div><strong id="totalCount">0</strong><span>lecciones disponibles</span></div>
+          <div><strong id="progressPercent">0%</strong><span>progreso del N5</span></div>
+        </div>
+        <div class="progress-track"><span id="courseProgress"></span></div>
+      </section>
+
+      <section class="course-layout" aria-label="Contenido del curso">
+        <aside class="course-sidebar">
+          <p class="eyebrow">NIVELES</p>
+          <button class="level-card active" type="button" aria-current="page">
+            <span class="level-code">N5</span><span class="level-copy"><strong>Japonés inicial</strong><small>Fundamentos · En progreso</small></span><span class="level-arrow">→</span>
+          </button>
+          <div class="level-card locked"><span class="level-code">N4</span><span class="level-copy"><strong>Preintermedio</strong><small>Próximamente</small></span><span class="lock-icon">🔒</span></div>
+          <div class="level-card locked"><span class="level-code">N3</span><span class="level-copy"><strong>Intermedio</strong><small>Próximamente</small></span><span class="lock-icon">🔒</span></div>
+          <div class="level-card locked"><span class="level-code">N2</span><span class="level-copy"><strong>Intermedio alto</strong><small>Próximamente</small></span><span class="lock-icon">🔒</span></div>
+          <div class="level-card locked"><span class="level-code">N1</span><span class="level-copy"><strong>Avanzado</strong><small>Próximamente</small></span><span class="lock-icon">🔒</span></div>
+          <p class="disclaimer">Contenido orientativo alineado al nivel JLPT; no es material oficial del examen.</p>
+        </aside>
+
+        <section class="lesson-area">
+          <div id="courseOverview" class="course-overview">
+            <div class="section-heading"><div><p class="eyebrow">CURSO N5</p><h2 id="courseTitle">Japonés inicial</h2></div><span class="status-pill">Tu camino empieza aquí</span></div>
+            <p id="courseDescription" class="course-description"></p>
+            <div id="unitList" class="unit-list" aria-label="Unidades y lecciones"></div>
+          </div>
+          <article id="lessonView" class="lesson-view" hidden>
+            <button id="backToCourse" class="text-button" type="button">← Todas las unidades</button>
+            <p id="lessonEyebrow" class="eyebrow"></p>
+            <h2 id="lessonTitle"></h2>
+            <p id="lessonDescription" class="course-description"></p>
+            <section class="objectives"><h3>Al terminar podrás</h3><ul id="objectivesList"></ul></section>
+            <div id="learningItems" class="learning-items"></div>
+            <div class="lesson-footer"><span id="lessonPosition"></span><button id="completeLesson" class="primary-button" type="button">Marcar lección como completada</button></div>
+            <p id="completionMessage" class="completion-message" aria-live="polite"></p>
+          </article>
+          <p id="loadError" class="load-error" hidden>No se pudo cargar el curso. Revisa tu conexión y vuelve a intentarlo.</p>
+        </section>
+      </section>
+      <footer class="page-footer">Japonea.me Learning · Estudia a tu ritmo</footer>
+    </main>
+    <script type="module" src="./courses.js"></script>
+  </body>
+</html>
