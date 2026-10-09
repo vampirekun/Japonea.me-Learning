@@ -33,7 +33,7 @@ function allLessons() {
 }
 
 function allPairs() {
-  return allLessons().flatMap(({ lesson }) =>
+  return allLessons().flatMap((lesson) =>
     (lesson.learningItems || []).flatMap((item) => {
       const pairs = [];
       if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
@@ -240,7 +240,6 @@ function buildAssessmentQuestions(lesson) {
 }
 
 function renderAssessment(lesson) {
-  const form = el("assessmentForm");
   const questionsRoot = el("assessmentQuestions");
   questionsRoot.replaceChildren();
   const policy = Number(lesson.completionPolicy?.minCorrect);
