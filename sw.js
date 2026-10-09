@@ -1,11 +1,15 @@
-const CACHE_NAME = "japonea-learning-v1";
+const CACHE_NAME = "japonea-learning-v2";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
+  "./courses.html",
+  "./courses.css",
+  "./courses.js",
   "./styles.css",
   "./app.js",
   "./manifest.json",
   "./data/batches.json",
+  "./data/courses/n5.json",
   "./assets/cropped-japoneame-1.png",
   "./assets/japonea-logo.svg",
   "./assets/icon-192.svg",
