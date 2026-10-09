@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "id": "n5",
+  "level": "N5",
+  "title": "Japonés inicial",
+  "description": "Fundamentos para presentarte, entender expresiones frecuentes y construir oraciones sencillas en japonés.",
+  "language": "ja",
+  "locale": "es-MX",
+  "alignment": "jlpt-aligned",
+  "alignmentNote": "Contenido orientativo alineado al nivel inicial; no es material oficial del JLPT.",
+  "prerequisites": [],
+  "completionPolicy": {
+    "requiredLessons": "all"
+  },
+  "units": [
+    {
+      "id": "n5-unit-1",
+      "title": "Primeros encuentros",
+      "order": 1,
+      "description": "Saludos, cortesía y presentaciones personales.",
+      "prerequisites": [],
+      "lessons": [
+        {
+          "id": "n5-lesson-1",
+          "title": "Saludar y participar en clase",
+          "order": 1,
+          "objectives": [
+            "Reconocer saludos según el momento del día.",
+            "Usar expresiones básicas de cortesía y pedir que repitan algo."
+          ],
+          "topics": [
+            "greetings",
+            "classroom",
+            "politeness"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-greeting-konnichiwa",
+              "type": "vocabulary",
+              "prompt": "こんにちは",
+              "answer": "Hola / buenas tardes",
+              "reading": "konnichiwa",
+              "explanation": "Saludo habitual durante el día.",
+              "examples": [
+                {
+                  "jp": "こんにちは、せんせい。",
+                  "kana": "こんにちは、せんせい。",
+                  "romaji": "Konnichiwa, sensei.",
+                  "es": "Hola, profesor/a."
+                }
+              ]
+            },
+            {
+              "id": "n5-politeness-onegaishimasu",
+              "type": "vocabulary",
+              "prompt": "おねがいします",
+              "answer": "Por favor / se lo encargo",
+              "reading": "onegaishimasu",
+              "explanation": "Expresión cortés que acompaña peticiones y solicitudes.",
+              "examples": [
+                {
+                  "jp": "もういちど おねがいします。",
+                  "kana": "もういちど おねがいします。",
+                  "romaji": "Mou ichido onegaishimasu.",
+                  "es": "Otra vez, por favor."
+                }
+              ]
+            },
+            {
+              "id": "n5-classroom-wakarimasen",
+              "type": "vocabulary",
+              "prompt": "わかりません",
+              "answer": "No entiendo",
+              "reading": "wakarimasen",
+              "explanation": "Úsalo para decir que no has entendido algo.",
+              "examples": []
+            }
+          ],
+          "reviewSet": [
+            "n5-greeting-konnichiwa",
+            "n5-politeness-onegaishimasu",
+            "n5-classroom-wakarimasen"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        },
+        {
+          "id": "n5-lesson-2",
+          "title": "Presentarte y decir quién eres",
+          "order": 2,
+          "objectives": [
+            "Decir tu nombre con una estructura sencilla.",
+            "Presentar nacionalidad u ocupación con desu."
+          ],
+          "topics": [
+            "introductions",
+            "identity",
+            "desu"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "countries"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "occupations"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-grammar-wa-desu",
+              "type": "grammar",
+              "prompt": "わたしはアレハンドロです。",
+              "answer": "Soy Alejandro.",
+              "reading": "Watashi wa Alejandro desu.",
+              "explanation": "Patrón inicial: tema + は + información + です. La partícula は se escribe ha, pero aquí se pronuncia wa.",
+              "examples": [
+                {
+                  "jp": "わたしはがくせいです。",
+                  "kana": "わたしはがくせいです。",
+                  "romaji": "Watashi wa gakusei desu.",
+                  "es": "Soy estudiante."
+                }
+              ]
+            },
+            {
+              "id": "n5-grammar-intro-hajimemashite",
+              "type": "vocabulary",
+              "prompt": "はじめまして",
+              "answer": "Mucho gusto (al conocer a alguien)",
+              "reading": "hajimemashite",
+              "explanation": "Se usa al presentarse por primera vez.",
+              "examples": [
+                {
+                  "jp": "はじめまして。アレハンドロです。",
+                  "kana": "はじめまして。アレハンドロです。",
+                  "romaji": "Hajimemashite. Alejandro desu.",
+                  "es": "Mucho gusto. Soy Alejandro."
+                }
+              ]
+            },
+            {
+              "id": "n5-grammar-desu-question",
+              "type": "grammar",
+              "prompt": "がくせいですか。",
+              "answer": "¿Eres estudiante?",
+              "reading": "Gakusei desu ka.",
+              "explanation": "Añadir か al final convierte una oración cortés en pregunta.",
+              "examples": [
+                {
+                  "jp": "せんせいですか。",
+                  "kana": "せんせいですか。",
+                  "romaji": "Sensei desu ka.",
+                  "es": "¿Es profesor/a?"
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-grammar-wa-desu",
+            "n5-grammar-intro-hajimemashite",
+            "n5-grammar-desu-question"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "n5-unit-2",
+      "title": "Construir oraciones sencillas",
+      "order": 2,
+      "description": "Preguntas, afirmaciones y negaciones corteses.",
+      "prerequisites": [
+        "n5-unit-1"
+      ],
+      "lessons": [
+        {
+          "id": "n5-lesson-3",
+          "title": "Hacer preguntas básicas",
+          "order": 1,
+          "objectives": [
+            "Formar preguntas con ka.",
+            "Reconocer preguntas de sí/no en conversaciones breves."
+          ],
+          "topics": [
+            "questions",
+            "particles",
+            "conversation"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "occupations"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-grammar-ka",
+              "type": "grammar",
+              "prompt": "これはほんですか。",
+              "answer": "¿Esto es un libro?",
+              "reading": "Kore wa hon desu ka.",
+              "explanation": "En una pregunta cortés, か suele aparecer al final de la oración.",
+              "examples": [
+                {
+                  "jp": "これはペンですか。",
+                  "kana": "これはぺんですか。",
+                  "romaji": "Kore wa pen desu ka.",
+                  "es": "¿Esto es una pluma?"
+                }
+              ]
+            },
+            {
+              "id": "n5-grammar-iie",
+              "type": "vocabulary",
+              "prompt": "いいえ",
+              "answer": "No",
+              "reading": "iie",
+              "explanation": "Respuesta negativa cortés. Puede acompañarse de una frase aclaratoria.",
+              "examples": [
+                {
+                  "jp": "いいえ、がくせいじゃありません。",
+                  "kana": "いいえ、がくせいじゃありません。",
+                  "romaji": "Iie, gakusei ja arimasen.",
+                  "es": "No, no soy estudiante."
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-grammar-ka",
+            "n5-grammar-iie"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        },
+        {
+          "id": "n5-lesson-4",
+          "title": "Decir lo que algo no es",
+          "order": 2,
+          "objectives": [
+            "Reconocer la negación cortés de sustantivos.",
+            "Contrastar una afirmación y una negación sencilla."
+          ],
+          "topics": [
+            "negation",
+            "desu",
+            "identity"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "occupations"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-grammar-ja-arimasen",
+              "type": "grammar",
+              "prompt": "わたしはせんせいじゃありません。",
+              "answer": "No soy profesor/a.",
+              "reading": "Watashi wa sensei ja arimasen.",
+              "explanation": "じゃありません es una forma cortés frecuente para negar una oración nominal. También existe ではありません, más formal.",
+              "examples": [
+                {
+                  "jp": "がくせいじゃありません。",
+                  "kana": "がくせいじゃありません。",
+                  "romaji": "Gakusei ja arimasen.",
+                  "es": "No soy estudiante."
+                }
+              ]
+            },
+            {
+              "id": "n5-review-desu-contrast",
+              "type": "review",
+              "prompt": "せんせいです。／せんせいじゃありません。",
+              "answer": "Es profesor/a. / No es profesor/a.",
+              "reading": "Sensei desu. / Sensei ja arimasen.",
+              "explanation": "Identifica cómo cambia el significado al pasar de afirmación a negación.",
+              "examples": []
+            }
+          ],
+          "reviewSet": [
+            "n5-grammar-ja-arimasen",
+            "n5-review-desu-contrast"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "n5-unit-3",
+      "title": "Gustos y vida cotidiana",
+      "order": 3,
+      "description": "Hablar de preferencias y ampliar vocabulario cotidiano.",
+      "prerequisites": [
+        "n5-unit-2"
+      ],
+      "lessons": [
+        {
+          "id": "n5-lesson-5",
+          "title": "Decir qué te gusta",
+          "order": 1,
+          "objectives": [
+            "Expresar una preferencia con ga suki desu.",
+            "Identificar vocabulario de gustos en contexto."
+          ],
+          "topics": [
+            "likes",
+            "preferences",
+            "particle-ga"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "likes"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-grammar-ga-suki",
+              "type": "grammar",
+              "prompt": "すしがすきです。",
+              "answer": "Me gusta el sushi.",
+              "reading": "Sushi ga suki desu.",
+              "explanation": "La estructura X がすきです expresa que algo gusta. すき funciona como adjetivo-na, no como verbo 'gustar' en español.",
+              "examples": [
+                {
+                  "jp": "にほんごがすきです。",
+                  "kana": "にほんごがすきです。",
+                  "romaji": "Nihongo ga suki desu.",
+                  "es": "Me gusta el japonés."
+                }
+              ]
+            },
+            {
+              "id": "n5-review-suki-question",
+              "type": "review",
+              "prompt": "なにがすきですか。",
+              "answer": "¿Qué te gusta?",
+              "reading": "Nani ga suki desu ka.",
+              "explanation": "なに significa 'qué'; la pregunta mantiene が y añade か al final.",
+              "examples": [
+                {
+                  "jp": "おんがくがすきです。",
+                  "kana": "おんがくがすきです。",
+                  "romaji": "Ongaku ga suki desu.",
+                  "es": "Me gusta la música."
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-grammar-ga-suki",
+            "n5-review-suki-question"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        },
+        {
+          "id": "n5-lesson-6",
+          "title": "Vocabulario en contexto",
+          "order": 2,
+          "objectives": [
+            "Relacionar palabras frecuentes con situaciones cotidianas.",
+            "Reconocer vocabulario de estudio, lugares y cultura."
+          ],
+          "topics": [
+            "daily-life",
+            "study",
+            "places",
+            "vocabulary"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-2",
+              "category": "vida_cotidiana"
+            },
+            {
+              "batchId": "batch-2",
+              "category": "estudio_y_profesion"
+            },
+            {
+              "batchId": "batch-2",
+              "category": "lugares_y_movilidad"
+            },
+            {
+              "batchId": "batch-2",
+              "category": "naturaleza_y_cultura"
+            },
+            {
+              "batchId": "batch-2",
+              "category": "sociedad_y_conceptos"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-vocab-eki",
+              "type": "vocabulary",
+              "prompt": "えき（駅）",
+              "answer": "Estación",
+              "reading": "eki",
+              "explanation": "Palabra frecuente para hablar de transporte y ubicaciones.",
+              "examples": [
+                {
+                  "jp": "えき",
+                  "kana": "えき",
+                  "romaji": "eki",
+                  "es": "estación"
+                }
+              ]
+            },
+            {
+              "id": "n5-vocab-gakusei",
+              "type": "vocabulary",
+              "prompt": "がくせい（学生）",
+              "answer": "Estudiante",
+              "reading": "gakusei",
+              "explanation": "Se refiere a una persona que estudia.",
+              "examples": [
+                {
+                  "jp": "わたしはがくせいです。",
+                  "kana": "わたしはがくせいです。",
+                  "romaji": "Watashi wa gakusei desu.",
+                  "es": "Soy estudiante."
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-vocab-eki",
+            "n5-vocab-gakusei"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "n5-unit-4",
+      "title": "Comprender y repasar",
+      "order": 4,
+      "description": "Aplicar lo aprendido en lecturas y conversaciones breves.",
+      "prerequisites": [
+        "n5-unit-3"
+      ],
+      "lessons": [
+        {
+          "id": "n5-lesson-7",
+          "title": "Leer una presentación breve",
+          "order": 1,
+          "objectives": [
+            "Comprender una presentación sencilla.",
+            "Extraer nombre, ocupación y gusto principal de un texto breve."
+          ],
+          "topics": [
+            "reading",
+            "introductions",
+            "comprehension"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "occupations"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "likes"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-reading-self-introduction",
+              "type": "reading",
+              "prompt": "はじめまして。マリアです。がくせいです。おんがくがすきです。",
+              "answer": "Mucho gusto. Soy María. Soy estudiante. Me gusta la música.",
+              "reading": "Hajimemashite. Maria desu. Gakusei desu. Ongaku ga suki desu.",
+              "explanation": "Busca las expresiones conocidas: はじめまして, です y がすきです.",
+              "examples": []
+            },
+            {
+              "id": "n5-review-reading-occupation",
+              "type": "review",
+              "prompt": "このひとはなにがすきですか。",
+              "answer": "Le gusta la música.",
+              "reading": "Kono hito wa nani ga suki desu ka.",
+              "explanation": "Contesta con la información explícita del texto anterior.",
+              "examples": []
+            }
+          ],
+          "reviewSet": [
+            "n5-reading-self-introduction",
+            "n5-review-reading-occupation"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        },
+        {
+          "id": "n5-lesson-8",
+          "title": "Repaso integrador N5 inicial",
+          "order": 2,
+          "objectives": [
+            "Combinar saludo, presentación, pregunta y preferencia.",
+            "Identificar qué estructuras conviene volver a practicar."
+          ],
+          "topics": [
+            "review",
+            "conversation",
+            "grammar"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-1",
+              "category": "phrases"
+            },
+            {
+              "batchId": "batch-1",
+              "category": "likes"
+            },
+            {
+              "batchId": "batch-2",
+              "category": "vida_cotidiana"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-review-dialogue",
+              "type": "review",
+              "prompt": "A: はじめまして。B: はじめまして。マリアです。A: にほんごがすきですか。B: はい、すきです。",
+              "answer": "A: Mucho gusto. B: Mucho gusto. Soy María. A: ¿Te gusta el japonés? B: Sí, me gusta.",
+              "reading": "A: Hajimemashite. B: Hajimemashite. Maria desu. A: Nihongo ga suki desu ka. B: Hai, suki desu.",
+              "explanation": "Diálogo de repaso con saludo, presentación y pregunta sobre gustos.",
+              "examples": []
+            },
+            {
+              "id": "n5-listening-dialogue-transcript",
+              "type": "listening",
+              "prompt": "Escucha o lee: こんにちは。わたしはケンです。がくせいです。",
+              "answer": "Hola. Soy Ken. Soy estudiante.",
+              "reading": "Konnichiwa. Watashi wa Ken desu. Gakusei desu.",
+              "explanation": "El texto funciona como transcripción inicial hasta que exista un recurso de audio. La ausencia de audio no bloquea la lección.",
+              "audioAsset": null,
+              "examples": []
+            }
+          ],
+          "reviewSet": [
+            "n5-review-dialogue",
+            "n5-listening-dialogue-transcript"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
+    }
+  ]
+}
