@@ -33,7 +33,7 @@ function allLessons() {
 }
 
 function allPairs() {
-  return allLessons().flatMap((lesson) =>
+  const pairs = allLessons().flatMap((lesson) =>
     (lesson.learningItems || []).flatMap((item) => {
       const pairs = [];
       if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
@@ -44,6 +44,17 @@ function allPairs() {
       return pairs;
     })
   );
+
+  const seen = new Set();
+  return pairs.filter((pair) => {
+    const key = JSON.stringify([
+      pair.jp.normalize("NFKC").trim(),
+      pair.es.normalize("NFKC").trim()
+    ]);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function isComplete(lessonId) {
