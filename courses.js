@@ -1,3 +1,5 @@
+import { selectReviewItems } from "./review-set.mjs";
+
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const PASS_FALLBACK = 0.8;
 const QUESTION_COUNT = 5;
@@ -206,7 +208,7 @@ function shuffle(items) {
 }
 
 function buildAssessmentQuestions(lesson) {
-  const lessonPairs = (lesson.learningItems || []).flatMap((item) => {
+  const lessonPairs = selectReviewItems(lesson, courseState.course).flatMap((item) => {
     const pairs = [];
     if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
     (item.examples || []).forEach((example) => {
@@ -234,7 +236,7 @@ function buildAssessmentQuestions(lesson) {
     bank.findIndex((candidate) => candidate.prompt === question.prompt && candidate.correct === question.correct) === index
   );
   const selected = shuffle(unique).slice(0, QUESTION_COUNT);
-  if (selected.length < QUESTION_COUNT) {
+  if (selected.length < QUESTION_COUNT && !Array.isArray(lesson.reviewSet)) {
     const used = new Set(selected.map((question) => question.prompt + "|" + question.correct));
     const reviewBank = allPairs().flatMap((pair, index) => [
       { id: lesson.id + "-review-jp-" + index, prompt: "Repaso acumulativo: ¿qué significa esta expresión?\n" + pair.jp, correct: pair.es, direction: "es" },
