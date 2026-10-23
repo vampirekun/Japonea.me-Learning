@@ -93,8 +93,17 @@ export function validateCourseSet(courses, batchData) {
     if (course?.schemaVersion !== 1) errors.push(`${courseId}: schemaVersion must be 1.`);
     if (!Array.isArray(course?.prerequisites)) errors.push(`${courseId}: prerequisites must be an array.`);
     else {
+      const seenCoursePrerequisites = new Set();
       for (const prerequisite of course.prerequisites) {
-        if (!courseIds.has(prerequisite)) errors.push(`${courseId}: unknown course prerequisite "${prerequisite}".`);
+        if (seenCoursePrerequisites.has(prerequisite)) {
+          errors.push(`${courseId}: duplicate course prerequisite "${prerequisite}".`);
+        }
+        seenCoursePrerequisites.add(prerequisite);
+        if (prerequisite === course.id) {
+          errors.push(`${courseId}: course cannot be its own prerequisite.`);
+        } else if (!courseIds.has(prerequisite)) {
+          errors.push(`${courseId}: unknown course prerequisite "${prerequisite}".`);
+        }
       }
     }
 
@@ -119,7 +128,12 @@ export function validateCourseSet(courses, batchData) {
       if (!isNonEmptyString(unit?.title)) errors.push(`${unitId}: missing title.`);
       if (!Array.isArray(unit?.prerequisites)) errors.push(`${unitId}: prerequisites must be an array.`);
       else {
+        const seenUnitPrerequisites = new Set();
         for (const prerequisite of unit.prerequisites) {
+          if (seenUnitPrerequisites.has(prerequisite)) {
+            errors.push(`${unitId}: duplicate unit prerequisite "${prerequisite}".`);
+          }
+          seenUnitPrerequisites.add(prerequisite);
           if (!unitIds.has(prerequisite) || prerequisite === unit.id) {
             errors.push(`${unitId}: invalid unit prerequisite "${prerequisite}".`);
           }
@@ -143,7 +157,12 @@ export function validateCourseSet(courses, batchData) {
         if (lesson?.prerequisites !== undefined) {
           if (!Array.isArray(lesson.prerequisites)) errors.push(`${lessonId}: prerequisites must be an array.`);
           else {
+            const seenLessonPrerequisites = new Set();
             for (const prerequisite of lesson.prerequisites) {
+              if (seenLessonPrerequisites.has(prerequisite)) {
+                errors.push(`${lessonId}: duplicate lesson prerequisite "${prerequisite}".`);
+              }
+              seenLessonPrerequisites.add(prerequisite);
               if (!courseLessonIds.has(prerequisite) || prerequisite === lesson.id) {
                 errors.push(`${lessonId}: invalid lesson prerequisite "${prerequisite}".`);
               }
