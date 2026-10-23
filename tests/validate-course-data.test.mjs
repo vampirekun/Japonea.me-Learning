@@ -127,3 +127,13 @@ test("rejects invalid completion thresholds and unsupported item types", () => {
   assert.ok(errors.some(error => error.includes("minCorrect must be between 0 and 1")));
   assert.ok(errors.some(error => error.includes('unsupported learning item type "animation"')));
 });
+
+test("reports malformed null records without crashing", () => {
+  const { courses, batches } = fixture();
+  courses[0].units.push(null);
+  batches.batches.push(null);
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes("positive integer order")));
+  assert.ok(errors.some(error => error.includes("Every batch must have a non-empty id")));
+});
