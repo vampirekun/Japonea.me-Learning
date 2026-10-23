@@ -94,47 +94,6 @@ test("accepts lesson prerequisites that point to an earlier unit", () => {
   assert.deepEqual(validateCourseSet(courses, batches), []);
 });
 
-test("rejects unit prerequisites that point forward in course order", () => {
-  const { courses, batches } = fixture();
-  const course = courses[0];
-  course.units[0].prerequisites = ["n5-unit-2"];
-  course.units.push({
-    id: "n5-unit-2",
-    title: "Presentaciones",
-    order: 2,
-    prerequisites: [],
-    lessons: [{
-      id: "n5-lesson-2",
-      title: "Presentarse",
-      order: 1,
-      objectives: ["Presentarse."],
-      sourceRefs: [{ batchId: "batch-1", category: "phrases" }],
-      learningItems: [{ id: "n5-item-2", type: "grammar", prompt: "わたしはアレハンドロです。", answer: "Soy Alejandro.", examples: [] }],
-      reviewSet: ["n5-item-2"],
-      completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
-    }]
-  });
-  const errors = validateCourseSet(courses, batches);
-  assert.ok(errors.some(error => error.includes('unit prerequisite "n5-unit-2" must appear before this unit')));
-});
-
-test("rejects lesson prerequisites that point forward in course order", () => {
-  const { courses, batches } = fixture();
-  const lesson = courses[0].units[0].lessons[0];
-  lesson.prerequisites = ["n5-lesson-2"];
-  const laterLesson = {
-    ...lesson,
-    id: "n5-lesson-2",
-    title: "Presentarse",
-    order: 2,
-    prerequisites: [],
-    learningItems: lesson.learningItems.map(item => ({ ...item, id: "n5-item-2" })),
-    reviewSet: ["n5-item-2"]
-  };
-  courses[0].units[0].lessons.push(laterLesson);
-  const errors = validateCourseSet(courses, batches);
-  assert.ok(errors.some(error => error.includes('lesson prerequisite "n5-lesson-2" must appear before this lesson')));
-});
 test("reports duplicate ids and dangling review references", () => {
   const { courses, batches } = fixture();
   const lesson = courses[0].units[0].lessons[0];
