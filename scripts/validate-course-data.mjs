@@ -110,6 +110,9 @@ export function validateCourseSet(courses, batchData) {
     if (units.length === 0) errors.push(`${courseId}: units must be a non-empty array.`);
     validateOrderList(units, `${courseId} units`, errors);
     const unitIds = new Set(units.map(unit => unit?.id).filter(isNonEmptyString));
+    const courseLessonIds = new Set(units.flatMap(unit =>
+      (Array.isArray(unit?.lessons) ? unit.lessons : []).map(lesson => lesson?.id).filter(isNonEmptyString)
+    ));
 
     for (const unit of units) {
       const unitId = unit?.id ?? "(missing unit id)";
@@ -126,7 +129,6 @@ export function validateCourseSet(courses, batchData) {
       const lessons = Array.isArray(unit?.lessons) ? unit.lessons : [];
       if (lessons.length === 0) errors.push(`${unitId}: lessons must be a non-empty array.`);
       validateOrderList(lessons, `${unitId} lessons`, errors);
-      const lessonIds = new Set(lessons.map(lesson => lesson?.id).filter(isNonEmptyString));
       const courseItemIds = itemIdsByCourse.get(course?.id) ?? new Set();
 
       for (const lesson of lessons) {
@@ -142,7 +144,7 @@ export function validateCourseSet(courses, batchData) {
           if (!Array.isArray(lesson.prerequisites)) errors.push(`${lessonId}: prerequisites must be an array.`);
           else {
             for (const prerequisite of lesson.prerequisites) {
-              if (!lessonIds.has(prerequisite) || prerequisite === lesson.id) {
+              if (!courseLessonIds.has(prerequisite) || prerequisite === lesson.id) {
                 errors.push(`${lessonId}: invalid lesson prerequisite "${prerequisite}".`);
               }
             }
