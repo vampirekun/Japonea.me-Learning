@@ -62,6 +62,17 @@ Luego visita `http://localhost:8080`.
 }
 ```
 
+## Validar el modelo de cursos
+
+Antes de añadir o modificar un curso, valida IDs, órdenes, prerrequisitos, tipos de learning item, review sets y referencias a lotes/categorías:
+
+```bash
+node scripts/validate-course-data.mjs
+node --test tests/validate-course-data.test.mjs
+```
+
+La validación es estática y no publica contenido ni requiere llamadas de red. El workflow `.github/workflows/validate-course-data.yml` la ejecuta en cambios de cursos, lotes, reglas y pruebas.
+
 ## Deploy (GitHub Pages)
 
 El workflow `.github/workflows/deploy.yml` despliega automáticamente a GitHub Pages en cada push a `main`.
