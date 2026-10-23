@@ -1,0 +1,38 @@
+name: Validate course data
+
+on:
+  pull_request:
+    paths:
+      - "data/courses/**"
+      - "data/batches.json"
+      - "scripts/validate-course-data.mjs"
+      - "tests/validate-course-data.test.mjs"
+      - "docs/learning/course-model.md"
+      - ".github/workflows/validate-course-data.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "data/courses/**"
+      - "data/batches.json"
+      - "scripts/validate-course-data.mjs"
+      - "tests/validate-course-data.test.mjs"
+      - "docs/learning/course-model.md"
+      - ".github/workflows/validate-course-data.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-course-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate course content
+        run: node scripts/validate-course-data.mjs
+      - name: Test validator rules
+        run: node --test tests/validate-course-data.test.mjs
