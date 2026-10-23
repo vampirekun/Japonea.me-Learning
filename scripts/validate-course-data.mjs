@@ -24,8 +24,8 @@ function isNonEmptyString(value) {
 function validateOrderList(records, context, errors) {
   const seen = new Set();
   for (const record of records) {
-    if (!Number.isInteger(record.order) || record.order < 1) {
-      errors.push(`${context} ${record.id ?? "(missing id)"} must have a positive integer order`);
+    if (!Number.isInteger(record?.order) || record.order < 1) {
+      errors.push(`${context} ${record?.id ?? "(missing id)"} must have a positive integer order`);
       continue;
     }
     if (seen.has(record.order)) {
@@ -45,7 +45,7 @@ export function validateCourseSet(courses, batchData) {
   if (batches.length === 0) errors.push("data/batches.json must contain a non-empty batches array.");
   const batchesById = new Map();
   for (const batch of batches) {
-    if (!isNonEmptyString(batch.id)) {
+    if (!isNonEmptyString(batch?.id)) {
       errors.push("Every batch must have a non-empty id.");
     } else if (batchesById.has(batch.id)) {
       errors.push(`Duplicate batch id: ${batch.id}`);
