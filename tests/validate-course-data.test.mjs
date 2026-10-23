@@ -137,3 +137,19 @@ test("reports malformed null records without crashing", () => {
   assert.ok(errors.some(error => error.includes("positive integer order")));
   assert.ok(errors.some(error => error.includes("Every batch must have a non-empty id")));
 });
+
+test("rejects self-referential and duplicate prerequisites at every level", () => {
+  const { courses, batches } = fixture();
+  const course = courses[0];
+  course.prerequisites = ["n5", "n5"];
+  const unit = course.units[0];
+  unit.prerequisites = ["n5-unit-1", "n5-unit-1"];
+  const lesson = unit.lessons[0];
+  lesson.prerequisites = ["n5-lesson-1", "n5-lesson-1"];
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes("course cannot be its own prerequisite")));
+  assert.ok(errors.some(error => error.includes("duplicate course prerequisite")));
+  assert.ok(errors.some(error => error.includes("duplicate unit prerequisite")));
+  assert.ok(errors.some(error => error.includes("duplicate lesson prerequisite")));
+});
