@@ -105,6 +105,17 @@ test("reports duplicate ids and dangling review references", () => {
   assert.ok(errors.some(error => error.includes('unknown reviewSet item "missing-item"')));
 });
 
+test("rejects malformed batch category maps even when string indices look like categories", () => {
+  const { courses, batches } = fixture();
+  batches.batches[0].categories = "x";
+  courses[0].units[0].lessons[0].sourceRefs = [
+    { batchId: "batch-1", category: "0" }
+  ];
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes("Batch batch-1 must have a categories object.")));
+});
+
 test("reports missing source batches and categories", () => {
   const { courses, batches } = fixture();
   courses[0].units[0].lessons[0].sourceRefs = [
