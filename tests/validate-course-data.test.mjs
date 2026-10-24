@@ -117,6 +117,14 @@ test("reports missing source batches and categories", () => {
   assert.ok(errors.some(error => error.includes('unknown category "batch-1/missing-category"')));
 });
 
+test("rejects course completion thresholds larger than the available lesson count", () => {
+  const { courses, batches } = fixture();
+  courses[0].completionPolicy.requiredLessons = 2;
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes("completionPolicy.requiredLessons cannot exceed the 1 lesson(s) in the course.")));
+});
+
 test("rejects invalid completion thresholds and unsupported item types", () => {
   const { courses, batches } = fixture();
   const lesson = courses[0].units[0].lessons[0];
