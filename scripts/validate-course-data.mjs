@@ -35,6 +35,50 @@ function validateOrderList(records, context, errors) {
   }
 }
 
+function validateAcyclicPrerequisites(records, context, errors) {
+  const recordsById = new Map();
+  for (const record of records) {
+    if (isNonEmptyString(record?.id) && !recordsById.has(record.id)) {
+      recordsById.set(record.id, record);
+    }
+  }
+
+  const state = new Map();
+  const path = [];
+  const reportedCycles = new Set();
+
+  function visit(id) {
+    if (state.get(id) === 2) return;
+    if (state.get(id) === 1) {
+      const cycleStart = path.indexOf(id);
+      const cycle = path.slice(cycleStart).concat(id);
+      if (cycle.length > 2) {
+        const key = cycle.slice(0, -1).slice().sort().join("|");
+        if (!reportedCycles.has(key)) {
+          reportedCycles.add(key);
+          errors.push(`${context} prerequisite cycle detected: ${cycle.join(" -> ")}.`);
+        }
+      }
+      return;
+    }
+
+    state.set(id, 1);
+    path.push(id);
+    const prerequisites = recordsById.get(id)?.prerequisites;
+    if (Array.isArray(prerequisites)) {
+      for (const prerequisite of prerequisites) {
+        if (typeof prerequisite === "string" && prerequisite !== id && recordsById.has(prerequisite)) {
+          visit(prerequisite);
+        }
+      }
+    }
+    path.pop();
+    state.set(id, 2);
+  }
+
+  for (const id of recordsById.keys()) visit(id);
+}
+
 export function validateCourseSet(courses, batchData) {
   const errors = [];
   if (!Array.isArray(courses) || courses.length === 0) {
@@ -55,6 +99,7 @@ export function validateCourseSet(courses, batchData) {
   }
 
   const courseIds = new Set(courses.map(course => course?.id).filter(isNonEmptyString));
+  validateAcyclicPrerequisites(courses, "course", errors);
   const idOwners = new Map();
   const itemIdsByCourse = new Map();
   const registerId = (id, context) => {
@@ -119,9 +164,11 @@ export function validateCourseSet(courses, batchData) {
     if (units.length === 0) errors.push(`${courseId}: units must be a non-empty array.`);
     validateOrderList(units, `${courseId} units`, errors);
     const unitIds = new Set(units.map(unit => unit?.id).filter(isNonEmptyString));
+    validateAcyclicPrerequisites(units, `${courseId} unit`, errors);
     const courseLessonIds = new Set(units.flatMap(unit =>
       (Array.isArray(unit?.lessons) ? unit.lessons : []).map(lesson => lesson?.id).filter(isNonEmptyString)
     ));
+    validateAcyclicPrerequisites(units.flatMap(unit => Array.isArray(unit?.lessons) ? unit.lessons : []), `${courseId} lesson`, errors);
 
     for (const unit of units) {
       const unitId = unit?.id ?? "(missing unit id)";
