@@ -89,6 +89,10 @@ export function validateCourseSet(courses, batchData) {
   if (batches.length === 0) errors.push("data/batches.json must contain a non-empty batches array.");
   const batchesById = new Map();
   for (const batch of batches) {
+    const batchId = batch?.id ?? "(missing id)";
+    if (!batch?.categories || typeof batch.categories !== "object" || Array.isArray(batch.categories)) {
+      errors.push(`Batch ${batchId} must have a categories object.`);
+    }
     if (!isNonEmptyString(batch?.id)) {
       errors.push("Every batch must have a non-empty id.");
     } else if (batchesById.has(batch.id)) {
