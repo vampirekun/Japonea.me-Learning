@@ -161,6 +161,16 @@ export function validateCourseSet(courses, batchData) {
     }
 
     const units = Array.isArray(course?.units) ? course.units : [];
+    const lessonCount = units.reduce(
+      (total, unit) => total + (Array.isArray(unit?.lessons) ? unit.lessons.length : 0),
+      0
+    );
+    if (
+      Number.isInteger(coursePolicy?.requiredLessons) &&
+      coursePolicy.requiredLessons > lessonCount
+    ) {
+      errors.push(`${courseId}: completionPolicy.requiredLessons cannot exceed the ${lessonCount} lesson(s) in the course.`);
+    }
     if (units.length === 0) errors.push(`${courseId}: units must be a non-empty array.`);
     validateOrderList(units, `${courseId} units`, errors);
     const unitIds = new Set(units.map(unit => unit?.id).filter(isNonEmptyString));
