@@ -138,6 +138,36 @@ test("reports malformed null records without crashing", () => {
   assert.ok(errors.some(error => error.includes("Every batch must have a non-empty id")));
 });
 
+test("rejects cyclic prerequisites at course, unit, and lesson levels", () => {
+  const { courses, batches } = fixture();
+  const course = courses[0];
+  const unit = course.units[0];
+  const lesson = unit.lessons[0];
+
+  // A second course is intentionally minimal: this assertion targets cycle detection.
+  courses.push({ id: "n4", prerequisites: ["n5"] });
+  course.prerequisites = ["n4"];
+
+  unit.prerequisites = ["n5-unit-2"];
+  unit.lessons.push({
+    id: "n5-lesson-2",
+    prerequisites: ["n5-lesson-1"]
+  });
+  lesson.prerequisites = ["n5-lesson-2"];
+
+  course.units.push({
+    id: "n5-unit-2",
+    order: 2,
+    prerequisites: ["n5-unit-1"],
+    lessons: [{ id: "n5-lesson-3", prerequisites: [] }]
+  });
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes("course prerequisite cycle detected")));
+  assert.ok(errors.some(error => error.includes("n5 unit prerequisite cycle detected")));
+  assert.ok(errors.some(error => error.includes("n5 lesson prerequisite cycle detected")));
+});
+
 test("rejects self-referential and duplicate prerequisites at every level", () => {
   const { courses, batches } = fixture();
   const course = courses[0];
