@@ -94,6 +94,7 @@
         },
         {
           "id": "n5-lesson-2",
+          "prerequisites": ["n5-lesson-1"],
           "title": "Presentarte y decir quién eres",
           "order": 2,
           "objectives": [
@@ -258,6 +259,7 @@
         },
         {
           "id": "n5-lesson-4",
+          "prerequisites": ["n5-lesson-3"],
           "title": "Decir lo que algo no es",
           "order": 2,
           "objectives": [
@@ -390,6 +392,7 @@
         },
         {
           "id": "n5-lesson-6",
+          "prerequisites": ["n5-lesson-5"],
           "title": "Vocabulario en contexto",
           "order": 2,
           "objectives": [
@@ -536,6 +539,7 @@
         },
         {
           "id": "n5-lesson-8",
+          "prerequisites": ["n5-lesson-7"],
           "title": "Repaso integrador N5 inicial",
           "order": 2,
           "objectives": [
