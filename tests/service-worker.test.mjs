@@ -10,7 +10,7 @@ function requestKey(request) {
   return typeof request === "string" ? request : request.url;
 }
 
-function createWorker({ fetchImpl, cachedEntries = [] }) {
+function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutImpl }) {
   const listeners = new Map();
   const cached = new Map(cachedEntries);
   const stored = new Map();
@@ -20,12 +20,13 @@ function createWorker({ fetchImpl, cachedEntries = [] }) {
       return cached.has(key) ? cached.get(key) : stored.get(key);
     },
     async put(request, response) {
+      if (cachePutImpl) await cachePutImpl(request, response);
       stored.set(requestKey(request), response);
     }
   };
   const caches = {
     match: (request) => cache.match(request),
-    open: async () => cache,
+    open: async () => cacheOpenImpl ? cacheOpenImpl() : cache,
     keys: async () => [],
     delete: async () => true
   };
@@ -131,4 +132,38 @@ test("successful same-origin responses are cached without changing the response"
 
   assert.equal(await event.responsePromise, response);
   assert.deepEqual(stored.get(url), { marker: "cached-response" });
+});
+
+test("opaque responses are returned but never cached", async () => {
+  const opaqueResponse = { ok: true, type: "opaque", clone() { throw new Error("must not clone"); } };
+  const { handler, stored } = createWorker({ fetchImpl: async () => opaqueResponse });
+  const event = dispatch(handler, {
+    method: "GET",
+    url: APP_ORIGIN + "/opaque",
+    mode: "cors"
+  });
+
+  assert.equal(await event.responsePromise, opaqueResponse);
+  assert.equal(stored.size, 0);
+});
+
+test("cache storage failures do not discard successful network responses", async () => {
+  for (const failureMode of ["open", "put"]) {
+    const response = { ok: true, type: "basic", clone() { return { marker: "cached-response" }; } };
+    const options = failureMode === "open"
+      ? { cacheOpenImpl: async () => { throw new Error("quota exceeded"); } }
+      : { cachePutImpl: async () => { throw new Error("quota exceeded"); } };
+    const { handler, stored } = createWorker({
+      fetchImpl: async () => response,
+      ...options
+    });
+    const event = dispatch(handler, {
+      method: "GET",
+      url: APP_ORIGIN + "/courses.css?failure=" + failureMode,
+      mode: "same-origin"
+    });
+
+    assert.equal(await event.responsePromise, response, `${failureMode} failure must preserve network response`);
+    assert.equal(stored.size, 0, `${failureMode} failure must not leave a cache entry`);
+  }
 });
