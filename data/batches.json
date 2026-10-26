@@ -1372,6 +1372,376 @@
           }
         ]
       }
+    },
+    {
+      "id": "batch-3",
+      "title": "Semana 3 - Viajar por Japón",
+      "categories": {
+        "vocabulary": [
+          {
+            "jp": "でんしゃ",
+            "reading": "",
+            "romaji": "densha",
+            "es": "tren",
+            "type": "object",
+            "kana": "でんしゃ",
+            "kanji": "電車"
+          },
+          {
+            "jp": "ちかてつ",
+            "reading": "",
+            "romaji": "chikatetsu",
+            "es": "metro",
+            "type": "object",
+            "kana": "ちかてつ",
+            "kanji": "地下鉄"
+          },
+          {
+            "jp": "しんかんせん",
+            "reading": "",
+            "romaji": "shinkansen",
+            "es": "tren bala",
+            "type": "object",
+            "kana": "しんかんせん",
+            "kanji": "新幹線"
+          },
+          {
+            "jp": "きっぷ",
+            "reading": "",
+            "romaji": "kippu",
+            "es": "boleto",
+            "type": "object",
+            "kana": "きっぷ",
+            "kanji": "切符"
+          },
+          {
+            "jp": "かいさつ",
+            "reading": "",
+            "romaji": "kaisatsu",
+            "es": "torniquetes de acceso",
+            "type": "place",
+            "kana": "かいさつ",
+            "kanji": "改札"
+          },
+          {
+            "jp": "のりかえ",
+            "reading": "",
+            "romaji": "norikae",
+            "es": "transbordo",
+            "type": "other",
+            "kana": "のりかえ",
+            "kanji": "乗り換え"
+          },
+          {
+            "jp": "いりぐち",
+            "reading": "",
+            "romaji": "iriguchi",
+            "es": "entrada",
+            "type": "place",
+            "kana": "いりぐち",
+            "kanji": "入口"
+          },
+          {
+            "jp": "でぐち",
+            "reading": "",
+            "romaji": "deguchi",
+            "es": "salida",
+            "type": "place",
+            "kana": "でぐち",
+            "kanji": "出口"
+          },
+          {
+            "jp": "みぎ",
+            "reading": "",
+            "romaji": "migi",
+            "es": "derecha",
+            "type": "other",
+            "kana": "みぎ",
+            "kanji": "右"
+          },
+          {
+            "jp": "ひだり",
+            "reading": "",
+            "romaji": "hidari",
+            "es": "izquierda",
+            "type": "other",
+            "kana": "ひだり",
+            "kanji": "左"
+          },
+          {
+            "jp": "まっすぐ",
+            "reading": "",
+            "romaji": "massugu",
+            "es": "todo recto",
+            "type": "other",
+            "kana": "まっすぐ",
+            "kanji": ""
+          },
+          {
+            "jp": "ちず",
+            "reading": "",
+            "romaji": "chizu",
+            "es": "mapa",
+            "type": "object",
+            "kana": "ちず",
+            "kanji": "地図"
+          },
+          {
+            "jp": "みち",
+            "reading": "",
+            "romaji": "michi",
+            "es": "camino o calle",
+            "type": "place",
+            "kana": "みち",
+            "kanji": "道"
+          },
+          {
+            "jp": "にもつ",
+            "reading": "",
+            "romaji": "nimotsu",
+            "es": "equipaje",
+            "type": "object",
+            "kana": "にもつ",
+            "kanji": "荷物"
+          },
+          {
+            "jp": "よやく",
+            "reading": "",
+            "romaji": "yoyaku",
+            "es": "reserva",
+            "type": "other",
+            "kana": "よやく",
+            "kanji": "予約"
+          },
+          {
+            "jp": "トイレ",
+            "reading": "",
+            "romaji": "toire",
+            "es": "baño",
+            "type": "place",
+            "kana": "トイレ",
+            "kanji": ""
+          },
+          {
+            "jp": "げんきん",
+            "reading": "",
+            "romaji": "genkin",
+            "es": "efectivo",
+            "type": "noun",
+            "kana": "げんきん",
+            "kanji": "現金"
+          },
+          {
+            "jp": "さいふ",
+            "reading": "",
+            "romaji": "saifu",
+            "es": "cartera",
+            "type": "object",
+            "kana": "さいふ",
+            "kanji": "財布"
+          },
+          {
+            "jp": "おみやげ",
+            "reading": "",
+            "romaji": "omiyage",
+            "es": "recuerdo o regalo de viaje",
+            "type": "object",
+            "kana": "おみやげ",
+            "kanji": "お土産"
+          },
+          {
+            "jp": "じゅうでんき",
+            "reading": "",
+            "romaji": "juudenki",
+            "es": "cargador",
+            "type": "object",
+            "kana": "じゅうでんき",
+            "kanji": "充電器"
+          }
+        ],
+        "phrases": [
+          {
+            "jp": "すみません",
+            "reading": "",
+            "romaji": "sumimasen",
+            "es": "Disculpe / perdón",
+            "type": "phrase",
+            "kana": "すみません",
+            "kanji": ""
+          },
+          {
+            "jp": "これをください",
+            "reading": "",
+            "romaji": "kore o kudasai",
+            "es": "Esto, por favor",
+            "type": "phrase",
+            "kana": "これをください",
+            "kanji": ""
+          },
+          {
+            "jp": "いくらですか",
+            "reading": "",
+            "romaji": "ikura desu ka",
+            "es": "¿Cuánto cuesta?",
+            "type": "phrase",
+            "kana": "いくらですか",
+            "kanji": ""
+          },
+          {
+            "jp": "どこですか",
+            "reading": "",
+            "romaji": "doko desu ka",
+            "es": "¿Dónde está?",
+            "type": "phrase",
+            "kana": "どこですか",
+            "kanji": ""
+          },
+          {
+            "jp": "えきはどこですか",
+            "reading": "",
+            "romaji": "eki wa doko desu ka",
+            "es": "¿Dónde está la estación?",
+            "type": "phrase",
+            "kana": "えきはどこですか",
+            "kanji": "駅はどこですか"
+          },
+          {
+            "jp": "ここにいきたいです",
+            "reading": "",
+            "romaji": "koko ni ikitai desu",
+            "es": "Quiero ir aquí",
+            "type": "phrase",
+            "kana": "ここにいきたいです",
+            "kanji": "ここに行きたいです"
+          },
+          {
+            "jp": "みぎにまがってください",
+            "reading": "",
+            "romaji": "migi ni magatte kudasai",
+            "es": "Gire a la derecha, por favor",
+            "type": "phrase",
+            "kana": "みぎにまがってください",
+            "kanji": "右に曲がってください"
+          },
+          {
+            "jp": "ひだりにまがってください",
+            "reading": "",
+            "romaji": "hidari ni magatte kudasai",
+            "es": "Gire a la izquierda, por favor",
+            "type": "phrase",
+            "kana": "ひだりにまがってください",
+            "kanji": "左に曲がってください"
+          },
+          {
+            "jp": "まっすぐいってください",
+            "reading": "",
+            "romaji": "massugu itte kudasai",
+            "es": "Siga recto, por favor",
+            "type": "phrase",
+            "kana": "まっすぐいってください",
+            "kanji": "まっすぐ行ってください"
+          },
+          {
+            "jp": "えいごをはなせますか",
+            "reading": "",
+            "romaji": "eigo o hanasemasu ka",
+            "es": "¿Habla inglés?",
+            "type": "phrase",
+            "kana": "えいごをはなせますか",
+            "kanji": "英語を話せますか"
+          },
+          {
+            "jp": "にほんごがわかりません",
+            "reading": "",
+            "romaji": "nihongo ga wakarimasen",
+            "es": "No entiendo japonés",
+            "type": "phrase",
+            "kana": "にほんごがわかりません",
+            "kanji": "日本語が分かりません"
+          },
+          {
+            "jp": "たすけてください",
+            "reading": "",
+            "romaji": "tasukete kudasai",
+            "es": "Ayúdeme, por favor",
+            "type": "phrase",
+            "kana": "たすけてください",
+            "kanji": "助けてください"
+          },
+          {
+            "jp": "よやくしています",
+            "reading": "",
+            "romaji": "yoyaku shiteimasu",
+            "es": "Tengo una reserva",
+            "type": "phrase",
+            "kana": "よやくしています",
+            "kanji": "予約しています"
+          },
+          {
+            "jp": "おすすめはなんですか",
+            "reading": "",
+            "romaji": "osusume wa nan desu ka",
+            "es": "¿Qué recomienda?",
+            "type": "phrase",
+            "kana": "おすすめはなんですか",
+            "kanji": "おすすめは何ですか"
+          },
+          {
+            "jp": "みずをください",
+            "reading": "",
+            "romaji": "mizu o kudasai",
+            "es": "Agua, por favor",
+            "type": "phrase",
+            "kana": "みずをください",
+            "kanji": "水をください"
+          },
+          {
+            "jp": "おかいけいをおねがいします",
+            "reading": "",
+            "romaji": "okaikei o onegaishimasu",
+            "es": "La cuenta, por favor",
+            "type": "phrase",
+            "kana": "おかいけいをおねがいします",
+            "kanji": "お会計をお願いします"
+          },
+          {
+            "jp": "しゃしんをとってもいいですか",
+            "reading": "",
+            "romaji": "shashin o totte mo ii desu ka",
+            "es": "¿Puedo tomar una foto?",
+            "type": "phrase",
+            "kana": "しゃしんをとってもいいですか",
+            "kanji": "写真を撮ってもいいですか"
+          },
+          {
+            "jp": "クレジットカードはつかえますか",
+            "reading": "",
+            "romaji": "kurejitto kaado wa tsukaemasu ka",
+            "es": "¿Aceptan tarjeta de crédito?",
+            "type": "phrase",
+            "kana": "クレジットカードはつかえますか",
+            "kanji": "クレジットカードは使えますか"
+          },
+          {
+            "jp": "みちにまよいました",
+            "reading": "",
+            "romaji": "michi ni mayoimashita",
+            "es": "Me he perdido",
+            "type": "phrase",
+            "kana": "みちにまよいました",
+            "kanji": "道に迷いました"
+          },
+          {
+            "jp": "にもつをあずけたいです",
+            "reading": "",
+            "romaji": "nimotsu o azuketai desu",
+            "es": "Quiero dejar mi equipaje",
+            "type": "phrase",
+            "kana": "にもつをあずけたいです",
+            "kanji": "荷物を預けたいです"
+          }
+        ]
+      }
     }
   ]
 }
