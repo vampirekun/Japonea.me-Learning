@@ -58,6 +58,20 @@ const BATCH_TITLE_TRANSLATIONS = {
   advanced: "Avanzado"
 };
 
+function readStringSetStorage(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return new Set();
+
+    const value = JSON.parse(raw);
+    if (!Array.isArray(value)) return new Set();
+
+    return new Set(value.filter((item) => typeof item === "string" && item.length > 0));
+  } catch {
+    return new Set();
+  }
+}
+
 const state = {
   batches: [],
   activeBatchId: "",
@@ -86,8 +100,8 @@ const state = {
     isAudioPlaying: false,
     currentMode: "learning"
   },
-  seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
-  knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]")),
+  seenCards: readStringSetStorage(STORAGE_KEYS.seen),
+  knownCards: readStringSetStorage(STORAGE_KEYS.known),
   quizStatsByBatch: readQuizStats()
 };
 
