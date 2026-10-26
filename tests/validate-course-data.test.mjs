@@ -147,6 +147,49 @@ test("rejects invalid completion thresholds and unsupported item types", () => {
   assert.ok(errors.some(error => error.includes('unsupported learning item type "animation"')));
 });
 
+test("rejects unit prerequisites that point forward in the course", () => {
+  const { courses, batches } = fixture();
+  const course = courses[0];
+  course.units[0].prerequisites = ["n5-unit-2"];
+  course.units.push({
+    id: "n5-unit-2",
+    title: "Presentaciones",
+    order: 2,
+    prerequisites: [],
+    lessons: [{
+      id: "n5-lesson-2",
+      title: "Presentarse",
+      order: 1,
+      objectives: ["Presentarse."],
+      learningItems: [{ id: "n5-item-2", type: "grammar", prompt: "わたし", answer: "Yo" }],
+      reviewSet: ["n5-item-2"],
+      completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+    }]
+  });
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes('n5 unit prerequisite "n5-unit-2" must appear earlier')));
+});
+
+test("rejects lesson prerequisites that point forward within a unit", () => {
+  const { courses, batches } = fixture();
+  const unit = courses[0].units[0];
+  unit.lessons[0].prerequisites = ["n5-lesson-2"];
+  unit.lessons.push({
+    id: "n5-lesson-2",
+    title: "Presentarse",
+    order: 2,
+    prerequisites: [],
+    objectives: ["Presentarse."],
+    learningItems: [{ id: "n5-item-2", type: "grammar", prompt: "わたし", answer: "Yo" }],
+    reviewSet: ["n5-item-2"],
+    completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+  });
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error => error.includes('n5 lesson prerequisite "n5-lesson-2" must appear earlier')));
+});
+
 test("reports malformed null records without crashing", () => {
   const { courses, batches } = fixture();
   courses[0].units.push(null);
