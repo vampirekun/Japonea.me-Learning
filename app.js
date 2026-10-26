@@ -58,6 +58,28 @@ const BATCH_TITLE_TRANSLATIONS = {
   advanced: "Avanzado"
 };
 
+function readStorageValue(key, fallback = null) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return fallback;
+  }
+}
+
+function readStringSetStorage(key) {
+  try {
+    const raw = readStorageValue(key);
+    if (!raw) return new Set();
+
+    const value = JSON.parse(raw);
+    if (!Array.isArray(value)) return new Set();
+
+    return new Set(value.filter((item) => typeof item === "string" && item.length > 0));
+  } catch {
+    return new Set();
+  }
+}
+
 const state = {
   batches: [],
   activeBatchId: "",
@@ -86,8 +108,8 @@ const state = {
     isAudioPlaying: false,
     currentMode: "learning"
   },
-  seenCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.seen) || "[]")),
-  knownCards: new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.known) || "[]")),
+  seenCards: readStringSetStorage(STORAGE_KEYS.seen),
+  knownCards: readStringSetStorage(STORAGE_KEYS.known),
   quizStatsByBatch: readQuizStats()
 };
 
@@ -170,7 +192,7 @@ async function init() {
     return;
   }
 
-  const storedBatch = localStorage.getItem(STORAGE_KEYS.lastBatch);
+  const storedBatch = readStorageValue(STORAGE_KEYS.lastBatch);
   const fallbackBatch = state.batches[0].id;
   state.activeBatchId = state.batches.some((batch) => batch.id === storedBatch) ? storedBatch : fallbackBatch;
 
@@ -640,7 +662,7 @@ function renderProgress(total, position) {
 
 function readQuizStats() {
   try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.quizStats) || "{}");
+    const raw = JSON.parse(readStorageValue(STORAGE_KEYS.quizStats, "{}") || "{}");
     return raw && typeof raw === "object" ? raw : {};
   } catch {
     return {};
@@ -716,11 +738,11 @@ function removeKnownCardFromActiveView(cardId) {
 }
 
 function readBooleanStorage(key) {
-  return localStorage.getItem(key) === "true";
+  return readStorageValue(key) === "true";
 }
 
 function readModeStorage() {
-  const mode = localStorage.getItem(STORAGE_KEYS.mode);
+  const mode = readStorageValue(STORAGE_KEYS.mode);
   return mode === "quiz" ? "quiz" : "learning";
 }
 
@@ -1164,7 +1186,7 @@ function getAudioSpeechRate() {
 }
 
 function readAudioSpeedStorage() {
-  const raw = Number(localStorage.getItem(STORAGE_KEYS.audioTutorSpeed));
+  const raw = Number(readStorageValue(STORAGE_KEYS.audioTutorSpeed));
   if (isValidAudioSpeed(raw)) return raw;
   return 1;
 }
