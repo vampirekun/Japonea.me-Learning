@@ -168,7 +168,7 @@ test("rejects unit prerequisites that point forward in the course", () => {
   });
 
   const errors = validateCourseSet(courses, batches);
-  assert.ok(errors.some(error => error.includes('n5 unit prerequisite "n5-unit-2" must appear earlier')));
+  assert.ok(errors.some(error => error.includes('n5 unit n5-unit-1 prerequisite "n5-unit-2" must appear earlier')));
 });
 
 test("rejects lesson prerequisites that point forward within a unit", () => {
@@ -187,7 +187,7 @@ test("rejects lesson prerequisites that point forward within a unit", () => {
   });
 
   const errors = validateCourseSet(courses, batches);
-  assert.ok(errors.some(error => error.includes('n5 lesson prerequisite "n5-lesson-2" must appear earlier')));
+  assert.ok(errors.some(error => error.includes('n5 lesson n5-lesson-1 prerequisite "n5-lesson-2" must appear earlier')));
 });
 
 test("reports malformed null records without crashing", () => {
