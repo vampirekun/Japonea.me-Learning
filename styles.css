@@ -10,6 +10,7 @@
   --primary: #e4007c;
   --primary-hover: #c9006d;
   --accent: #00a8e8;
+  --focus-ring: #111827;
   --success: #11b47a;
   --success-soft: #dbfff0;
   --success-gradient: linear-gradient(135deg, #0f8e5f, #0b774f);
@@ -333,6 +334,24 @@ button:disabled {
   opacity: 0.55;
   cursor: default;
   transform: none;
+}
+
+/* Keep keyboard navigation visible without changing pointer interactions. */
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.card:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.switch input:focus-visible + .switch-slider {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 .progress-shell {
