@@ -79,6 +79,37 @@ function validateAcyclicPrerequisites(records, context, errors) {
   for (const id of recordsById.keys()) visit(id);
 }
 
+function comparePositions(left, right) {
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) return left[index] - right[index];
+  }
+  return 0;
+}
+
+function validateEarlierPrerequisites(records, context, positionsById, errors) {
+  for (const record of records) {
+    if (!Array.isArray(record?.prerequisites)) continue;
+    const currentPosition = positionsById.get(record?.id);
+    if (!Array.isArray(currentPosition) || currentPosition.some(order => !Number.isInteger(order) || order < 1)) {
+      continue;
+    }
+
+    for (const prerequisite of record.prerequisites) {
+      const prerequisitePosition = positionsById.get(prerequisite);
+      if (
+        !Array.isArray(prerequisitePosition) ||
+        prerequisitePosition.length !== currentPosition.length ||
+        prerequisitePosition.some(order => !Number.isInteger(order) || order < 1)
+      ) {
+        continue;
+      }
+      if (comparePositions(prerequisitePosition, currentPosition) >= 0) {
+        errors.push(`${context} ${record?.id ?? "(missing id)"} prerequisite "${prerequisite}" must appear earlier in the learning path.`);
+      }
+    }
+  }
+}
+
 export function validateCourseSet(courses, batchData) {
   const errors = [];
   if (!Array.isArray(courses) || courses.length === 0) {
@@ -179,10 +210,20 @@ export function validateCourseSet(courses, batchData) {
     validateOrderList(units, `${courseId} units`, errors);
     const unitIds = new Set(units.map(unit => unit?.id).filter(isNonEmptyString));
     validateAcyclicPrerequisites(units, `${courseId} unit`, errors);
+    const unitPositions = new Map(units.filter(unit => isNonEmptyString(unit?.id)).map(unit => [unit.id, [unit.order]]));
+    validateEarlierPrerequisites(units, `${courseId} unit`, unitPositions, errors);
     const courseLessonIds = new Set(units.flatMap(unit =>
       (Array.isArray(unit?.lessons) ? unit.lessons : []).map(lesson => lesson?.id).filter(isNonEmptyString)
     ));
-    validateAcyclicPrerequisites(units.flatMap(unit => Array.isArray(unit?.lessons) ? unit.lessons : []), `${courseId} lesson`, errors);
+    const lessonsInCourse = units.flatMap(unit => Array.isArray(unit?.lessons) ? unit.lessons : []);
+    const lessonPositions = new Map();
+    for (const unit of units) {
+      for (const lesson of Array.isArray(unit?.lessons) ? unit.lessons : []) {
+        if (isNonEmptyString(lesson?.id)) lessonPositions.set(lesson.id, [unit.order, lesson.order]);
+      }
+    }
+    validateAcyclicPrerequisites(lessonsInCourse, `${courseId} lesson`, errors);
+    validateEarlierPrerequisites(lessonsInCourse, `${courseId} lesson`, lessonPositions, errors);
 
     for (const unit of units) {
       const unitId = unit?.id ?? "(missing unit id)";
