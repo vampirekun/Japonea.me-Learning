@@ -69,6 +69,13 @@ function isUnitUnlocked(unit) {
   });
 }
 
+function isLessonUnlocked(lesson, unitUnlocked, lessonsById) {
+  if (!unitUnlocked) return false;
+  const prerequisites = lesson.prerequisites ?? [];
+  if (!Array.isArray(prerequisites)) return false;
+  return prerequisites.every((id) => lessonsById.has(id) && isComplete(id));
+}
+
 function renderStats() {
   const lessons = allLessons();
   const completed = lessons.filter((lesson) => isComplete(lesson.id)).length;
@@ -85,6 +92,7 @@ function renderCourse() {
   el("courseDescription").textContent = course.description;
   const list = el("unitList");
   list.replaceChildren();
+  const lessonsById = new Map(allLessons().map((lesson) => [lesson.id, lesson]));
 
   course.units.forEach((unit, unitIndex) => {
     const unlocked = isUnitUnlocked(unit);
@@ -110,14 +118,15 @@ function renderCourse() {
 
     unit.lessons.forEach((lesson) => {
       const completed = isComplete(lesson.id);
+      const lessonUnlocked = isLessonUnlocked(lesson, unlocked, lessonsById);
       const button = document.createElement("button");
       button.type = "button";
       button.className = "lesson-row" + (completed ? " completed" : "");
-      button.disabled = !unlocked;
-      button.setAttribute("aria-label", lesson.title + (completed ? ", completada" : ""));
+      button.disabled = !lessonUnlocked && !completed;
+      button.setAttribute("aria-label", lesson.title + (completed ? ", completada" : lessonUnlocked ? "" : ", bloqueada"));
       const status = document.createElement("span");
       status.className = "lesson-status";
-      status.textContent = completed ? "✓" : unlocked ? "○" : "🔒";
+      status.textContent = completed ? "✓" : lessonUnlocked ? "○" : "🔒";
       const copy = document.createElement("span");
       copy.className = "lesson-copy";
       const lessonTitle = document.createElement("strong");
