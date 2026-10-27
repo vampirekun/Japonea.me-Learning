@@ -55,6 +55,43 @@ function fixture() {
   };
 }
 
+function n4Course(prerequisites = []) {
+  return {
+    schemaVersion: 1,
+    id: "n4",
+    level: "N4",
+    title: "Japonés elemental",
+    language: "ja",
+    locale: "es-MX",
+    alignment: "jlpt-aligned",
+    prerequisites,
+    completionPolicy: { requiredLessons: "all" },
+    units: [{
+      id: "n4-unit-1",
+      title: "Conectar ideas",
+      order: 1,
+      prerequisites: [],
+      lessons: [{
+        id: "n4-lesson-1",
+        title: "Frases conectadas",
+        order: 1,
+        objectives: ["Reconocer frases conectadas."],
+        topics: ["grammar"],
+        sourceRefs: [{ batchId: "batch-1", category: "phrases" }],
+        learningItems: [{
+          id: "n4-item-1",
+          type: "grammar",
+          prompt: "でも",
+          answer: "pero / sin embargo",
+          examples: []
+        }],
+        reviewSet: ["n4-item-1"],
+        completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+      }]
+    }]
+  };
+}
+
 test("accepts a valid course and its source batch references", () => {
   const { courses, batches } = fixture();
   assert.deepEqual(validateCourseSet(courses, batches), []);
@@ -304,4 +341,23 @@ test("rejects lesson prerequisites that point forward across units", () => {
   assert.ok(errors.some(error =>
     error.includes('n5 lesson n5-lesson-2 prerequisite "n5-lesson-3" must appear earlier')
   ));
+});
+
+
+test("rejects forward course prerequisites from a lower level", () => {
+  const { courses, batches } = fixture();
+  courses[0].prerequisites = ["n4"];
+  courses.push(n4Course());
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error =>
+    error.includes('n5 course prerequisite "n4" must be at an earlier JLPT level')
+  ));
+});
+
+test("accepts an earlier course as a prerequisite for the next JLPT level", () => {
+  const { courses, batches } = fixture();
+  courses.push(n4Course(["n5"]));
+
+  assert.deepEqual(validateCourseSet(courses, batches), []);
 });
