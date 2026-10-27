@@ -245,3 +245,63 @@ test("rejects self-referential and duplicate prerequisites at every level", () =
   assert.ok(errors.some(error => error.includes("duplicate unit prerequisite")));
   assert.ok(errors.some(error => error.includes("duplicate lesson prerequisite")));
 });
+
+test("rejects lesson prerequisites that point forward across units", () => {
+  const { courses, batches } = fixture();
+  const course = courses[0];
+  course.units.push(
+    {
+      id: "n5-unit-2",
+      title: "Presentaciones",
+      order: 2,
+      prerequisites: ["n5-unit-1"],
+      lessons: [{
+        id: "n5-lesson-2",
+        title: "Presentarse",
+        order: 1,
+        prerequisites: ["n5-lesson-3"],
+        objectives: ["Presentarse."],
+        topics: ["introductions"],
+        sourceRefs: [{ batchId: "batch-1", category: "phrases" }],
+        learningItems: [{
+          id: "n5-item-2",
+          type: "grammar",
+          prompt: "わたしはアレハンドロです。",
+          answer: "Soy Alejandro.",
+          examples: []
+        }],
+        reviewSet: ["n5-item-2"],
+        completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+      }]
+    },
+    {
+      id: "n5-unit-3",
+      title: "Más presentaciones",
+      order: 3,
+      prerequisites: ["n5-unit-2"],
+      lessons: [{
+        id: "n5-lesson-3",
+        title: "Presentar a otra persona",
+        order: 1,
+        prerequisites: ["n5-lesson-2"],
+        objectives: ["Presentar a otra persona."],
+        topics: ["introductions"],
+        sourceRefs: [{ batchId: "batch-1", category: "phrases" }],
+        learningItems: [{
+          id: "n5-item-3",
+          type: "vocabulary",
+          prompt: "こちらは...",
+          answer: "Esta persona es...",
+          examples: []
+        }],
+        reviewSet: ["n5-item-3"],
+        completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+      }]
+    }
+  );
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error =>
+    error.includes('n5 lesson n5-lesson-2 prerequisite "n5-lesson-3" must appear earlier')
+  ));
+});
