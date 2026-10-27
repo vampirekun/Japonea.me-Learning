@@ -69,6 +69,7 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 - A **lesson** is complete when the host app's configured completion policy is met; the initial policy uses a minimum correct-answer ratio and at least one attempt.
 - A **unit** is complete when all required lessons in that unit are complete.
 - A **course** is complete when all required units are complete.
+- A course prerequisite is an ID reference to a preceding course in the N5 -> N4 -> N3 -> N2 -> N1 progression. The validator rejects forward dependencies between recognized N1-N5 levels.
 - A unit/lesson prerequisite is an ID reference to an item earlier in the course progression. The validator checks missing references, cycles and forward dependencies; the host app is responsible for locking/unlocking and showing prerequisite state.
 - Persist completion by stable course/unit/lesson IDs. Persist item review state separately so it can support spaced repetition later without changing the course schema.
 - Unknown optional fields should be ignored by older readers; increment schemaVersion only for incompatible structural changes.
