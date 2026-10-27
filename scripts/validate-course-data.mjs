@@ -110,6 +110,32 @@ function validateEarlierPrerequisites(records, context, positionsById, errors) {
   }
 }
 
+function validateEarlierCoursePrerequisites(courses, errors) {
+  const coursesById = new Map(
+    courses
+      .filter(course => isNonEmptyString(course?.id))
+      .map(course => [course.id, course])
+  );
+
+  for (const course of courses) {
+    const currentLevel = /^N([1-5])$/.exec(course?.level ?? "");
+    if (!currentLevel || !Array.isArray(course?.prerequisites)) continue;
+
+    for (const prerequisite of course.prerequisites) {
+      const prerequisiteCourse = coursesById.get(prerequisite);
+      const prerequisiteLevel = /^N([1-5])$/.exec(prerequisiteCourse?.level ?? "");
+      if (!prerequisiteLevel) continue;
+
+      // N5 is foundational; prerequisite levels must precede the current level.
+      if (Number(prerequisiteLevel[1]) <= Number(currentLevel[1])) {
+        errors.push(
+          `${course?.id ?? "(missing course id)"} course prerequisite "${prerequisite}" must be at an earlier JLPT level (N5 before N4, N4 before N3, and so on).`
+        );
+      }
+    }
+  }
+}
+
 export function validateCourseSet(courses, batchData) {
   const errors = [];
   if (!Array.isArray(courses) || courses.length === 0) {
@@ -135,6 +161,7 @@ export function validateCourseSet(courses, batchData) {
 
   const courseIds = new Set(courses.map(course => course?.id).filter(isNonEmptyString));
   validateAcyclicPrerequisites(courses, "course", errors);
+  validateEarlierCoursePrerequisites(courses, errors);
   const idOwners = new Map();
   const itemIdsByCourse = new Map();
   const registerId = (id, context) => {
