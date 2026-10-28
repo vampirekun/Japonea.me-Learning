@@ -1203,6 +1203,15 @@
             "type": "noun",
             "kana": "せかい",
             "kanji": "世界"
+          },
+          {
+            "jp": "ひだり",
+            "reading": "ひだり",
+            "romaji": "hidari",
+            "es": "izquierda",
+            "type": "other",
+            "kana": "ひだり",
+            "kanji": "左"
           }
         ],
         "naturaleza_y_cultura": [
