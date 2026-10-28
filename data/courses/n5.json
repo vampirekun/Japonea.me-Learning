@@ -622,12 +622,8 @@
           ],
           "sourceRefs": [
             {
-              "batchId": "batch-3",
-              "category": "phrases"
-            },
-            {
-              "batchId": "batch-3",
-              "category": "vocabulary"
+              "batchId": "batch-2",
+              "category": "lugares_y_movilidad"
             }
           ],
           "learningItems": [
