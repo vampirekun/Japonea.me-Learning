@@ -625,6 +625,10 @@
             {
               "batchId": "batch-2",
               "category": "lugares_y_movilidad"
+            },
+            {
+              "batchId": "batch-3",
+              "category": "vocabulary"
             }
           ],
           "learningItems": [
