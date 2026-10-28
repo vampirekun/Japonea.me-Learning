@@ -592,6 +592,156 @@
           }
         }
       ]
+    },
+    {
+      "id": "n5-unit-5",
+      "title": "Moverse por la ciudad",
+      "order": 5,
+      "description": "Pedir indicaciones sencillas y reconocer palabras útiles para orientarse.",
+      "prerequisites": [
+        "n5-unit-4"
+      ],
+      "lessons": [
+        {
+          "id": "n5-lesson-9",
+          "title": "Preguntar dónde está la estación",
+          "order": 1,
+          "prerequisites": [
+            "n5-lesson-8"
+          ],
+          "objectives": [
+            "Preguntar dónde está un lugar con una estructura sencilla.",
+            "Reconocer palabras básicas para entender indicaciones.",
+            "Pedir ayuda de forma cortés cuando necesitas orientarte."
+          ],
+          "topics": [
+            "travel",
+            "directions",
+            "places",
+            "politeness"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-3",
+              "category": "phrases"
+            },
+            {
+              "batchId": "batch-3",
+              "category": "vocabulary"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-travel-sumimasen",
+              "type": "vocabulary",
+              "prompt": "すみません",
+              "answer": "Disculpe / perdón",
+              "reading": "sumimasen",
+              "explanation": "Se usa para llamar la atención de alguien con cortesía o para disculparse.",
+              "examples": [
+                {
+                  "jp": "すみません。",
+                  "kana": "すみません。",
+                  "romaji": "Sumimasen.",
+                  "es": "Disculpe."
+                }
+              ]
+            },
+            {
+              "id": "n5-travel-eki",
+              "type": "vocabulary",
+              "prompt": "えき",
+              "answer": "Estación de tren",
+              "reading": "eki",
+              "explanation": "Lugar donde tomas el tren. En la pregunta, えき es el lugar que buscas.",
+              "examples": [
+                {
+                  "jp": "えきはどこですか。",
+                  "kana": "えきはどこですか。",
+                  "romaji": "Eki wa doko desu ka.",
+                  "es": "¿Dónde está la estación?"
+                }
+              ]
+            },
+            {
+              "id": "n5-travel-eki-wa-doko",
+              "type": "grammar",
+              "prompt": "えきはどこですか。",
+              "answer": "¿Dónde está la estación?",
+              "reading": "Eki wa doko desu ka.",
+              "explanation": "Patrón: lugar + は (wa) + どこですか. Sirve para preguntar dónde está un lugar.",
+              "examples": [
+                {
+                  "jp": "トイレはどこですか。",
+                  "kana": "トイレはどこですか。",
+                  "romaji": "Toire wa doko desu ka.",
+                  "es": "¿Dónde está el baño?"
+                }
+              ]
+            },
+            {
+              "id": "n5-travel-migi",
+              "type": "vocabulary",
+              "prompt": "みぎ",
+              "answer": "Derecha",
+              "reading": "migi",
+              "explanation": "Palabra frecuente en indicaciones para girar o señalar una dirección.",
+              "examples": [
+                {
+                  "jp": "みぎにまがってください。",
+                  "kana": "みぎにまがってください。",
+                  "romaji": "Migi ni magatte kudasai.",
+                  "es": "Gire a la derecha, por favor."
+                }
+              ]
+            },
+            {
+              "id": "n5-travel-massugu",
+              "type": "vocabulary",
+              "prompt": "まっすぐ",
+              "answer": "Todo recto",
+              "reading": "massugu",
+              "explanation": "Indica que continúes sin girar.",
+              "examples": [
+                {
+                  "jp": "まっすぐいってください。",
+                  "kana": "まっすぐいってください。",
+                  "romaji": "Massugu itte kudasai.",
+                  "es": "Siga recto, por favor."
+                }
+              ]
+            },
+            {
+              "id": "n5-travel-koko-ni-ikitai",
+              "type": "grammar",
+              "prompt": "ここにいきたいです。",
+              "answer": "Quiero ir aquí.",
+              "reading": "Koko ni ikitai desu.",
+              "explanation": "Expresa el deseo de ir a un lugar; puedes acompañarlo señalando un mapa o una dirección.",
+              "examples": [
+                {
+                  "jp": "ここにいきたいです。",
+                  "kana": "ここにいきたいです。",
+                  "romaji": "Koko ni ikitai desu.",
+                  "es": "Quiero ir aquí."
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-travel-sumimasen",
+            "n5-travel-eki",
+            "n5-travel-eki-wa-doko",
+            "n5-travel-migi",
+            "n5-travel-massugu",
+            "n5-travel-koko-ni-ikitai"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
     }
   ]
 }
