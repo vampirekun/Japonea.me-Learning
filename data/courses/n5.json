@@ -612,7 +612,8 @@
           "objectives": [
             "Preguntar dónde está un lugar con una estructura sencilla.",
             "Reconocer palabras básicas para entender indicaciones.",
-            "Pedir ayuda de forma cortés cuando necesitas orientarte."
+            "Pedir ayuda de forma cortés cuando necesitas orientarte.",
+            "Distinguir izquierda y derecha al seguir indicaciones sencillas."
           ],
           "topics": [
             "travel",
@@ -692,6 +693,22 @@
               ]
             },
             {
+              "id": "n5-travel-hidari",
+              "type": "vocabulary",
+              "prompt": "ひだり",
+              "answer": "Izquierda",
+              "reading": "hidari",
+              "explanation": "Indica el lado izquierdo; se usa para señalar una dirección o para dar una indicación.",
+              "examples": [
+                {
+                  "jp": "ひだりにまがってください。",
+                  "kana": "ひだりにまがってください。",
+                  "romaji": "Hidari ni magatte kudasai.",
+                  "es": "Gire a la izquierda, por favor."
+                }
+              ]
+            },
+            {
               "id": "n5-travel-massugu",
               "type": "vocabulary",
               "prompt": "まっすぐ",
@@ -729,6 +746,7 @@
             "n5-travel-eki",
             "n5-travel-eki-wa-doko",
             "n5-travel-migi",
+            "n5-travel-hidari",
             "n5-travel-massugu",
             "n5-travel-koko-ni-ikitai"
           ],
