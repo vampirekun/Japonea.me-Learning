@@ -94,7 +94,9 @@
         },
         {
           "id": "n5-lesson-2",
-          "prerequisites": ["n5-lesson-1"],
+          "prerequisites": [
+            "n5-lesson-1"
+          ],
           "title": "Presentarte y decir quién eres",
           "order": 2,
           "objectives": [
@@ -259,7 +261,9 @@
         },
         {
           "id": "n5-lesson-4",
-          "prerequisites": ["n5-lesson-3"],
+          "prerequisites": [
+            "n5-lesson-3"
+          ],
           "title": "Decir lo que algo no es",
           "order": 2,
           "objectives": [
@@ -392,7 +396,9 @@
         },
         {
           "id": "n5-lesson-6",
-          "prerequisites": ["n5-lesson-5"],
+          "prerequisites": [
+            "n5-lesson-5"
+          ],
           "title": "Vocabulario en contexto",
           "order": 2,
           "objectives": [
@@ -539,7 +545,9 @@
         },
         {
           "id": "n5-lesson-8",
-          "prerequisites": ["n5-lesson-7"],
+          "prerequisites": [
+            "n5-lesson-7"
+          ],
           "title": "Repaso integrador N5 inicial",
           "order": 2,
           "objectives": [
@@ -753,6 +761,141 @@
             "n5-travel-hidari",
             "n5-travel-massugu",
             "n5-travel-koko-ni-ikitai"
+          ],
+          "completionPolicy": {
+            "minCorrect": 0.8,
+            "minAttempts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "n5-unit-6",
+      "title": "Horarios y rutinas",
+      "order": 6,
+      "description": "Preguntar la hora y entender horarios sencillos.",
+      "prerequisites": [
+        "n5-unit-5"
+      ],
+      "lessons": [
+        {
+          "id": "n5-lesson-10",
+          "title": "Preguntar y decir la hora",
+          "order": 1,
+          "prerequisites": [
+            "n5-lesson-9"
+          ],
+          "objectives": [
+            "Preguntar qué hora es con una estructura cortés.",
+            "Distinguir gozen y gogo para indicar mañana o tarde.",
+            "Expresar media hora y reconocer las lecturas yoji, shichiji y kuji."
+          ],
+          "topics": [
+            "time",
+            "daily-routine",
+            "gozen-gogo",
+            "numbers"
+          ],
+          "sourceRefs": [
+            {
+              "batchId": "batch-2",
+              "category": "vida_cotidiana"
+            }
+          ],
+          "learningItems": [
+            {
+              "id": "n5-time-nanji",
+              "type": "grammar",
+              "prompt": "いま なんじですか。",
+              "answer": "¿Qué hora es ahora?",
+              "reading": "Ima nanji desu ka.",
+              "explanation": "いま significa «ahora» y なんじ pregunta «qué hora». ですか convierte la expresión en una pregunta cortés.",
+              "examples": [
+                {
+                  "jp": "いま ごご さんじです。",
+                  "kana": "いま ごご さんじです。",
+                  "romaji": "Ima gogo sanji desu.",
+                  "es": "Ahora son las 3 de la tarde."
+                }
+              ]
+            },
+            {
+              "id": "n5-time-gozen-gogo",
+              "type": "vocabulary",
+              "prompt": "ごぜん / ごご",
+              "answer": "a. m. / p. m. (antes / después del mediodía)",
+              "reading": "gozen / gogo",
+              "explanation": "Se coloca antes de la hora: ごぜん はちじ (8 a. m.) y ごご はちじ (8 p. m.).",
+              "examples": [
+                {
+                  "jp": "ごぜん はちじです。",
+                  "kana": "ごぜん はちじです。",
+                  "romaji": "Gozen hachiji desu.",
+                  "es": "Son las 8 de la mañana."
+                },
+                {
+                  "jp": "ごご はちじです。",
+                  "kana": "ごご はちじです。",
+                  "romaji": "Gogo hachiji desu.",
+                  "es": "Son las 8 de la noche."
+                }
+              ]
+            },
+            {
+              "id": "n5-time-half-hour",
+              "type": "grammar",
+              "prompt": "ごご さんじはんです。",
+              "answer": "Son las 3:30 de la tarde.",
+              "reading": "Gogo sanji han desu.",
+              "explanation": "はん después de la hora indica media hora; no hace falta añadir una palabra equivalente a «y».",
+              "examples": [
+                {
+                  "jp": "ごぜん しちじはんです。",
+                  "kana": "ごぜん しちじはんです。",
+                  "romaji": "Gozen shichiji han desu.",
+                  "es": "Son las 7:30 de la mañana."
+                }
+              ]
+            },
+            {
+              "id": "n5-time-irregular-hours",
+              "type": "vocabulary",
+              "prompt": "よじ・しちじ・くじ",
+              "answer": "4:00 · 7:00 · 9:00",
+              "reading": "yoji / shichiji / kuji",
+              "explanation": "Estas tres horas tienen lecturas especiales: yoji, shichiji y kuji. Conviene memorizarlas como vocabulario fijo.",
+              "examples": [
+                {
+                  "jp": "いま くじです。",
+                  "kana": "いま くじです。",
+                  "romaji": "Ima kuji desu.",
+                  "es": "Ahora son las 9."
+                }
+              ]
+            },
+            {
+              "id": "n5-time-practice-question",
+              "type": "review",
+              "prompt": "いま ごぜん くじですか。",
+              "answer": "¿Son las 9 de la mañana ahora?",
+              "reading": "Ima gozen kuji desu ka.",
+              "explanation": "Cambia la hora o gozen/gogo para practicar preguntas sobre distintos horarios.",
+              "examples": [
+                {
+                  "jp": "はい、ごぜん くじです。",
+                  "kana": "はい、ごぜん くじです。",
+                  "romaji": "Hai, gozen kuji desu.",
+                  "es": "Sí, son las 9 de la mañana."
+                }
+              ]
+            }
+          ],
+          "reviewSet": [
+            "n5-time-nanji",
+            "n5-time-gozen-gogo",
+            "n5-time-half-hour",
+            "n5-time-irregular-hours",
+            "n5-time-practice-question"
           ],
           "completionPolicy": {
             "minCorrect": 0.8,
