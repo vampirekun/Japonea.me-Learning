@@ -19,7 +19,7 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 - Prefer natural, contextual examples over isolated translations.
 - sourceRefs link existing weekly batches/categories instead of copying their vocabulary. A missing source reference should not prevent the lesson from loading.
 - A listening item may initially provide a transcript and an optional audio asset reference. Missing audio must not block study.
-- Keep review items explicit and traceable to earlier items.
+- Keep review items explicit and traceable to earlier items. `reviewSet` is the authoritative list used to build a lesson assessment; its IDs may reference learning items from earlier lessons. The course-wide item pool is used only to offer distractor answers, never to introduce unrelated assessment prompts.
 - Content files must be static JSON and work offline; no runtime API is required to load a course.
 - Do not mark a lesson complete merely because it was opened. Completion should be driven by the lesson policy and persisted by the host app.
 
@@ -71,7 +71,7 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 - A **course** is complete when all required units are complete.
 - A course prerequisite is an ID reference to a preceding course in the N5 -> N4 -> N3 -> N2 -> N1 progression. The validator rejects forward dependencies between recognized N1-N5 levels.
 - A unit/lesson prerequisite is an ID reference to an item earlier in the course progression. The validator checks missing references, cycles and forward dependencies; the host app is responsible for locking/unlocking and showing prerequisite state.
-- Persist completion by stable course/unit/lesson IDs. Persist item review state separately so it can support spaced repetition later without changing the course schema.
+- A lesson assessment passes only when its current attempt meets `minCorrect` and the submitted-attempt count reaches `minAttempts`; persist that count with the lesson progress so retries survive reloads. Persist item review state separately so it can support spaced repetition later without changing the course schema.
 - Unknown optional fields should be ignored by older readers; increment schemaVersion only for incompatible structural changes.
 
 ## Existing batches migration
