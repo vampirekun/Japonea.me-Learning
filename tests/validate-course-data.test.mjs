@@ -361,3 +361,14 @@ test("accepts an earlier course as a prerequisite for the next JLPT level", () =
 
   assert.deepEqual(validateCourseSet(courses, batches), []);
 });
+
+
+test("rejects empty lesson review sets", () => {
+  const { courses, batches } = fixture();
+  courses[0].units[0].lessons[0].reviewSet = [];
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error =>
+    error.includes("n5-lesson-1: reviewSet must contain at least one item.")
+  ));
+});
