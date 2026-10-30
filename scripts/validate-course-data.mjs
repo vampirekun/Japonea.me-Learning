@@ -301,6 +301,7 @@ export function validateCourseSet(courses, batchData) {
 
         if (!Array.isArray(lesson?.reviewSet)) errors.push(`${lessonId}: reviewSet must be an array.`);
         else {
+          if (lesson.reviewSet.length === 0) errors.push(`${lessonId}: reviewSet must contain at least one item.`);
           const seenReviewIds = new Set();
           for (const itemId of lesson.reviewSet) {
             if (seenReviewIds.has(itemId)) errors.push(`${lessonId}: duplicate reviewSet id "${itemId}".`);
