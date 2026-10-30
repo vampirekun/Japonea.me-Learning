@@ -344,6 +344,41 @@ test("rejects lesson prerequisites that point forward across units", () => {
 });
 
 
+test("rejects reviewSet items from later lessons", () => {
+  const { courses, batches } = fixture();
+  const course = courses[0];
+  course.units[0].lessons[0].reviewSet = ["n5-item-2"];
+  course.units.push({
+    id: "n5-unit-2",
+    title: "Unidad posterior",
+    order: 2,
+    prerequisites: ["n5-unit-1"],
+    lessons: [{
+      id: "n5-lesson-2",
+      title: "Lección posterior",
+      order: 1,
+      prerequisites: ["n5-lesson-1"],
+      objectives: ["Reconocer vocabulario nuevo."],
+      topics: ["vocabulary"],
+      sourceRefs: [{ batchId: "batch-1", category: "phrases" }],
+      learningItems: [{
+        id: "n5-item-2",
+        type: "vocabulary",
+        prompt: "ねこ",
+        answer: "Gato",
+        examples: []
+      }],
+      reviewSet: ["n5-item-2"],
+      completionPolicy: { minCorrect: 0.8, minAttempts: 1 }
+    }]
+  });
+
+  const errors = validateCourseSet(courses, batches);
+  assert.ok(errors.some(error =>
+    error.includes('n5-lesson-1: reviewSet item "n5-item-2" must belong to this lesson or an earlier lesson.')
+  ));
+});
+
 test("rejects forward course prerequisites from a lower level", () => {
   const { courses, batches } = fixture();
   courses[0].prerequisites = ["n4"];
