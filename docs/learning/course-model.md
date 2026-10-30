@@ -19,7 +19,7 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 - Prefer natural, contextual examples over isolated translations.
 - sourceRefs link existing weekly batches/categories instead of copying their vocabulary. A missing source reference should not prevent the lesson from loading.
 - A listening item may initially provide a transcript and an optional audio asset reference. Missing audio must not block study.
-- Keep review items explicit and traceable to earlier items. `reviewSet` is the authoritative list used to build a lesson assessment; its IDs may reference learning items from earlier lessons. The course-wide item pool is used only to offer distractor answers, never to introduce unrelated assessment prompts.
+- Keep review items explicit and traceable to earlier items. `reviewSet` is the authoritative list used to build a lesson assessment; its IDs may reference learning items from the current or earlier lessons, never future lessons. The course-wide item pool is used only to offer distractor answers, never to introduce unrelated assessment prompts.
 - Content files must be static JSON and work offline; no runtime API is required to load a course.
 - Do not mark a lesson complete merely because it was opened. Completion should be driven by the lesson policy and persisted by the host app.
 
