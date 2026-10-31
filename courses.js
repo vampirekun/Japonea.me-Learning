@@ -347,7 +347,7 @@ function submitAssessment(event) {
     const list = document.createElement("ul");
     missed.forEach(({ question }) => {
       const li = document.createElement("li");
-      li.textContent = question.prompt.replace("\\n", " ") + " — respuesta: " + question.correct;
+      li.textContent = question.prompt.replace("\n", " ") + " — respuesta: " + question.correct;
       list.append(li);
     });
     result.append(list);
