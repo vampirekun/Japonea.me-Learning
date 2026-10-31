@@ -244,9 +244,14 @@ export function validateCourseSet(courses, batchData) {
     ));
     const lessonsInCourse = units.flatMap(unit => Array.isArray(unit?.lessons) ? unit.lessons : []);
     const lessonPositions = new Map();
+    const itemPositions = new Map();
     for (const unit of units) {
       for (const lesson of Array.isArray(unit?.lessons) ? unit.lessons : []) {
-        if (isNonEmptyString(lesson?.id)) lessonPositions.set(lesson.id, [unit.order, lesson.order]);
+        const position = [unit.order, lesson.order];
+        if (isNonEmptyString(lesson?.id)) lessonPositions.set(lesson.id, position);
+        for (const item of Array.isArray(lesson?.learningItems) ? lesson.learningItems : []) {
+          if (isNonEmptyString(item?.id)) itemPositions.set(item.id, position);
+        }
       }
     }
     validateAcyclicPrerequisites(lessonsInCourse, `${courseId} lesson`, errors);
@@ -301,11 +306,19 @@ export function validateCourseSet(courses, batchData) {
 
         if (!Array.isArray(lesson?.reviewSet)) errors.push(`${lessonId}: reviewSet must be an array.`);
         else {
+          if (lesson.reviewSet.length === 0) errors.push(`${lessonId}: reviewSet must contain at least one item.`);
           const seenReviewIds = new Set();
           for (const itemId of lesson.reviewSet) {
             if (seenReviewIds.has(itemId)) errors.push(`${lessonId}: duplicate reviewSet id "${itemId}".`);
             seenReviewIds.add(itemId);
             if (!courseItemIds.has(itemId)) errors.push(`${lessonId}: unknown reviewSet item "${itemId}".`);
+            const itemPosition = itemPositions.get(itemId);
+            if (itemPosition && (
+              itemPosition[0] > unit.order ||
+              (itemPosition[0] === unit.order && itemPosition[1] > lesson.order)
+            )) {
+              errors.push(`${lessonId}: reviewSet item "${itemId}" must belong to this lesson or an earlier lesson.`);
+            }
           }
         }
 

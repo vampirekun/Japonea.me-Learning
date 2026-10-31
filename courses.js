@@ -1,3 +1,5 @@
+import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts } from "./scripts/course-assessment.mjs";
+
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const PASS_FALLBACK = 0.8;
 const QUESTION_COUNT = 5;
@@ -5,7 +7,7 @@ const courseState = {
   course: null,
   activeLesson: null,
   progress: readProgress(),
-  assessment: { lessonId: null, questions: [], passed: false, submitted: false }
+  assessment: { lessonId: null, questions: [], passed: false, submitted: false, attempts: 0, canComplete: false }
 };
 const el = (id) => document.getElementById(id);
 
@@ -30,31 +32,6 @@ function allLessons() {
   return courseState.course.units.flatMap((unit) =>
     unit.lessons.map((lesson) => ({ ...lesson, unitId: unit.id, unitTitle: unit.title, unit }))
   );
-}
-
-function allPairs() {
-  const pairs = allLessons().flatMap((lesson) =>
-    (lesson.learningItems || []).flatMap((item) => {
-      const pairs = [];
-      if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
-      (item.examples || []).forEach((example) => {
-        const jp = example.jp || example.kana;
-        if (jp && example.es) pairs.push({ jp: String(jp), es: String(example.es) });
-      });
-      return pairs;
-    })
-  );
-
-  const seen = new Set();
-  return pairs.filter((pair) => {
-    const key = JSON.stringify([
-      pair.jp.normalize("NFKC").trim(),
-      pair.es.normalize("NFKC").trim()
-    ]);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
 }
 
 function isComplete(lessonId) {
@@ -205,76 +182,37 @@ function renderLearningItem(item) {
   return card;
 }
 
-function shuffle(items) {
-  const result = [...items];
-  for (let i = result.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-function buildAssessmentQuestions(lesson) {
-  const lessonPairs = (lesson.learningItems || []).flatMap((item) => {
-    const pairs = [];
-    if (item.prompt && item.answer) pairs.push({ jp: String(item.prompt), es: String(item.answer) });
-    (item.examples || []).forEach((example) => {
-      const jp = example.jp || example.kana;
-      if (jp && example.es) pairs.push({ jp: String(jp), es: String(example.es) });
-    });
-    return pairs;
-  });
-  const bank = [];
-  lessonPairs.forEach((pair, index) => {
-    bank.push({
-      id: lesson.id + "-jp-" + index,
-      prompt: "¿Qué significa esta expresión?\n" + pair.jp,
-      correct: pair.es,
-      direction: "es"
-    });
-    bank.push({
-      id: lesson.id + "-es-" + index,
-      prompt: "¿Qué expresión corresponde a esta traducción?\n" + pair.es,
-      correct: pair.jp,
-      direction: "jp"
-    });
-  });
-  const unique = bank.filter((question, index) =>
-    bank.findIndex((candidate) => candidate.prompt === question.prompt && candidate.correct === question.correct) === index
-  );
-  const selected = shuffle(unique).slice(0, QUESTION_COUNT);
-  if (selected.length < QUESTION_COUNT) {
-    const used = new Set(selected.map((question) => question.prompt + "|" + question.correct));
-    const reviewBank = allPairs().flatMap((pair, index) => [
-      { id: lesson.id + "-review-jp-" + index, prompt: "Repaso acumulativo: ¿qué significa esta expresión?\n" + pair.jp, correct: pair.es, direction: "es" },
-      { id: lesson.id + "-review-es-" + index, prompt: "Repaso acumulativo: ¿qué expresión corresponde a esta traducción?\n" + pair.es, correct: pair.jp, direction: "jp" }
-    ]).filter((question) => !used.has(question.prompt + "|" + question.correct));
-    selected.push(...shuffle(reviewBank).slice(0, QUESTION_COUNT - selected.length));
-  }
-  return selected.map((question) => {
-    const answerPool = [...new Set(allPairs().map((pair) => question.direction === "es" ? pair.es : pair.jp))]
-      .filter((answer) => answer && answer !== question.correct);
-    const distractors = shuffle(answerPool).slice(0, 3);
-    return { ...question, options: shuffle([...new Set([question.correct, ...distractors])]) };
-  });
-}
-
 function renderAssessment(lesson) {
   const questionsRoot = el("assessmentQuestions");
   questionsRoot.replaceChildren();
   const policy = Number(lesson.completionPolicy?.minCorrect);
   const threshold = Number.isFinite(policy) && policy > 0 && policy <= 1 ? policy : PASS_FALLBACK;
-  el("assessmentThreshold").textContent = Math.round(threshold * 100) + "% para aprobar";
+  const minAttempts = getMinimumAttempts(lesson);
+  const storedAttempts = courseState.progress[lesson.id]?.assessmentAttempts;
+  const attempts = Number.isInteger(storedAttempts) && storedAttempts > 0 ? storedAttempts : 0;
+  const questions = buildLessonAssessmentQuestions(lesson, allLessons(), QUESTION_COUNT);
+
+  el("assessmentThreshold").textContent =
+    Math.round(threshold * 100) + "% · " + minAttempts + (minAttempts === 1 ? " intento mínimo" : " intentos mínimos");
   courseState.assessment = {
     lessonId: lesson.id,
-    questions: buildAssessmentQuestions(lesson),
+    questions,
     passed: false,
     submitted: false,
     score: null,
-    threshold
+    threshold,
+    attempts,
+    canComplete: false
   };
 
-  courseState.assessment.questions.forEach((question, index) => {
+  if (!questions.length) {
+    const emptyState = document.createElement("p");
+    emptyState.className = "assessment-copy";
+    emptyState.textContent = "Esta lección no tiene elementos válidos en su conjunto de repaso.";
+    questionsRoot.append(emptyState);
+  }
+
+  questions.forEach((question, index) => {
     const fieldset = document.createElement("fieldset");
     fieldset.className = "assessment-question";
     const legend = document.createElement("legend");
@@ -302,10 +240,12 @@ function renderAssessment(lesson) {
   el("assessmentResult").hidden = true;
   el("assessmentResult").className = "assessment-result";
   el("submitAssessment").hidden = false;
-  el("submitAssessment").disabled = false;
+  el("submitAssessment").disabled = questions.length === 0;
   el("retryAssessment").hidden = true;
   el("completeLesson").disabled = true;
-  el("completeLesson").textContent = "Aprueba la evaluación para completar";
+  el("completeLesson").textContent = questions.length
+    ? "Aprueba la evaluación para completar"
+    : "No hay elementos de repaso configurados";
 }
 
 function openLesson(unit, lesson) {
@@ -351,7 +291,17 @@ function showCourse() {
 function submitAssessment(event) {
   event.preventDefault();
   const assessment = courseState.assessment;
-  if (!assessment.questions.length) return;
+  const active = courseState.activeLesson;
+  if (!assessment.questions.length || !active || assessment.submitted) return;
+
+  assessment.attempts += 1;
+  const previousProgress = courseState.progress[assessment.lessonId] || {};
+  courseState.progress[assessment.lessonId] = {
+    ...previousProgress,
+    assessmentAttempts: assessment.attempts
+  };
+  saveProgress();
+
   const result = el("assessmentResult");
   let correctCount = 0;
   const feedback = [];
@@ -374,13 +324,23 @@ function submitAssessment(event) {
   assessment.submitted = true;
   const percent = Math.round(score * 100);
   assessment.score = percent;
+  assessment.canComplete = canCompleteLessonAssessment(assessment, active.lesson);
+
   result.replaceChildren();
   result.className = "assessment-result " + (assessment.passed ? "pass" : "fail");
   const title = document.createElement("strong");
   title.textContent = assessment.passed ? "¡Evaluación aprobada! " + percent + "%" : "Todavía no. Resultado: " + percent + "%";
   const summary = document.createElement("p");
-  summary.textContent = correctCount + " de " + assessment.questions.length + " respuestas correctas. " +
-    (assessment.passed ? "Ya puedes completar la lección." : "Necesitas al menos " + Math.round(assessment.threshold * 100) + "%. Revisa los errores e inténtalo otra vez.");
+  if (assessment.passed && !assessment.canComplete) {
+    summary.textContent =
+      "Aprobaste, pero la política requiere al menos " + getMinimumAttempts(active.lesson) +
+      " intentos. Llevas " + assessment.attempts + "; realiza otro intento para completar la lección.";
+  } else {
+    summary.textContent = correctCount + " de " + assessment.questions.length + " respuestas correctas. " +
+      (assessment.canComplete
+        ? "Ya puedes completar la lección."
+        : "Necesitas alcanzar al menos " + Math.round(assessment.threshold * 100) + "%. Revisa los errores e inténtalo otra vez.");
+  }
   result.append(title, summary);
   const missed = feedback.filter((entry) => !entry.correct);
   if (missed.length) {
@@ -394,12 +354,16 @@ function submitAssessment(event) {
   }
   result.hidden = false;
   el("submitAssessment").hidden = true;
-  el("retryAssessment").hidden = assessment.passed;
+  el("retryAssessment").hidden = assessment.canComplete;
   const alreadyComplete = isComplete(assessment.lessonId);
-  el("completeLesson").disabled = !assessment.passed || alreadyComplete;
+  el("completeLesson").disabled = !assessment.canComplete || alreadyComplete;
   el("completeLesson").textContent = alreadyComplete
     ? "✓ Lección completada"
-    : assessment.passed ? "Completar lección y guardar progreso" : "Aprueba la evaluación para completar";
+    : assessment.canComplete
+      ? "Completar lección y guardar progreso"
+      : assessment.passed
+        ? "Completa los intentos mínimos para continuar"
+        : "Aprueba la evaluación para completar";
 }
 
 function retryAssessment() {
@@ -420,10 +384,13 @@ async function init() {
     el("completeLesson").addEventListener("click", () => {
       const active = courseState.activeLesson;
       const assessment = courseState.assessment;
-      if (!active || !assessment.passed || assessment.lessonId !== active.lesson.id || isComplete(active.lesson.id)) return;
+      if (!active || !canCompleteLessonAssessment(assessment, active.lesson) || assessment.lessonId !== active.lesson.id || isComplete(active.lesson.id)) return;
+      const previousProgress = courseState.progress[active.lesson.id] || {};
       courseState.progress[active.lesson.id] = {
+        ...previousProgress,
         completedAt: new Date().toISOString(),
-        bestScore: assessment.score
+        bestScore: assessment.score,
+        assessmentAttempts: assessment.attempts
       };
       saveProgress();
       renderCourse();

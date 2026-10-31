@@ -7,6 +7,9 @@ on:
       - "data/batches.json"
       - "scripts/validate-course-data.mjs"
       - "tests/validate-course-data.test.mjs"
+      - "tests/course-assessment.test.mjs"
+      - "scripts/course-assessment.mjs"
+      - "courses.js"
       - "docs/learning/course-model.md"
       - ".github/workflows/validate-course-data.yml"
   push:
@@ -35,4 +38,4 @@ jobs:
       - name: Validate course content
         run: node scripts/validate-course-data.mjs
       - name: Test validator rules
-        run: node --test tests/validate-course-data.test.mjs
+        run: node --test tests/*.test.mjs

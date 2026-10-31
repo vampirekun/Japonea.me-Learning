@@ -10,11 +10,16 @@ function requestKey(request) {
   return typeof request === "string" ? request : request.url;
 }
 
-function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutImpl }) {
+function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutImpl, cacheAddAllImpl }) {
   const listeners = new Map();
   const cached = new Map(cachedEntries);
   const stored = new Map();
+  const precache = { cacheNames: [], assets: [] };
   const cache = {
+    async addAll(assets) {
+      if (cacheAddAllImpl) await cacheAddAllImpl(assets);
+      precache.assets.push(...assets);
+    },
     async match(request) {
       const key = requestKey(request);
       return cached.has(key) ? cached.get(key) : stored.get(key);
@@ -26,7 +31,10 @@ function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutIm
   };
   const caches = {
     match: (request) => cache.match(request),
-    open: async () => cacheOpenImpl ? cacheOpenImpl() : cache,
+    open: async (name) => {
+      precache.cacheNames.push(name);
+      return cacheOpenImpl ? cacheOpenImpl(name) : cache;
+    },
     keys: async () => [],
     delete: async () => true
   };
@@ -38,8 +46,25 @@ function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutIm
   };
 
   vm.runInNewContext(source, { self, caches, fetch: fetchImpl, URL, Promise });
-  return { handler: listeners.get("fetch"), stored };
+  return { handler: listeners.get("fetch"), listeners, stored, precache };
 }
+
+
+test("install precaches the lesson assessment module with the current cache version", async () => {
+  const { listeners, precache } = createWorker({ fetchImpl: async () => {} });
+  let installPromise;
+
+  listeners.get("install")({
+    waitUntil(promise) {
+      installPromise = Promise.resolve(promise);
+    }
+  });
+
+  await installPromise;
+
+  assert.deepEqual(precache.cacheNames, ["japonea-learning-v6"]);
+  assert.ok(precache.assets.includes("./scripts/course-assessment.mjs"));
+});
 
 function dispatch(handler, request) {
   let responsePromise;
