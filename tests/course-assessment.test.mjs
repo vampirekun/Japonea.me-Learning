@@ -38,6 +38,8 @@ test("builds lesson questions only from the explicit reviewSet, including earlie
   );
 
   assert.equal(questions.length, 2);
+  assert.ok(questions.every((question) => question.prompt.includes(String.fromCharCode(10))));
+  assert.ok(questions.every((question) => !question.prompt.includes(String.fromCharCode(92) + "n")));
   assert.ok(questions.every((question) =>
     question.prompt.includes("こんにちは") || question.prompt.includes("Hola")
   ));
