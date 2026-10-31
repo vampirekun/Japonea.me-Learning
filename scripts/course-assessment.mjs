@@ -71,13 +71,13 @@ export function buildLessonAssessmentQuestions(lesson, lessons, questionCount = 
   const bank = lessonPairs.flatMap((pair, index) => [
     {
       id: lesson.id + "-jp-" + index,
-      prompt: "¿Qué significa esta expresión?\\n" + pair.jp,
+      prompt: "¿Qué significa esta expresión?\n" + pair.jp,
       correct: pair.es,
       direction: "es"
     },
     {
       id: lesson.id + "-es-" + index,
-      prompt: "¿Qué expresión corresponde a esta traducción?\\n" + pair.es,
+      prompt: "¿Qué expresión corresponde a esta traducción?\n" + pair.es,
       correct: pair.jp,
       direction: "jp"
     }
