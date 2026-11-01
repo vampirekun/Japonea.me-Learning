@@ -133,3 +133,13 @@ export function buildLessonAssessmentQuestions(lesson, lessons, questionCount = 
     };
   });
 }
+
+export function persistCourseProgress(storage, key, progress) {
+  try {
+    if (!storage || typeof storage.setItem !== "function") return false;
+    storage.setItem(key, JSON.stringify(progress));
+    return true;
+  } catch {
+    return false;
+  }
+}
