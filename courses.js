@@ -1,4 +1,4 @@
-import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
+import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, persistCourseProgress, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
 
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const PASS_FALLBACK = 0.8;
@@ -22,9 +22,12 @@ function readProgress() {
 
 function saveProgress() {
   try {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(courseState.progress));
+    const saved = persistCourseProgress(localStorage, PROGRESS_KEY, courseState.progress);
+    if (!saved) console.warn("No se pudo guardar el progreso local");
+    return saved;
   } catch (error) {
     console.warn("No se pudo guardar el progreso local", error);
+    return false;
   }
 }
 
@@ -324,15 +327,18 @@ function submitAssessment(event) {
     assessment.attempts,
     percent
   );
-  saveProgress();
-  assessment.canComplete = canCompleteLessonAssessment(assessment, active.lesson);
+  const progressSaved = saveProgress();
+  assessment.canComplete = progressSaved && canCompleteLessonAssessment(assessment, active.lesson);
 
   result.replaceChildren();
   result.className = "assessment-result " + (assessment.passed ? "pass" : "fail");
   const title = document.createElement("strong");
   title.textContent = assessment.passed ? "¡Evaluación aprobada! " + percent + "%" : "Todavía no. Resultado: " + percent + "%";
   const summary = document.createElement("p");
-  if (assessment.passed && !assessment.canComplete) {
+  if (!progressSaved) {
+    summary.textContent =
+      "El resultado se calculó, pero el navegador no pudo guardar el intento. No se marcará la lección como completada; habilita el almacenamiento local e inténtalo de nuevo.";
+  } else if (assessment.passed && !assessment.canComplete) {
     summary.textContent =
       "Aprobaste, pero la política requiere al menos " + getMinimumAttempts(active.lesson) +
       " intentos. Llevas " + assessment.attempts + "; realiza otro intento para completar la lección.";
@@ -386,13 +392,19 @@ async function init() {
       const active = courseState.activeLesson;
       const assessment = courseState.assessment;
       if (!active || !canCompleteLessonAssessment(assessment, active.lesson) || assessment.lessonId !== active.lesson.id || isComplete(active.lesson.id)) return;
-      const previousProgress = courseState.progress[active.lesson.id] || {};
+      const previousProgress = courseState.progress[active.lesson.id];
       courseState.progress[active.lesson.id] = {
-        ...previousProgress,
+        ...(previousProgress || {}),
         completedAt: new Date().toISOString(),
         assessmentAttempts: assessment.attempts
       };
-      saveProgress();
+      if (!saveProgress()) {
+        if (previousProgress) courseState.progress[active.lesson.id] = previousProgress;
+        else delete courseState.progress[active.lesson.id];
+        el("completionMessage").textContent =
+          "No se pudo guardar la finalización en este dispositivo. La lección no se marcará como completada; revisa el almacenamiento local e inténtalo de nuevo.";
+        return;
+      }
       renderCourse();
       el("completeLesson").disabled = true;
       el("completeLesson").textContent = "✓ Lección completada";
