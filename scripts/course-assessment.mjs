@@ -47,6 +47,38 @@ export function canCompleteLessonAssessment(assessment, lesson) {
   );
 }
 
+export function recordLessonAssessmentAttempt(progress, lessonId, attempts, score) {
+  if (typeof lessonId !== "string" || !lessonId.trim()) {
+    throw new TypeError("lessonId must be a non-empty string");
+  }
+  if (!Number.isInteger(attempts) || attempts < 1) {
+    throw new RangeError("attempts must be a positive integer");
+  }
+  if (!Number.isInteger(score) || score < 0 || score > 100) {
+    throw new RangeError("score must be an integer between 0 and 100");
+  }
+
+  const currentProgress = progress && typeof progress === "object" && !Array.isArray(progress)
+    ? progress
+    : {};
+  const previousLessonProgress = currentProgress[lessonId] && typeof currentProgress[lessonId] === "object"
+    ? currentProgress[lessonId]
+    : {};
+  const previousBest = previousLessonProgress.bestScore;
+  const bestScore = Number.isInteger(previousBest) && previousBest >= 0 && previousBest <= 100
+    ? Math.max(previousBest, score)
+    : score;
+
+  return {
+    ...currentProgress,
+    [lessonId]: {
+      ...previousLessonProgress,
+      assessmentAttempts: attempts,
+      bestScore
+    }
+  };
+}
+
 export function buildLessonAssessmentQuestions(lesson, lessons, questionCount = 5, random = Math.random) {
   const courseLessons = Array.isArray(lessons) ? lessons : [lesson].filter(Boolean);
   const itemsById = new Map();
