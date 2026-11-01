@@ -4,7 +4,8 @@ import test from "node:test";
 import {
   buildLessonAssessmentQuestions,
   canCompleteLessonAssessment,
-  getMinimumAttempts
+  getMinimumAttempts,
+  recordLessonAssessmentAttempt
 } from "../scripts/course-assessment.mjs";
 
 const earlierLesson = {
@@ -85,4 +86,31 @@ test("caps assessment size and respects the configured minimum attempt count", (
   assert.equal(canCompleteLessonAssessment({ passed: true, attempts: 1 }, lesson), false);
   assert.equal(canCompleteLessonAssessment({ passed: true, attempts: 2 }, lesson), true);
   assert.equal(canCompleteLessonAssessment({ passed: false, attempts: 2 }, lesson), false);
+});
+
+test("preserves the highest score across persisted assessment attempts", () => {
+  const firstAttempt = recordLessonAssessmentAttempt(
+    { "n5-lesson-2": { note: "keep this" }, otherLesson: { completedAt: "2026-01-01" } },
+    "n5-lesson-2",
+    1,
+    100
+  );
+  const secondAttempt = recordLessonAssessmentAttempt(firstAttempt, "n5-lesson-2", 2, 80);
+
+  assert.deepEqual(secondAttempt["n5-lesson-2"], {
+    note: "keep this",
+    assessmentAttempts: 2,
+    bestScore: 100
+  });
+  assert.deepEqual(secondAttempt.otherLesson, { completedAt: "2026-01-01" });
+
+  const thirdAttempt = recordLessonAssessmentAttempt(secondAttempt, "n5-lesson-2", 3, 95);
+  assert.equal(thirdAttempt["n5-lesson-2"].bestScore, 100);
+  assert.equal(thirdAttempt["n5-lesson-2"].assessmentAttempts, 3);
+});
+
+test("rejects invalid assessment attempt records", () => {
+  assert.throws(() => recordLessonAssessmentAttempt({}, "lesson-1", 0, 80), /positive integer/);
+  assert.throws(() => recordLessonAssessmentAttempt({}, "lesson-1", 1, 101), /between 0 and 100/);
+  assert.throws(() => recordLessonAssessmentAttempt({}, "", 1, 80), /non-empty string/);
 });
