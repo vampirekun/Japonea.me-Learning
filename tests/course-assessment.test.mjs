@@ -5,6 +5,7 @@ import {
   buildLessonAssessmentQuestions,
   canCompleteLessonAssessment,
   getMinimumAttempts,
+  persistCourseProgress,
   recordLessonAssessmentAttempt
 } from "../scripts/course-assessment.mjs";
 
@@ -113,4 +114,33 @@ test("rejects invalid assessment attempt records", () => {
   assert.throws(() => recordLessonAssessmentAttempt({}, "lesson-1", 0, 80), /positive integer/);
   assert.throws(() => recordLessonAssessmentAttempt({}, "lesson-1", 1, 101), /between 0 and 100/);
   assert.throws(() => recordLessonAssessmentAttempt({}, "", 1, 80), /non-empty string/);
+});
+
+test("reports local-storage failures instead of claiming progress was saved", () => {
+  let written = null;
+  const workingStorage = {
+    setItem(key, value) {
+      written = { key, value };
+    }
+  };
+
+  assert.equal(
+    persistCourseProgress(workingStorage, "course-progress", { lesson: { assessmentAttempts: 1 } }),
+    true
+  );
+  assert.deepEqual(written, {
+    key: "course-progress",
+    value: JSON.stringify({ lesson: { assessmentAttempts: 1 } })
+  });
+
+  const quotaExceededStorage = {
+    setItem() {
+      throw new Error("QuotaExceededError");
+    }
+  };
+  assert.equal(
+    persistCourseProgress(quotaExceededStorage, "course-progress", { lesson: { completedAt: "now" } }),
+    false
+  );
+  assert.equal(persistCourseProgress(null, "course-progress", {}), false);
 });
