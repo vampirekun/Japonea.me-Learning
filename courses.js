@@ -1,4 +1,4 @@
-import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts } from "./scripts/course-assessment.mjs";
+import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
 
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const PASS_FALLBACK = 0.8;
@@ -295,12 +295,6 @@ function submitAssessment(event) {
   if (!assessment.questions.length || !active || assessment.submitted) return;
 
   assessment.attempts += 1;
-  const previousProgress = courseState.progress[assessment.lessonId] || {};
-  courseState.progress[assessment.lessonId] = {
-    ...previousProgress,
-    assessmentAttempts: assessment.attempts
-  };
-  saveProgress();
 
   const result = el("assessmentResult");
   let correctCount = 0;
@@ -324,6 +318,13 @@ function submitAssessment(event) {
   assessment.submitted = true;
   const percent = Math.round(score * 100);
   assessment.score = percent;
+  courseState.progress = recordLessonAssessmentAttempt(
+    courseState.progress,
+    assessment.lessonId,
+    assessment.attempts,
+    percent
+  );
+  saveProgress();
   assessment.canComplete = canCompleteLessonAssessment(assessment, active.lesson);
 
   result.replaceChildren();
@@ -389,7 +390,6 @@ async function init() {
       courseState.progress[active.lesson.id] = {
         ...previousProgress,
         completedAt: new Date().toISOString(),
-        bestScore: assessment.score,
         assessmentAttempts: assessment.attempts
       };
       saveProgress();
