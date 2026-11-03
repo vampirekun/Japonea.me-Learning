@@ -152,3 +152,45 @@ test("reports local-storage failures instead of claiming progress was saved", ()
   );
   assert.equal(persistCourseProgress(null, "course-progress", {}), false);
 });
+
+
+test("keeps the minimum-attempt gate and best score across a storage reload", () => {
+  const lesson = {
+    ...currentLesson,
+    completionPolicy: { minCorrect: 0.8, minAttempts: 2 }
+  };
+  const storage = {
+    value: null,
+    setItem(_key, value) {
+      this.value = value;
+    }
+  };
+
+  const firstAttempt = recordLessonAssessmentAttempt({}, lesson.id, 1, 100);
+  assert.equal(persistCourseProgress(storage, "course-progress", firstAttempt), true);
+  const restoredAfterFirst = JSON.parse(storage.value);
+
+  assert.equal(restoredAfterFirst[lesson.id].assessmentAttempts, 1);
+  assert.equal(restoredAfterFirst[lesson.id].bestScore, 100);
+  assert.equal(
+    canCompleteLessonAssessment(
+      { passed: true, attempts: restoredAfterFirst[lesson.id].assessmentAttempts },
+      lesson
+    ),
+    false
+  );
+
+  const secondAttempt = recordLessonAssessmentAttempt(restoredAfterFirst, lesson.id, 2, 80);
+  assert.equal(persistCourseProgress(storage, "course-progress", secondAttempt), true);
+  const restoredAfterSecond = JSON.parse(storage.value);
+
+  assert.equal(restoredAfterSecond[lesson.id].assessmentAttempts, 2);
+  assert.equal(restoredAfterSecond[lesson.id].bestScore, 100);
+  assert.equal(
+    canCompleteLessonAssessment(
+      { passed: true, attempts: restoredAfterSecond[lesson.id].assessmentAttempts },
+      lesson
+    ),
+    true
+  );
+});
