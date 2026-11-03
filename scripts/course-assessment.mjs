@@ -90,10 +90,17 @@ export function buildLessonAssessmentQuestions(lesson, lessons, questionCount = 
   });
 
   // An explicit reviewSet is authoritative and may reference items from earlier lessons.
-  // Only legacy lessons without reviewSet fall back to their own learningItems.
-  const reviewItems = Array.isArray(lesson?.reviewSet)
-    ? lesson.reviewSet.map((id) => itemsById.get(id)).filter(Boolean)
-    : (Array.isArray(lesson?.learningItems) ? lesson.learningItems : []);
+  // If any reference is invalid, fail closed instead of silently assessing a partial set.
+  let reviewItems;
+  if (Array.isArray(lesson?.reviewSet)) {
+    const resolvedItems = lesson.reviewSet.map((id) => itemsById.get(id));
+    if (!resolvedItems.length || resolvedItems.some((item) => !item)) return [];
+    reviewItems = resolvedItems;
+  } else {
+    // Only legacy lessons without reviewSet fall back to their own learningItems.
+    reviewItems = Array.isArray(lesson?.learningItems) ? lesson.learningItems : [];
+  }
+
   const lessonPairs = uniquePairs(collectPairs(reviewItems));
   const allCourseItems = courseLessons.flatMap((courseLesson) =>
     Array.isArray(courseLesson?.learningItems) ? courseLesson.learningItems : []
