@@ -58,9 +58,17 @@ test("builds lesson questions only from the explicit reviewSet, including earlie
 test("does not silently replace an explicit empty or unresolved reviewSet with unrelated lesson content", () => {
   const emptyReview = { ...currentLesson, reviewSet: [] };
   const unresolvedReview = { ...currentLesson, reviewSet: ["missing-item"] };
+  const partiallyUnresolvedReview = {
+    ...currentLesson,
+    reviewSet: ["n5-greeting-konnichiwa", "missing-item"]
+  };
 
   assert.deepEqual(buildLessonAssessmentQuestions(emptyReview, [currentLesson]), []);
   assert.deepEqual(buildLessonAssessmentQuestions(unresolvedReview, [currentLesson]), []);
+  assert.deepEqual(
+    buildLessonAssessmentQuestions(partiallyUnresolvedReview, [earlierLesson, partiallyUnresolvedReview]),
+    []
+  );
 });
 
 test("supports legacy lessons that do not yet declare reviewSet", () => {
