@@ -6,6 +6,7 @@ import {
   canCompleteLessonAssessment,
   getMinimumAttempts,
   persistCourseProgress,
+  readCourseProgress,
   recordLessonAssessmentAttempt
 } from "../scripts/course-assessment.mjs";
 
@@ -124,6 +125,26 @@ test("rejects invalid assessment attempt records", () => {
   assert.throws(() => recordLessonAssessmentAttempt({}, "", 1, 80), /non-empty string/);
 });
 
+test("restores only object-shaped course progress and tolerates unavailable storage", () => {
+  const expected = { "n5-lesson-1": { completedAt: "2026-11-04T00:00:00.000Z" } };
+  const validStorage = {
+    getItem(key) {
+      assert.equal(key, "course-progress");
+      return JSON.stringify(expected);
+    }
+  };
+  assert.deepEqual(readCourseProgress(validStorage, "course-progress"), expected);
+
+  for (const raw of ["[]", "null", "42", '"text"', "{broken json"]) {
+    const storage = { getItem: () => raw };
+    assert.deepEqual(readCourseProgress(storage, "course-progress"), {});
+  }
+
+  assert.deepEqual(readCourseProgress(null, "course-progress"), {});
+  assert.deepEqual(readCourseProgress({}, "course-progress"), {});
+  assert.deepEqual(readCourseProgress({ getItem() { throw new Error("SecurityError"); } }, "course-progress"), {});
+});
+
 test("reports local-storage failures instead of claiming progress was saved", () => {
   let written = null;
   const workingStorage = {
@@ -151,6 +172,8 @@ test("reports local-storage failures instead of claiming progress was saved", ()
     false
   );
   assert.equal(persistCourseProgress(null, "course-progress", {}), false);
+  assert.equal(persistCourseProgress(workingStorage, "course-progress", []), false);
+  assert.equal(persistCourseProgress(workingStorage, "course-progress", null), false);
 });
 
 
