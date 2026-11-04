@@ -141,9 +141,22 @@ export function buildLessonAssessmentQuestions(lesson, lessons, questionCount = 
   });
 }
 
+export function readCourseProgress(storage, key) {
+  try {
+    if (!storage || typeof storage.getItem !== "function") return {};
+    const raw = storage.getItem(key);
+    if (raw === null || raw === undefined || raw === "") return {};
+    const value = JSON.parse(raw);
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
 export function persistCourseProgress(storage, key, progress) {
   try {
     if (!storage || typeof storage.setItem !== "function") return false;
+    if (!progress || typeof progress !== "object" || Array.isArray(progress)) return false;
     storage.setItem(key, JSON.stringify(progress));
     return true;
   } catch {
