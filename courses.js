@@ -1,4 +1,4 @@
-import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, persistCourseProgress, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
+import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, persistCourseProgress, readCourseProgress, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
 
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const PASS_FALLBACK = 0.8;
@@ -13,8 +13,7 @@ const el = (id) => document.getElementById(id);
 
 function readProgress() {
   try {
-    const value = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
-    return value && typeof value === "object" ? value : {};
+    return readCourseProgress(localStorage, PROGRESS_KEY);
   } catch {
     return {};
   }
