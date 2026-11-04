@@ -68,7 +68,7 @@ Antes de añadir o modificar un curso, valida IDs, órdenes, prerrequisitos, tip
 
 ```bash
 node scripts/validate-course-data.mjs
-node --test tests/validate-course-data.test.mjs
+node --test tests/*.test.mjs
 ```
 
 La validación es estática y no publica contenido ni requiere llamadas de red. El workflow `.github/workflows/validate-course-data.yml` la ejecuta en cambios de cursos, lotes, reglas y pruebas.
