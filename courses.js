@@ -1,12 +1,15 @@
 import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, persistCourseProgress, readCourseProgress, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
+import { findResumableLesson, persistLastActiveLesson, readLastActiveLesson } from "./scripts/course-progress.mjs";
 
 const PROGRESS_KEY = "japonea_course_progress_v1";
+const LAST_ACTIVE_LESSON_KEY = "japonea_course_last_active_v1";
 const PASS_FALLBACK = 0.8;
 const QUESTION_COUNT = 5;
 const courseState = {
   course: null,
   activeLesson: null,
   progress: readProgress(),
+  resumeTarget: null,
   assessment: { lessonId: null, questions: [], passed: false, submitted: false, attempts: 0, canComplete: false }
 };
 const el = (id) => document.getElementById(id);
@@ -53,6 +56,33 @@ function isLessonUnlocked(lesson, unitUnlocked, lessonsById) {
   const prerequisites = lesson.prerequisites ?? [];
   if (!Array.isArray(prerequisites)) return false;
   return prerequisites.every((id) => lessonsById.has(id) && isComplete(id));
+}
+
+function renderResumePrompt() {
+  let lastActive = null;
+  try {
+    lastActive = readLastActiveLesson(localStorage, LAST_ACTIVE_LESSON_KEY);
+  } catch {
+    lastActive = null;
+  }
+
+  courseState.resumeTarget = findResumableLesson(
+    courseState.course,
+    courseState.progress,
+    lastActive
+  );
+
+  const card = el("resumeLessonCard");
+  if (!courseState.resumeTarget) {
+    card.hidden = true;
+    return;
+  }
+
+  const { unit, lesson } = courseState.resumeTarget;
+  el("resumeLessonTitle").textContent = lesson.title;
+  el("resumeLessonMeta").textContent = unit.title + " · " +
+    (isComplete(lesson.id) ? "Completada · puedes repasar" : "Tu última lección abierta");
+  card.hidden = false;
 }
 
 function renderStats() {
@@ -123,6 +153,7 @@ function renderCourse() {
     list.append(card);
   });
   renderStats();
+  renderResumePrompt();
 }
 
 function renderLearningItem(item) {
@@ -252,6 +283,17 @@ function renderAssessment(lesson) {
 
 function openLesson(unit, lesson) {
   courseState.activeLesson = { unit, lesson };
+  try {
+    const saved = persistLastActiveLesson(localStorage, LAST_ACTIVE_LESSON_KEY, {
+      schemaVersion: 1,
+      courseId: courseState.course.id,
+      lessonId: lesson.id,
+      updatedAt: new Date().toISOString()
+    });
+    if (!saved) console.warn("No se pudo guardar la última lección abierta");
+  } catch (error) {
+    console.warn("No se pudo guardar la última lección abierta", error);
+  }
   el("courseOverview").hidden = true;
   el("lessonView").hidden = false;
   el("lessonEyebrow").textContent = "UNIDAD " + unit.order + " · LECCIÓN " + lesson.order;
@@ -384,6 +426,14 @@ async function init() {
     courseState.course = await response.json();
     if (!Array.isArray(courseState.course.units) || !courseState.course.units.length) throw new Error("Invalid course structure");
     renderCourse();
+    el("resumeLessonButton").addEventListener("click", () => {
+      const target = courseState.resumeTarget;
+      if (!target) {
+        renderResumePrompt();
+        return;
+      }
+      openLesson(target.unit, target.lesson);
+    });
     el("backToCourse").addEventListener("click", showCourse);
     el("assessmentForm").addEventListener("submit", submitAssessment);
     el("retryAssessment").addEventListener("click", retryAssessment);
