@@ -74,6 +74,14 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 - A lesson assessment passes only when its current attempt meets `minCorrect` and the submitted-attempt count reaches `minAttempts`; persist that count with the lesson progress so retries survive reloads. Persist item review state separately so it can support spaced repetition later without changing the course schema.
 - Unknown optional fields should be ignored by older readers; increment schemaVersion only for incompatible structural changes.
 
+### Resume position
+
+- The web client stores the last opened lesson separately from completion records under `japonea_course_last_active_v1`. The versioned pointer contains only `courseId`, `lessonId` and an ISO timestamp; it does not duplicate lesson content or assessment state.
+- On load, the client resolves the pointer against the currently loaded course. It offers a resume action only when the course and lesson still exist and the lesson is already complete or its current prerequisites are satisfied.
+- A malformed, unsupported, stale or now-locked pointer is ignored. It never unlocks a lesson or overrides the prerequisite rules.
+- The pointer is best-effort local state: if browser storage is unavailable or quota-limited, the lesson still opens, but the client does not claim that the resume position was saved.
+- The service worker precaches the resume helper so the resume action can work with the cached course shell offline.
+
 ## Existing batches migration
 
 The current data/batches.json remains the source of truth for its existing cards. Course lessons can reference batches/categories through sourceRefs; migrate or duplicate card content only when a later client explicitly requires a self-contained course bundle. The current web UI still loads batches directly; consuming the new course model is separate integration work.
