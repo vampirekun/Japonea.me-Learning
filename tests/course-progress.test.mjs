@@ -1,0 +1,118 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import {
+  findResumableLesson,
+  persistLastActiveLesson,
+  readLastActiveLesson
+} from "../scripts/course-progress.mjs";
+
+const activeLesson = {
+  schemaVersion: 1,
+  courseId: "n5",
+  lessonId: "n5-lesson-2",
+  updatedAt: "2026-11-05T17:00:00.000Z"
+};
+
+const course = {
+  id: "n5",
+  units: [
+    {
+      id: "n5-unit-1",
+      prerequisites: [],
+      lessons: [
+        { id: "n5-lesson-1", prerequisites: [] },
+        { id: "n5-lesson-2", prerequisites: ["n5-lesson-1"] }
+      ]
+    },
+    {
+      id: "n5-unit-2",
+      prerequisites: ["n5-unit-1"],
+      lessons: [
+        { id: "n5-lesson-3", prerequisites: ["n5-lesson-2"] }
+      ]
+    }
+  ]
+};
+
+test("persists and restores a versioned last-active lesson pointer", () => {
+  const storage = {
+    value: null,
+    setItem(key, value) {
+      assert.equal(key, "last-active");
+      this.value = value;
+    },
+    getItem(key) {
+      assert.equal(key, "last-active");
+      return this.value;
+    }
+  };
+
+  assert.equal(persistLastActiveLesson(storage, "last-active", activeLesson), true);
+  assert.deepEqual(JSON.parse(storage.value), activeLesson);
+  assert.deepEqual(readLastActiveLesson(storage, "last-active"), activeLesson);
+});
+
+test("ignores malformed, unsupported, and incomplete last-active records", () => {
+  for (const raw of [
+    "{broken json",
+    "[]",
+    "null",
+    JSON.stringify({ ...activeLesson, schemaVersion: 2 }),
+    JSON.stringify({ ...activeLesson, courseId: "" }),
+    JSON.stringify({ ...activeLesson, lessonId: 42 }),
+    JSON.stringify({ ...activeLesson, updatedAt: "not-a-date" })
+  ]) {
+    assert.equal(
+      readLastActiveLesson({ getItem: () => raw }, "last-active"),
+      null
+    );
+  }
+
+  assert.equal(readLastActiveLesson(null, "last-active"), null);
+  assert.equal(readLastActiveLesson({}, "last-active"), null);
+  assert.equal(readLastActiveLesson({ getItem() { throw new Error("SecurityError"); } }, "last-active"), null);
+});
+
+test("reports unavailable, invalid, and quota-exceeded storage without claiming persistence", () => {
+  assert.equal(persistLastActiveLesson(null, "last-active", activeLesson), false);
+  assert.equal(persistLastActiveLesson({}, "last-active", activeLesson), false);
+  assert.equal(persistLastActiveLesson({ setItem() { throw new Error("QuotaExceededError"); } }, "last-active", activeLesson), false);
+  assert.equal(persistLastActiveLesson({ setItem() {} }, "last-active", { ...activeLesson, lessonId: "" }), false);
+});
+
+test("resolves an unlocked last-active lesson in its matching course", () => {
+  const result = findResumableLesson(
+    course,
+    { "n5-lesson-1": { completedAt: "2026-11-05T16:00:00.000Z" } },
+    activeLesson
+  );
+
+  assert.equal(result.unit.id, "n5-unit-1");
+  assert.equal(result.lesson.id, "n5-lesson-2");
+});
+
+test("does not resume a lesson from another course, an unknown lesson, or a locked unit", () => {
+  assert.equal(
+    findResumableLesson(course, {}, { ...activeLesson, courseId: "n4" }),
+    null
+  );
+  assert.equal(
+    findResumableLesson(course, {}, { ...activeLesson, lessonId: "missing-lesson" }),
+    null
+  );
+  assert.equal(
+    findResumableLesson(course, {}, { ...activeLesson, lessonId: "n5-lesson-3" }),
+    null
+  );
+});
+
+test("allows a previously completed lesson to be resumed for review", () => {
+  const result = findResumableLesson(
+    course,
+    { "n5-lesson-2": { completedAt: "2026-11-05T16:00:00.000Z" } },
+    activeLesson
+  );
+
+  assert.equal(result.lesson.id, "n5-lesson-2");
+});
