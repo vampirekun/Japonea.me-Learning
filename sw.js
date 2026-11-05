@@ -1,4 +1,4 @@
-const CACHE_NAME = "japonea-learning-v6";
+const CACHE_NAME = "japonea-learning-v7";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const ASSETS_TO_CACHE = [
   "./courses.css",
   "./courses.js",
   "./scripts/course-assessment.mjs",
+  "./scripts/course-progress.mjs",
   "./styles.css",
   "./reduced-motion.css",
   "./app.js",
