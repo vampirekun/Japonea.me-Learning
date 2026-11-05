@@ -73,6 +73,8 @@ node --test tests/*.test.mjs
 
 La validación es estática y no publica contenido ni requiere llamadas de red. El workflow `.github/workflows/validate-course-data.yml` la ejecuta en cambios de cursos, lotes, reglas y pruebas.
 
+La página de cursos guarda por separado la última lección abierta y ofrece retomarla al volver. El marcador se valida contra el curso y sus prerrequisitos actuales; no marca lecciones como completadas ni desbloquea contenido. Si el almacenamiento local falla, la lección sigue disponible durante la sesión, pero no se afirma que la posición quedó guardada.
+
 ## Deploy (GitHub Pages)
 
 El workflow `.github/workflows/deploy.yml` despliega automáticamente a GitHub Pages en cada push a `main`.
