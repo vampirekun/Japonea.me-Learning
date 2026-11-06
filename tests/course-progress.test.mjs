@@ -107,6 +107,28 @@ test("does not resume a lesson from another course, an unknown lesson, or a lock
   );
 });
 
+test("does not unlock a lesson from stale progress for a removed prerequisite", () => {
+  const courseWithRemovedPrerequisite = {
+    id: "n5",
+    units: [{
+      id: "n5-unit-1",
+      prerequisites: [],
+      lessons: [{
+        id: "n5-lesson-2",
+        prerequisites: ["removed-lesson"]
+      }]
+    }]
+  };
+  const staleProgress = {
+    "removed-lesson": { completedAt: "2026-11-05T16:00:00.000Z" }
+  };
+
+  assert.equal(
+    findResumableLesson(courseWithRemovedPrerequisite, staleProgress, activeLesson),
+    null
+  );
+});
+
 test("allows a previously completed lesson to be resumed for review", () => {
   const result = findResumableLesson(
     course,
