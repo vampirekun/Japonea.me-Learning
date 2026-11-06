@@ -72,6 +72,13 @@ export function findResumableLesson(course, progress, lastActive) {
   const target = lessonEntries.find(({ lesson }) => lesson?.id === lastActive.lessonId);
   if (!target) return null;
 
+  // Match the course UI's prerequisite resolution: stale progress for a lesson that
+  // no longer exists must never make another lesson appear unlocked.
+  const lessonIds = new Set(
+    lessonEntries
+      .map(({ lesson }) => lesson?.id)
+      .filter((lessonId) => typeof lessonId === "string" && lessonId.length > 0)
+  );
   const progressMap = progress && typeof progress === "object" && !Array.isArray(progress)
     ? progress
     : {};
@@ -95,7 +102,8 @@ export function findResumableLesson(course, progress, lastActive) {
   const isLessonUnlocked = (lesson, unit) => {
     if (!isUnitUnlocked(unit)) return false;
     const prerequisites = lesson?.prerequisites ?? [];
-    return Array.isArray(prerequisites) && prerequisites.every(isComplete);
+    return Array.isArray(prerequisites) &&
+      prerequisites.every((lessonId) => lessonIds.has(lessonId) && isComplete(lessonId));
   };
 
   return isComplete(target.lesson.id) || isLessonUnlocked(target.lesson, target.unit)
