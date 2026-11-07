@@ -29,3 +29,7 @@
 .lesson-footer .primary-button:disabled{background:#d9dbe4;color:#666b7c;cursor:not-allowed}
 .lesson-footer .primary-button:disabled:hover{background:#d9dbe4}
 @media(max-width:520px){.assessment{padding:15px}.assessment-heading{flex-direction:column}.assessment-question{padding:13px}.assessment-option{padding:10px}.assessment-actions .primary-button,.assessment-actions .secondary-button{width:100%}}
+
+
+.resume-card{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:18px 0 20px;padding:18px 20px;border:1px solid #f2c4dc;border-radius:16px;background:linear-gradient(120deg,#fff7fb,#fff)}.resume-card h3{margin:0;font-size:1.05rem}.resume-meta{margin:4px 0 0;color:var(--muted);font-size:.8rem}.resume-card .eyebrow{margin-bottom:5px}.resume-card .primary-button{flex:0 0 auto}
+@media(max-width:520px){.resume-card{align-items:stretch;flex-direction:column;padding:15px}.resume-card .primary-button{width:100%}}

@@ -5,11 +5,13 @@ on:
     branches: [main]
     paths:
       - "sw.js"
+      - "scripts/course-progress.mjs"
       - "tests/service-worker.test.mjs"
       - ".github/workflows/service-worker.yml"
   pull_request:
     paths:
       - "sw.js"
+      - "scripts/course-progress.mjs"
       - "tests/service-worker.test.mjs"
       - ".github/workflows/service-worker.yml"
 

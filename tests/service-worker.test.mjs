@@ -50,7 +50,7 @@ function createWorker({ fetchImpl, cachedEntries = [], cacheOpenImpl, cachePutIm
 }
 
 
-test("install precaches the lesson assessment module with the current cache version", async () => {
+test("install precaches the assessment and progress modules with the current cache version", async () => {
   const { listeners, precache } = createWorker({ fetchImpl: async () => {} });
   let installPromise;
 
@@ -62,8 +62,9 @@ test("install precaches the lesson assessment module with the current cache vers
 
   await installPromise;
 
-  assert.deepEqual(precache.cacheNames, ["japonea-learning-v6"]);
+  assert.deepEqual(precache.cacheNames, ["japonea-learning-v7"]);
   assert.ok(precache.assets.includes("./scripts/course-assessment.mjs"));
+  assert.ok(precache.assets.includes("./scripts/course-progress.mjs"));
 });
 
 function dispatch(handler, request) {
