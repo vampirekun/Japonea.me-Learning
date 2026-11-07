@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
@@ -137,4 +138,24 @@ test("allows a previously completed lesson to be resumed for review", () => {
   );
 
   assert.equal(result.lesson.id, "n5-lesson-2");
+});
+
+test("moves keyboard focus to the visible heading when switching course views", async () => {
+  const [html, ui] = await Promise.all([
+    readFile(new URL("../courses.html", import.meta.url), "utf8"),
+    readFile(new URL("../courses.js", import.meta.url), "utf8")
+  ]);
+
+  assert.match(html, /<h2 id="courseTitle" tabindex="-1">/);
+  assert.match(html, /<h2 id="lessonTitle" tabindex="-1">/);
+
+  const openStart = ui.indexOf("function openLesson(");
+  const returnStart = ui.indexOf("function showCourse()");
+  const assessmentStart = ui.indexOf("function submitAssessment(");
+  assert.ok(openStart >= 0 && returnStart > openStart && assessmentStart > returnStart);
+
+  const openLesson = ui.slice(openStart, returnStart);
+  const showCourse = ui.slice(returnStart, assessmentStart);
+  assert.ok(openLesson.indexOf('el("lessonView").hidden = false;') < openLesson.indexOf('el("lessonTitle").focus();'));
+  assert.ok(showCourse.indexOf('el("courseOverview").hidden = false;') < showCourse.indexOf('el("courseTitle").focus();'));
 });
