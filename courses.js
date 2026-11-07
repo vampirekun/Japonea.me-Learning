@@ -321,6 +321,7 @@ function openLesson(unit, lesson) {
   } else {
     el("completionMessage").textContent = "";
   }
+  el("lessonTitle").focus();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -329,6 +330,7 @@ function showCourse() {
   el("lessonView").hidden = true;
   el("courseOverview").hidden = false;
   renderCourse();
+  el("courseTitle").focus();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
