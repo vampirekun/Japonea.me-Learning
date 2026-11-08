@@ -183,14 +183,48 @@ test("does not unlock a lesson from stale progress for a removed prerequisite", 
   );
 });
 
-test("allows a previously completed lesson to be resumed for review", () => {
+test("allows a previously completed lesson to be resumed for review when prerequisites remain complete", () => {
   const result = findResumableLesson(
     course,
-    { "n5-lesson-2": { completedAt: "2026-11-05T16:00:00.000Z" } },
+    {
+      "n5-lesson-1": { completedAt: "2026-11-05T16:00:00.000Z" },
+      "n5-lesson-2": { completedAt: "2026-11-05T17:00:00.000Z" }
+    },
     activeLesson
   );
 
   assert.equal(result.lesson.id, "n5-lesson-2");
+});
+
+test("does not let a completed lesson bypass an incomplete current prerequisite", () => {
+  const progress = {
+    "n5-lesson-2": { completedAt: "2026-11-05T17:00:00.000Z" }
+  };
+
+  assert.equal(findResumableLesson(course, progress, activeLesson), null);
+});
+
+test("does not let a completed lesson revive a removed prerequisite from stale progress", () => {
+  const courseWithRemovedPrerequisite = {
+    id: "n5",
+    units: [{
+      id: "n5-unit-1",
+      prerequisites: [],
+      lessons: [{
+        id: "n5-lesson-2",
+        prerequisites: ["removed-lesson"]
+      }]
+    }]
+  };
+  const staleProgress = {
+    "removed-lesson": { completedAt: "2026-11-05T16:00:00.000Z" },
+    "n5-lesson-2": { completedAt: "2026-11-05T17:00:00.000Z" }
+  };
+
+  assert.equal(
+    findResumableLesson(courseWithRemovedPrerequisite, staleProgress, activeLesson),
+    null
+  );
 });
 
 test("moves keyboard focus to the visible heading when switching course views", async () => {
