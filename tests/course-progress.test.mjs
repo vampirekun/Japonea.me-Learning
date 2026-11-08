@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  areUnitPrerequisitesComplete,
   findResumableLesson,
   persistLastActiveLesson,
   readLastActiveLesson
@@ -91,6 +92,58 @@ test("resolves an unlocked last-active lesson in its matching course", () => {
 
   assert.equal(result.unit.id, "n5-unit-1");
   assert.equal(result.lesson.id, "n5-lesson-2");
+});
+
+test("does not unlock a unit when a prerequisite unit has no lessons", () => {
+  const emptyUnit = { id: "empty-unit", prerequisites: [], lessons: [] };
+  const targetUnit = {
+    id: "target-unit",
+    prerequisites: ["empty-unit"],
+    lessons: [{ id: "n5-lesson-2", prerequisites: [] }]
+  };
+
+  assert.equal(
+    areUnitPrerequisitesComplete(targetUnit, [emptyUnit, targetUnit], () => true),
+    false
+  );
+  assert.equal(
+    findResumableLesson(
+      { id: "n5", units: [emptyUnit, targetUnit] },
+      {},
+      activeLesson
+    ),
+    null
+  );
+});
+
+test("requires every lesson in a prerequisite unit to be complete", () => {
+  const prerequisite = {
+    id: "unit-1",
+    lessons: [{ id: "lesson-1" }, { id: "lesson-2" }]
+  };
+  const target = { id: "unit-2", prerequisites: ["unit-1"] };
+  const units = [prerequisite, target];
+
+  assert.equal(
+    areUnitPrerequisitesComplete(target, units, (id) => id === "lesson-1"),
+    false
+  );
+  assert.equal(
+    areUnitPrerequisitesComplete(target, units, () => true),
+    true
+  );
+  assert.equal(
+    areUnitPrerequisitesComplete({ id: "first-unit", prerequisites: [] }, units, () => false),
+    true
+  );
+});
+
+test("course UI uses the shared unit prerequisite guard", async () => {
+  const ui = await readFile(new URL("../courses.js", import.meta.url), "utf8");
+  assert.match(
+    ui,
+    /function isUnitUnlocked\(unit\)\s*\{\s*return areUnitPrerequisitesComplete\(unit, courseState\.course\.units, isComplete\);\s*\}/
+  );
 });
 
 test("does not resume a lesson from another course, an unknown lesson, or a locked unit", () => {
