@@ -1,5 +1,5 @@
 import { buildLessonAssessmentQuestions, canCompleteLessonAssessment, getMinimumAttempts, persistCourseProgress, readCourseProgress, recordLessonAssessmentAttempt } from "./scripts/course-assessment.mjs";
-import { findResumableLesson, persistLastActiveLesson, readLastActiveLesson } from "./scripts/course-progress.mjs";
+import { areUnitPrerequisitesComplete, findResumableLesson, persistLastActiveLesson, readLastActiveLesson } from "./scripts/course-progress.mjs";
 
 const PROGRESS_KEY = "japonea_course_progress_v1";
 const LAST_ACTIVE_LESSON_KEY = "japonea_course_last_active_v1";
@@ -44,11 +44,7 @@ function isComplete(lessonId) {
 }
 
 function isUnitUnlocked(unit) {
-  if (!unit.prerequisites?.length) return true;
-  return unit.prerequisites.every((id) => {
-    const prerequisite = courseState.course.units.find((candidate) => candidate.id === id);
-    return prerequisite && prerequisite.lessons.every((lesson) => isComplete(lesson.id));
-  });
+  return areUnitPrerequisitesComplete(unit, courseState.course.units, isComplete);
 }
 
 function isLessonUnlocked(lesson, unitUnlocked, lessonsById) {
