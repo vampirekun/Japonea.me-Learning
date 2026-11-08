@@ -53,6 +53,35 @@ export function persistLastActiveLesson(storage, key, record) {
   }
 }
 
+export function areUnitPrerequisitesComplete(unit, units, isLessonComplete) {
+  if (
+    !unit ||
+    typeof unit !== "object" ||
+    Array.isArray(unit) ||
+    !Array.isArray(units) ||
+    typeof isLessonComplete !== "function"
+  ) {
+    return false;
+  }
+
+  const prerequisites = unit.prerequisites ?? [];
+  if (!Array.isArray(prerequisites)) return false;
+
+  return prerequisites.every((unitId) => {
+    const prerequisite = units.find((candidate) => candidate?.id === unitId);
+    return Boolean(
+      prerequisite &&
+      Array.isArray(prerequisite.lessons) &&
+      prerequisite.lessons.length > 0 &&
+      prerequisite.lessons.every((lesson) =>
+        typeof lesson?.id === "string" &&
+        lesson.id.trim().length > 0 &&
+        isLessonComplete(lesson.id)
+      )
+    );
+  });
+}
+
 export function findResumableLesson(course, progress, lastActive) {
   if (
     !course ||
@@ -83,24 +112,8 @@ export function findResumableLesson(course, progress, lastActive) {
     ? progress
     : {};
   const isComplete = (lessonId) => Boolean(progressMap[lessonId]?.completedAt);
-  const unitsById = new Map(course.units.filter((unit) => typeof unit?.id === "string").map((unit) => [unit.id, unit]));
-
-  const isUnitUnlocked = (unit) => {
-    const prerequisites = unit?.prerequisites ?? [];
-    if (!Array.isArray(prerequisites)) return false;
-    return prerequisites.every((unitId) => {
-      const prerequisite = unitsById.get(unitId);
-      return Boolean(
-        prerequisite &&
-        Array.isArray(prerequisite.lessons) &&
-        prerequisite.lessons.length > 0 &&
-        prerequisite.lessons.every((lesson) => isComplete(lesson.id))
-      );
-    });
-  };
-
   const isLessonUnlocked = (lesson, unit) => {
-    if (!isUnitUnlocked(unit)) return false;
+    if (!areUnitPrerequisitesComplete(unit, course.units, isComplete)) return false;
     const prerequisites = lesson?.prerequisites ?? [];
     return Array.isArray(prerequisites) &&
       prerequisites.every((lessonId) => lessonIds.has(lessonId) && isComplete(lessonId));
