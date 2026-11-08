@@ -119,7 +119,7 @@ export function findResumableLesson(course, progress, lastActive) {
       prerequisites.every((lessonId) => lessonIds.has(lessonId) && isComplete(lessonId));
   };
 
-  return isComplete(target.lesson.id) || isLessonUnlocked(target.lesson, target.unit)
-    ? target
-    : null;
+  // Completed lessons remain available for review, but completion must not bypass
+  // the current prerequisite graph or revive a pointer made stale by course changes.
+  return isLessonUnlocked(target.lesson, target.unit) ? target : null;
 }
