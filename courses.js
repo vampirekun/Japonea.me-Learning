@@ -127,7 +127,7 @@ function renderCourse() {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "lesson-row" + (completed ? " completed" : "");
-      button.disabled = !lessonUnlocked && !completed;
+      button.disabled = !lessonUnlocked;
       button.setAttribute("aria-label", lesson.title + (completed ? ", completada" : lessonUnlocked ? "" : ", bloqueada"));
       const status = document.createElement("span");
       status.className = "lesson-status";
