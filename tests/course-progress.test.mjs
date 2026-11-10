@@ -140,8 +140,8 @@ test("requires every lesson in a prerequisite unit to be complete", () => {
 
 test("course UI does not let completed lessons bypass current prerequisites", async () => {
   const ui = await readFile(new URL("../courses.js", import.meta.url), "utf8");
-  assert.match(ui, /button\\.disabled = !lessonUnlocked;/);
-  assert.doesNotMatch(ui, /button\\.disabled = !lessonUnlocked && !completed;/);
+  assert.match(ui, /button\.disabled = !lessonUnlocked;/);
+  assert.doesNotMatch(ui, /button\.disabled = !lessonUnlocked && !completed;/);
 });
 
 test("course UI uses the shared unit prerequisite guard", async () => {
