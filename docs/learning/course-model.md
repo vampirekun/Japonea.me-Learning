@@ -77,7 +77,7 @@ Japonea.me courses are structured learning paths, not just larger vocabulary bat
 ### Resume position
 
 - The web client stores the last opened lesson separately from completion records under `japonea_course_last_active_v1`. The versioned pointer contains only `courseId`, `lessonId` and an ISO timestamp; it does not duplicate lesson content or assessment state.
-- On load, the client resolves the pointer against the currently loaded course. It offers a resume action only when the course and lesson still exist and the lesson is already complete or its current prerequisites are satisfied.
+- On load, the client resolves the pointer against the currently loaded course. It offers a resume action only when the course and lesson still exist and the lesson's current unit and lesson prerequisites are satisfied. Completion never bypasses a changed prerequisite graph; completed lessons remain available for review only while those prerequisites are valid.
 - A malformed, unsupported, stale or now-locked pointer is ignored. It never unlocks a lesson or overrides the prerequisite rules.
 - The pointer is best-effort local state: if browser storage is unavailable or quota-limited, the lesson still opens, but the client does not claim that the resume position was saved.
 - The service worker precaches the resume helper so the resume action can work with the cached course shell offline.
